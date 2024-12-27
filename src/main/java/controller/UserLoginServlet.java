@@ -18,17 +18,39 @@ public class UserLoginServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/view/user/login.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+			//フォームから送信されたログインIDとパスワードを取得
+			String loginId = request.getParameter("loginId");
+			String loginPass = request.getParameter("loginPass");
+			//Factoryを使いDAOオブジェクトを生成、利用する
+			UserDao userDao = UserFactory.createUserDao();
+			User user =
+					//loginIdとloginPassを使ってユーザー情報を検索
+					userDao.findByLoginIdAndLoginPass(loginId, loginPass);
+			if (user != null) {
+				//ログイン成功⇒セッションにログインIDを格納
+				request.getSession().setAttribute("loginId",
+						user.getLoginId());
+				//ログイン後はトップページへリダイレクト
+				response.sendRedirect("userTop");
+			} else {
+				request.setAttribute("error", true);
+				request.getRequestDispatcher("/WEB-INF/view/user/login.jsp")
+						.forward(request, response);
+			}
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
 	}
 
 }
