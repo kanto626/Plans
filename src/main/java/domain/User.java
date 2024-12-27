@@ -8,4 +8,5 @@ public class User {
 	private Integer id;
 	private String loginId;
 	private String loginPass;
+	private String name;
 }
