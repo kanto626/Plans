@@ -14,7 +14,8 @@ public class UserDaoImpl implements UserDao {
 	//データベース接続に使用するDataSourceを保持するためのフィールドdsを用意
 	private DataSource ds;
 
-	//コンストラクタ
+	// コンストラクタを通じて、DataSourceを受けとる
+	// DataSourceの準備は、UserDaoImplを生成するクラス(DaoFactory)に委ねる
 	public UserDaoImpl(DataSource ds) {
 		this.ds = ds;
 	}
