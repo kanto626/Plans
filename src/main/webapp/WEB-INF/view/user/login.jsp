@@ -10,9 +10,9 @@
 <body>
 	<h1>ログイン</h1>
 	<c:if test="${not empty error}">
+		<p>アカウントが見つかりませんでした。ログインID 又はパスワードを確認してください。</p>
 		<p>
-			ログインID 又は パスワード が正しくないか、アカウントが見つかりませんでした。 まだアカウントを作成していない場合は<a
-				href="user/register.jsp">コチラ</a>から作成してください
+			まだアカウントを作成していない場合は<a href="user/register.jsp">コチラ</a>から作成してください
 		</p>
 	</c:if>
 	<form action="" method="post">
