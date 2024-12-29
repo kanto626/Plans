@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import domain.User;
+import dto.User;
 
 public class UserDaoImpl implements UserDao {
 	//データベース接続に使用するDataSourceを保持するためのフィールドdsを用意
