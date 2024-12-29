@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.DaoFactory;
 import dao.UserDao;
 import domain.User;
 
@@ -36,7 +37,7 @@ public class UserLoginServlet extends HttpServlet {
 			String loginId = request.getParameter("loginId");
 			String loginPass = request.getParameter("loginPass");
 			//Factoryを使いDAOオブジェクトを生成、利用する
-			UserDao userDao = UserFactory.createUserDao();
+			UserDao userDao = DaoFactory.createUserDao();
 			User user =
 					//loginIdとloginPassを使ってユーザー情報を検索
 					userDao.findByLoginIdAndLoginPass(loginId, loginPass);
