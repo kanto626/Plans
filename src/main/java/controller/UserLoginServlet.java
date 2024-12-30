@@ -46,7 +46,7 @@ public class UserLoginServlet extends HttpServlet {
 				request.getSession().setAttribute("loginId",
 						user.getLoginId());
 				//ログイン後はトップページへリダイレクト
-				response.sendRedirect("userTop");
+				response.sendRedirect("top");
 			} else {
 				request.setAttribute("error", true);
 				request.getRequestDispatcher("/WEB-INF/view/user/login.jsp")

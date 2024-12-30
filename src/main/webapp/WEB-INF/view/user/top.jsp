@@ -11,14 +11,17 @@
 	<h1>旅行プラン投稿サイト</h1>
 	<%-- ユーザーがログインしているかどうかをチェック --%>
 	<%
-	// セッションからユーザー情報を取得
-	User user = (User) session.getAttribute("user");
-	if (user != null) {
+	// セッションからログインIDを取得
+	String loginId = (String) session.getAttribute("loginId");
+	if (loginId != null) {
 	%>
+
+
 	<!-- ログイン状態の場合 -->
-	<p>
-		ようこそ、<%=user.getUsername()%>さん
-	</p>
+	<p>ようこそ</p>
+
+	<%-- 
+
 	<p>
 		<a href="<%=request.getContextPath()%>/user/mypage">マイページ</a>
 	</p>
@@ -32,9 +35,12 @@
 		<a href="<%=request.getContextPath()%>/user/logout">ログアウト</a>
 	</p>
 
+	--%>
+
 	<%
 	} else {
 	%>
+
 	<!-- ログインしていない場合 -->
 	<p>
 		<a href="<%=request.getContextPath()%>/user/login">ログイン</a>
@@ -45,5 +51,6 @@
 	<%
 	}
 	%>
+
 </body>
 </html>
