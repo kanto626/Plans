@@ -5,17 +5,14 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>ログイン</title>
+<title>アカウント作成</title>
 </head>
 <body>
-	<h1>ログイン</h1>
-	<c:if test="${not empty error}">
-		<p>アカウントが見つかりませんでした。ログインID 又はパスワードを確認してください。</p>
-		<p>
-			まだアカウントを作成していない場合は<a href="${pageContext.request.contextPath}/user/register">コチラ</a>から作成してください
-		</p>
-	</c:if>
+	<h1>アカウント作成</h1>
 	<form action="" method="post">
+		<p>
+			<input type="text" name="name" placeholder="ユーザー名">
+		</p>
 		<p>
 			<input type="text" name="loginId" placeholder="ログインID">
 		</p>
@@ -23,7 +20,7 @@
 			<input type="password" name="loginPass" placeholder="パスワード">
 		</p>
 		<p>
-			<input type="submit" value="ログイン">
+			<input type="submit" value="作成する">
 		</p>
 	</form>
 </body>

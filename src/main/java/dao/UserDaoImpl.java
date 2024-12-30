@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import domain.User;
+import dto.User;
 
 public class UserDaoImpl implements UserDao {
 	//データベース接続に使用するDataSourceを保持するためのフィールドdsを用意
@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 		// データベース接続を取得
 		try (var con = ds.getConnection()) {
 			// conを使い、SQLを実行
-			String sql = "SELECT * FROM users WHERE login_id=?"; // id が一致するレコードを取得する
+			String sql = "SELECT * FROM users WHERE login_id=?"; // id が一致するデータを取得する
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, loginId);
 			ResultSet rs = stmt.executeQuery();
@@ -72,7 +72,7 @@ public class UserDaoImpl implements UserDao {
 		} catch (Exception e) {
 			throw e;
 		}
-		return user;
+		return user; // ログインIDとパスワードが一致する場合のみ
 	}
 
 	private User mapToUser(ResultSet rs) throws Exception {

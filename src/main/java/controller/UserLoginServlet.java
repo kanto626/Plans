@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.DaoFactory;
 import dao.UserDao;
-import domain.User;
+import dto.User;
 
 /**
  * Servlet implementation class UserLoginServlet
