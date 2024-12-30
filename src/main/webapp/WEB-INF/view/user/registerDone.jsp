@@ -13,7 +13,7 @@
 		アカウントを作成しました。<br>トップページからログインしてください
 	</p>
 	<p>
-		<input type="submit" value="ログイン">
+		<a href="top">トップへ</a> 
 	</p>
 </body>
 </html>
