@@ -10,13 +10,13 @@
 <body>
 	<h1>アカウント作成</h1>
 	<form action="" method="post">
-		<p>
+		<p>ユーザー名:
 			<input type="text" name="name" placeholder="ユーザー名">
 		</p>
-		<p>
+		<p>ログインID:
 			<input type="text" name="loginId" placeholder="ログインID">
 		</p>
-		<p>
+		<p>パスワード:
 			<input type="password" name="loginPass" placeholder="パスワード">
 		</p>
 		<p>
