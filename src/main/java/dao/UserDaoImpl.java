@@ -1,7 +1,9 @@
 package dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -22,8 +24,27 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> findAll() throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		List<User> userList = new ArrayList<>();
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT users.id, users.name,"
+					+ " users.login_id FROM users";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				userList.add(mapToUserForList(rs));
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return userList;
+
+	}
+
+	private User mapToUserForList(ResultSet rs) throws Exception {
+		Integer id = (Integer) rs.getObject("id");
+		String name = rs.getString("name");
+		return new User(id, name);
+
 	}
 
 	@Override
@@ -82,6 +103,7 @@ public class UserDaoImpl implements UserDao {
 		user.setId((Integer) rs.getObject("id"));
 		user.setLoginId(rs.getString("login_id"));
 		user.setLoginPass(rs.getString("login_pass"));
+		user.setName(rs.getString("name"));
 		return user;
 	}
 }
