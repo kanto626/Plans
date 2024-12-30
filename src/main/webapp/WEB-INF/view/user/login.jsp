@@ -12,7 +12,7 @@
 	<c:if test="${not empty error}">
 		<p>アカウントが見つかりませんでした。ログインID 又はパスワードを確認してください。</p>
 		<p>
-			まだアカウントを作成していない場合は<a href="user/register.jsp">コチラ</a>から作成してください
+			まだアカウントを作成していない場合は<a href="${pageContext.request.contextPath}/user/register">コチラ</a>から作成してください
 		</p>
 	</c:if>
 	<form action="" method="post">
