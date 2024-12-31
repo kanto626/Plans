@@ -31,11 +31,11 @@
 	<p>
 		<a href="<%=request.getContextPath()%>/user/addPlan">旅行プラン作成</a>
 	</p>
+	--%>
 	<p>
 		<a href="<%=request.getContextPath()%>/user/logout">ログアウト</a>
 	</p>
 
-	--%>
 
 	<%
 	} else {
