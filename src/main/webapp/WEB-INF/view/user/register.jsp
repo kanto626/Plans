@@ -11,7 +11,7 @@
 	<h1>アカウント作成</h1>
 	<form action="" method="post">
 		<p>
-			ユーザー名: <input type="text" name="name" placeholder="ユーザー名"
+			ユーザー名: <input type="text" name="name" 
 				value="<c:out value="${name}" />">
 		</p>
 		<c:if test="${not empty nameError}">

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import dao.DaoFactory;
 import dao.UserDao;
 import dto.User;
@@ -66,6 +68,9 @@ public class UserRegisterServlet extends HttpServlet {
 		} else if (loginPass.length() < 4) {
 			request.setAttribute("loginPassError", "パスワードは4文字以上で入力してください。");
 			isError = true;
+		} else {
+			// パスワードをハッシュ化
+			loginPass = BCrypt.hashpw(loginPass, BCrypt.gensalt());
 		}
 		// 入力不備がある場合は、フォームを再表示し、処理を中断
 		if (isError == true) {
