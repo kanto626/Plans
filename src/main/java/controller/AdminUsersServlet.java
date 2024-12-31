@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.DaoFactory;
 import dao.UserDao;
-import dto.User;
+import domain.User;
 
 /**
  * Servlet implementation class ListUserServlet

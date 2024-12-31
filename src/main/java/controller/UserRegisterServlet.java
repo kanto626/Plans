@@ -12,7 +12,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import dao.DaoFactory;
 import dao.UserDao;
-import dto.User;
+import domain.User;
 
 /**
  * Servlet implementation class UserRegisterServlet
