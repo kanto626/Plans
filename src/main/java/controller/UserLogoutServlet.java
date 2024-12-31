@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class UserTopServlet
+ * Servlet implementation class UserLogoutServlet
  */
-@WebServlet("/user/top")
-public class UserTopServlet extends HttpServlet {
+@WebServlet("/user/logout")
+public class UserLogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -20,7 +20,9 @@ public class UserTopServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/view/user/top.jsp").forward(request, response);
+		// ログイン情報の破棄
+		request.getSession().removeAttribute("loginId");
+		response.sendRedirect("top");
 
 	}
 
