@@ -5,13 +5,9 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>アカウント作成完了</title>
+<title>アカウント一覧</title>
 </head>
 <body>
-	<h1>アカウント作成完了</h1>
-	<p>アカウントを作成しました。</p>
-	<p>
-		<a href="top">トップへ</a>
-	</p>
+	<h1>アカウント一覧</h1>
 </body>
 </html>

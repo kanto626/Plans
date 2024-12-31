@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class UserTopServlet
  */
-@WebServlet("/user/Top")
+@WebServlet("/user/top")
 public class UserTopServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
