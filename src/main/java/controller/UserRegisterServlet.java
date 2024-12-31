@@ -34,11 +34,46 @@ public class UserRegisterServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// パラメータの取得
+		// バリデーション用のフラグ
+		boolean isError = false;
+
+		// パラメータの取得 + バリデーション
 		String name = request.getParameter("name");
+		request.setAttribute("name", name); // 再表示用
+		if (name.isBlank()) {
+			// エラーメッセージの作成
+			request.setAttribute("nameError", "ユーザー名が未入力です。");
+			isError = true; // 入力に不備ありと判定
+		} else if (name.length() > 15) {
+			request.setAttribute("nameError", "15 字以内で入力してください。");
+			isError = true;
+		}
+		// loginIdのバリデーション
 		String loginId = request.getParameter("loginId");
+		request.setAttribute("loginId", loginId); // 再表示用
+		if (loginId == null || loginId.isBlank()) {
+			request.setAttribute("loginIdError", "ログインIDが未入力です。");
+			isError = true;
+		} else if (loginId.length() < 5 || loginId.length() > 30) {
+			request.setAttribute("loginIdError", "ログインIDは5〜30文字以内で入力してください。");
+			isError = true;
+		}
+		// loginPassのバリデーション
 		String loginPass = request.getParameter("loginPass");
-		// データの追加
+		if (loginPass == null || loginPass.isBlank()) {
+			request.setAttribute("loginPassError", "パスワードが未入力です。");
+			isError = true;
+		} else if (loginPass.length() < 4) {
+			request.setAttribute("loginPassError", "パスワードは4文字以上で入力してください。");
+			isError = true;
+		}
+		// 入力不備がある場合は、フォームを再表示し、処理を中断
+		if (isError == true) {
+			request.getRequestDispatcher("/WEB-INF/view/user/register.jsp")
+					.forward(request, response);
+			return;
+		}
+		// 入力に不備がなければ、データの追加
 		User user = new User();
 		user.setName(name);
 		user.setLoginId(loginId);

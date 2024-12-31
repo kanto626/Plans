@@ -10,15 +10,35 @@
 <body>
 	<h1>アカウント作成</h1>
 	<form action="" method="post">
-		<p>ユーザー名:
-			<input type="text" name="name" placeholder="ユーザー名">
+		<p>
+			ユーザー名: <input type="text" name="name" placeholder="ユーザー名"
+				value="<c:out value="${name}" />">
 		</p>
-		<p>ログインID:
-			<input type="text" name="loginId" placeholder="ログインID">
+		<c:if test="${not empty nameError}">
+			<p style="color: red;">
+				※
+				<c:out value="${nameError}" />
+			</p>
+		</c:if>
+		<p>
+			ログインID: <input type="text" name="loginId" placeholder="30字以内"
+				value="<c:out value="${loginId}" />">
 		</p>
-		<p>パスワード:
-			<input type="password" name="loginPass" placeholder="パスワード">
+		<c:if test="${not empty loginIdError}">
+			<p style="color: red;">
+				※
+				<c:out value="${loginIdError}" />
+			</p>
+		</c:if>
+		<p>
+			パスワード: <input type="password" name="loginPass" placeholder="4文字以上">
 		</p>
+		<c:if test="${not empty loginPassError}">
+			<p style="color: red;">
+				※
+				<c:out value="${loginPassError}" />
+			</p>
+		</c:if>
 		<p>
 			<input type="submit" value="作成する">
 		</p>
