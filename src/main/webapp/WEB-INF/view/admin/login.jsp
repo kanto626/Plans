@@ -11,16 +11,13 @@
 	<h1>ログイン</h1>
 	<c:if test="${not empty error}">
 		<p>アカウントが見つかりませんでした。ログインID 又はパスワードを確認してください。</p>
-		<p>
-			まだアカウントを作成していない場合は<a href="${pageContext.request.contextPath}/user/register">コチラ</a>から作成してください
-		</p>
 	</c:if>
 	<form action="" method="post">
 		<p>
-			<input type="text" name="loginId" placeholder="ログインID">
+			<input type="text" name="adminId" placeholder="ログインID">
 		</p>
 		<p>
-			<input type="password" name="loginPass" placeholder="パスワード">
+			<input type="password" name="adminPass" placeholder="パスワード">
 		</p>
 		<p>
 			<input type="submit" value="ログイン">

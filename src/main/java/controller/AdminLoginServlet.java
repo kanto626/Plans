@@ -34,6 +34,7 @@ public class AdminLoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		try {
 			// フォームから送信されたログインIDとパスワードを取得
 			String adminId = request.getParameter("adminId");
@@ -47,7 +48,7 @@ public class AdminLoginServlet extends HttpServlet {
 				// ログイン成功⇒セッションに管理者IDを格納
 				request.getSession().setAttribute("adminId", admin.getLoginId());
 
-				// 管理者用ページへリダイレクト
+				// 管理者用ページ(ユーザーリスト)へリダイレクト
 				response.sendRedirect("users");
 			} else {
 				request.setAttribute("error", true);

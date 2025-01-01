@@ -54,24 +54,29 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public Admin findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
 		Admin admin = null;
+		// データベース接続を取得
 		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT * FROM admins WHERE login_id = ?";
+			String sql = "SELECT * FROM admins WHERE login_id = ?"; // id が一致するデータを取得する
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, loginId);
 			ResultSet rs = stmt.executeQuery();
+			
+			// ResultSet に1行以上のデータがある場合に true を返す
 			if (rs.next()) {
-				// ハッシュ化されたパスワードを比較
+				// 送信されたlogin_passをハッシュ化し比較
 				if (BCrypt.checkpw(loginPass, rs.getString("login_pass"))) {
+					// 一致した場合、mapToAdmin(rs) で作成した User オブジェクトをセット
 					admin = mapToAdmin(rs);
 				}
 			}
 		} catch (Exception e) {
 			throw e;
 		}
-		return admin;
+		return admin; // ログインIDとパスワードが一致する場合のみ
 	}
 
 	private Admin mapToAdmin(ResultSet rs) throws Exception {
+		// DBから取得した行データをUserクラスのインスタンスに変換
 		Admin admin = new Admin();
 		admin.setId(rs.getInt("id"));
 		admin.setName(rs.getString("name"));
