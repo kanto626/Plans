@@ -1,3 +1,5 @@
 /UserDao.class
 /UserDaoImpl.class
 /DaoFactory.class
+/AdminDao.class
+/AdminDaoImpl.class
