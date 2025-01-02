@@ -26,8 +26,9 @@ public class UserDaoImpl implements UserDao {
 	public List<User> findAll() throws Exception {
 		List<User> userList = new ArrayList<>();
 		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT users.id, users.name,"
-					+ " users.login_id FROM users";
+			String sql = "SELECT"
+					+ " users.id, users.name"
+					+ " FROM users";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {

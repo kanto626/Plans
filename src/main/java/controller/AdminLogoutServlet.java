@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class UserLogoutServlet
+ * Servlet implementation class AdminLogoutServlet
  */
-@WebServlet("/user/logout")
-public class UserLogoutServlet extends HttpServlet {
+@WebServlet("/admin/logout")
+public class AdminLogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -22,8 +22,6 @@ public class UserLogoutServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// ログイン情報の破棄
 		request.getSession().removeAttribute("adminId");
-		response.sendRedirect("top");
-
+		response.sendRedirect("users");
 	}
-
 }
