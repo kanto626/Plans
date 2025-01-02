@@ -36,6 +36,7 @@ public class UserLoginServlet extends HttpServlet {
 			//フォームから送信されたログインIDとパスワードを取得
 			String loginId = request.getParameter("loginId");
 			String loginPass = request.getParameter("loginPass");
+
 			//Factoryを使いDAOオブジェクトを生成、利用する
 			UserDao userDao = DaoFactory.createUserDao();
 			User user =
