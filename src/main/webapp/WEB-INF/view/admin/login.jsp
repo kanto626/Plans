@@ -5,10 +5,10 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>ログイン</title>
+<title>管理者ログイン</title>
 </head>
 <body>
-	<h1>ログイン</h1>
+	<h1>管理者ログイン</h1>
 	<c:if test="${not empty error}">
 		<p>アカウントが見つかりませんでした。ログインID 又はパスワードを確認してください。</p>
 	</c:if>

@@ -44,8 +44,7 @@ public class UserLoginServlet extends HttpServlet {
 					userDao.findByLoginIdAndLoginPass(loginId, loginPass);
 			if (user != null) {
 				//ログイン成功⇒セッションにログインIDを格納
-				request.getSession().setAttribute("loginId",
-						user.getLoginId());
+				request.getSession().setAttribute("loginId",user.getLoginId());
 				//ログイン後はトップページへリダイレクト
 				response.sendRedirect("top");
 			} else {

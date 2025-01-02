@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+//adminsテーブルの情報を格納する「Admin」クラス
 public class Admin {
 	private Integer id;
 	private String loginId;

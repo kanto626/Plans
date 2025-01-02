@@ -24,8 +24,7 @@ public class AdminLoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/view/admin/login.jsp")
-				.forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/admin/login.jsp").forward(request, response);
 
 	}
 
@@ -34,7 +33,6 @@ public class AdminLoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		try {
 			// フォームから送信されたログインIDとパスワードを取得
 			String adminId = request.getParameter("adminId");
@@ -42,17 +40,19 @@ public class AdminLoginServlet extends HttpServlet {
 
 			// Factoryを使いDAOオブジェクトを生成、利用する
 			AdminDao adminDao = DaoFactory.createAdminDao();
-			Admin admin = adminDao.findByLoginIdAndLoginPass(adminId, adminPass);
+			Admin admin =
+					//loginIdとloginPassを使って管理者情報を検索
+					adminDao.findByLoginIdAndLoginPass(adminId, adminPass);
 
 			if (admin != null) {
 				// ログイン成功⇒セッションに管理者IDを格納
 				request.getSession().setAttribute("adminId", admin.getLoginId());
-
 				// 管理者用ページ(ユーザーリスト)へリダイレクト
 				response.sendRedirect("users");
 			} else {
 				request.setAttribute("error", true);
-				request.getRequestDispatcher("/WEB-INF/view/admin/login.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/view/admin/login.jsp")
+						.forward(request, response);
 			}
 		} catch (Exception e) {
 			throw new ServletException(e);
