@@ -21,7 +21,7 @@ public class UserLogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// ログイン情報の破棄
-		request.getSession().removeAttribute("loginId");
+		request.getSession().removeAttribute("adminId");
 		response.sendRedirect("top");
 
 	}

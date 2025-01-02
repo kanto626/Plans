@@ -10,7 +10,7 @@
 <body>
 	<h1>管理者ログイン</h1>
 	<c:if test="${not empty error}">
-		<p>アカウントが見つかりませんでした。ログインID 又はパスワードを確認してください。</p>
+		<p>ログインID 又はパスワードが違います。</p>
 	</c:if>
 	<form action="" method="post">
 		<p>

@@ -18,12 +18,10 @@ public class AdminLogoutServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// ログイン情報の破棄
-				request.getSession().removeAttribute("loginId");
-				response.sendRedirect("top");
-
-		
+		request.getSession().removeAttribute("adminId");
+		response.sendRedirect("users");
 	}
-
 }
