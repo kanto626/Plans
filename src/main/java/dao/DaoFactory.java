@@ -9,11 +9,17 @@ public class DaoFactory {
 	public static UserDao createUserDao() {
 		return new UserDaoImpl(getDataSource());
 	}
-	   // AdminDaoを生成するメソッド
-    public static AdminDao createAdminDao() {
-        return new AdminDaoImpl(getDataSource());
-    }
-	
+
+	// AdminDaoを生成するメソッド
+	public static AdminDao createAdminDao() {
+		return new AdminDaoImpl(getDataSource());
+	}
+
+	// PlanDaoを生成するメソッド
+	public static PlanDao createPlanDao() {
+		return new PlanDaoImpl(getDataSource());
+	}
+
 	// データソースを生成するためのメソッド
 	private static DataSource getDataSource() {
 		InitialContext ctx = null;
