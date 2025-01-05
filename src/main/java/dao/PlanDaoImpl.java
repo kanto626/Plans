@@ -83,8 +83,9 @@ public class PlanDaoImpl implements PlanDao {
 			stmt.setObject(5, user.getId(), Types.INTEGER);
 			// SQLを実行
 			stmt.executeUpdate();
+		} catch (Exception e) {
+			throw e;
 		}
-
 	}
 
 	@Override
