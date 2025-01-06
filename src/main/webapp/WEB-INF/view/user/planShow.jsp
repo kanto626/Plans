@@ -13,6 +13,7 @@
 	</h1>
 	<ul>
 		<li>投稿者: <c:out value="${plan.user.name}" /></li>
+		<li>登録日: <c:out value="${plan.registeredAt}" /></li>
 		<li>場所: <c:out value="${plan.place}" /></li>
 		<li>目的: <c:out value="${plan.category}" /></li>
 		<li>スケジュール: <c:out value="${plan.detail}" /></li>
