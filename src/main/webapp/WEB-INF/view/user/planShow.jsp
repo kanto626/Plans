@@ -18,7 +18,7 @@
 		<li>目的: <c:out value="${plan.category}" /></li>
 		<li>スケジュール: <c:out value="${plan.detail}" /></li>
 	</ul>
-	<a href="plans">旅行プラン一覧に戻る</a>
+	<a href="<%=request.getContextPath()%>/user/searchPlan">旅行プラン検索に戻る</a>
 
 </body>
 </html>

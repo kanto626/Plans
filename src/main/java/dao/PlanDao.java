@@ -15,4 +15,5 @@ public interface PlanDao {
 
 	void delete(Plan plan) throws Exception;
 
+	List<Plan> findByPrefecture(String prefecture) throws Exception;
 }
