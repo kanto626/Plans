@@ -81,6 +81,8 @@ public class PlanDaoImpl implements PlanDao {
 			stmt.setString(4, plan.getCategory());
 			User user = plan.getUser();
 			stmt.setObject(5, user.getId(), Types.INTEGER);
+			plan.setRegisteredAt(new Date());
+
 			// SQLを実行
 			stmt.executeUpdate();
 		} catch (Exception e) {

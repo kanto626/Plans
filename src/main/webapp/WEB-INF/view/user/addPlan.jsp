@@ -33,9 +33,17 @@
 					</c:if> <input type="text" name="place" value="<c:out value="${place}" />"></td>
 			</tr>
 			<tr>
+				<th>目的</th>
+				<td><c:if test="${!empty errorCategory}">
+						<p class="error">
+							<c:out value="${errorCategory}" />
+						</p>
+					</c:if> <input type="text" name="category" value="<c:out value="${category}" />"></td>
+			</tr>
+			<tr>
 				<th>詳細</th>
-				<td><textarea name="description" rows="5" cols="30"><c:out
-							value="${description}" /></textarea></td>
+				<td><textarea name="detail" rows="5" cols="30"><c:out
+							value="${detail}" /></textarea></td>
 			</tr>
 			<tr>
 				<td colspan="2"><input type="submit" value="登録"></td>
