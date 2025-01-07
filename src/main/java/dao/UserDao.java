@@ -19,4 +19,5 @@ public interface UserDao {
 	// ユーザーのログインIDとパスワードを使ってユーザー情報を検索する
 	User findByLoginIdAndLoginPass(String loginId, String loginPass)
 	throws Exception;
+	
 }

@@ -19,7 +19,7 @@
 		<c:forEach items="${userList}" var="user">
 			<tr>
 				<td><c:out value="${user.id}" /></td>
-				<td><a href="userShow?id=<c:out value="${user.id}" />"><c:out
+				<td><a href="userShow?id=<c:out value="${user.name}" />"><c:out
 							value="${user.name}" /></td>
 			</tr>
 		</c:forEach>
