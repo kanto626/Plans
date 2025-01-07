@@ -101,32 +101,49 @@ public class PlanDaoImpl implements PlanDao {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
-	
+
 	@Override
 	public List<Plan> findByPrefecture(String prefecture) throws Exception {
-	    List<Plan> planList = new ArrayList<>();
-	    try (Connection con = ds.getConnection()) {
-	        // SQLを実行準備
-	    	String sql = createSelectClauseWithJoin()
-	                + " WHERE p.place = ?"; 
-	        var stmt = con.prepareStatement(sql);
-	        stmt.setString(1, prefecture);  // 一致する県名を検索
-	        ResultSet rs = stmt.executeQuery();
-	        // ResultSet ⇒ Planリストに変換
-	        while (rs.next()) {
-	            planList.add(mapToPlan(rs));
-	        }
-	    } catch (Exception e) {
-	        throw e;
-	    }
-	    return planList;
+		List<Plan> planList = new ArrayList<>();
+		try (Connection con = ds.getConnection()) {
+			// SQLを実行準備
+			String sql = createSelectClauseWithJoin()
+					+ " WHERE p.place = ?";
+			var stmt = con.prepareStatement(sql);
+			stmt.setString(1, prefecture); // 一致する県名を検索
+			ResultSet rs = stmt.executeQuery();
+			// ResultSet ⇒ Planリストに変換
+			while (rs.next()) {
+				planList.add(mapToPlan(rs));
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return planList;
 	}
 
+	@Override
+	public List<Plan> findByUserId(Integer userId) throws Exception {
+		List<Plan> planList = new ArrayList<>();
+		try (Connection con = ds.getConnection()) {
+			// SQLを実行準備
+			String sql = createSelectClauseWithJoin()
+					+ " WHERE p.user_id = ?";
+			var stmt = con.prepareStatement(sql);
+			stmt.setObject(1, userId, Types.INTEGER);
+			ResultSet rs = stmt.executeQuery();
+			// ResultSet ⇒ Planリストに変換
+			while (rs.next()) {
+				planList.add(mapToPlan(rs));
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return planList;
+	}
 
 	private Plan mapToPlan(ResultSet rs) throws Exception {
 		// ResultSet からデータを取得して Plan オブジェクトにマッピングする
-		Plan plan = new Plan();
-
 		Integer id = (Integer) rs.getObject("id");// プランID
 		String title = rs.getString("title"); // タイトル
 		String detail = rs.getString("detail"); // プラン内容（詳細）

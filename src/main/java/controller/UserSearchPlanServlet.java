@@ -52,6 +52,7 @@ public class UserSearchPlanServlet extends HttpServlet {
 			// 取得したプランリストをリクエストスコープに格納
 			request.setAttribute("plans", plans);
 			request.setAttribute("selectedPrefecture", prefecture);
+
 			// フォワード
 			request.getRequestDispatcher("/WEB-INF/view/user/plans.jsp").forward(request, response);
 		} catch (Exception e) {
