@@ -26,7 +26,7 @@
 		<a href="<%=request.getContextPath()%>/user/addPlan">旅行プラン作成</a>
 	</p>
 	<p>
-		<a href="<%=request.getContextPath()%>/user/mypage">マイページ</a>
+		<a href="<%=request.getContextPath()%>/user/myPage">マイページ</a>
 	</p>
 	<p>
 		<a href="<%=request.getContextPath()%>/user/logout">ログアウト</a>
