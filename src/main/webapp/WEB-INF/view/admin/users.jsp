@@ -11,12 +11,6 @@
 <body>
 	<h1>管理者専用</h1>
 	<h2>会員一覧</h2>
-	<%-- ユーザーがログインしているかどうかをチェック --%>
-	<%
-	// セッションからログインIDを取得
-	String loginId = (String) session.getAttribute("adminId");
-	if (loginId != null) {
-	%>
 	<table border="1">
 		<tr>
 			<th>ID</th>
@@ -25,24 +19,13 @@
 		<c:forEach items="${userList}" var="user">
 			<tr>
 				<td><c:out value="${user.id}" /></td>
-				<td><c:out value="${user.name}" /></td>
+				<td><a href="userShow?id=<c:out value="${user.id}" />"><c:out
+							value="${user.name}" /></td>
 			</tr>
 		</c:forEach>
 	</table>
 	<p>
 		<a href="<%=request.getContextPath()%>/admin/logout">ログアウト</a>
 	</p>
-	<%
-	} else {
-	%>
-
-	<!-- ログインしていない場合 -->
-	<p>
-		<a href="<%=request.getContextPath()%>/admin/login">ログイン</a>
-	</p>
-	<%
-	}
-	%>
-
 </body>
 </html>
