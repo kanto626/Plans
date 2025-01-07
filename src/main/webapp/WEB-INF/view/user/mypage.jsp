@@ -10,7 +10,7 @@
 <body>
 	<h1>マイページ</h1>
 	<p>
-		<a href="<%=request.getContextPath()%>/user/planList">マイプランリスト</a>
+		<a href="<%=request.getContextPath()%>/user/myPlans">マイプランリスト</a>
 	</p>
 </body>
 </html>

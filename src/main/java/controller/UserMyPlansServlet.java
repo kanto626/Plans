@@ -18,8 +18,8 @@ import domain.User;
 /**
  * Servlet implementation class UserPlanListServlet
  */
-@WebServlet("/user/planList")
-public class UserPlanListServlet extends HttpServlet {
+@WebServlet("/user/myPlans")
+public class UserMyPlansServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -32,6 +32,9 @@ public class UserPlanListServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			User user = (User) session.getAttribute("user");
 
+			// 検索結果ページで遷移する前にセッションに前のページのURLを保存
+			session.setAttribute("previousPage", request.getRequestURL().toString());
+
 			// userオブジェクトからuserIdを取得
 			Integer userId = user.getId(); // userオブジェクトからuserIdを取得
 
@@ -43,7 +46,7 @@ public class UserPlanListServlet extends HttpServlet {
 			request.setAttribute("plans", plans);
 
 			// フォワード
-			request.getRequestDispatcher("/WEB-INF/view/user/planList.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/view/user/myPlans.jsp").forward(request, response);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}

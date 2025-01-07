@@ -20,7 +20,7 @@
 	<!-- ログイン状態の場合 -->
 
 	<p>
-		<a href="<%=request.getContextPath()%>/user/searchPlan">旅行プラン検索トップ</a>
+		<a href="<%=request.getContextPath()%>/user/selectPrefecture">旅行プラン検索トップ</a>
 	</p>
 	<p>
 		<a href="<%=request.getContextPath()%>/user/addPlan">旅行プラン作成</a>
