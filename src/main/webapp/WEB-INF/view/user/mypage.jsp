@@ -12,5 +12,6 @@
 	<p>
 		<a href="<%=request.getContextPath()%>/user/myPlans">マイプランリスト</a>
 	</p>
+	<a href="<%=request.getContextPath()%>/user/top">トップに戻る</a>
 </body>
 </html>

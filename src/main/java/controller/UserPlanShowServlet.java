@@ -35,9 +35,7 @@ public class UserPlanShowServlet extends HttpServlet {
 			
 			// セッションからUserオブジェクトを取得
 			User user = (User) request.getSession().getAttribute("user");
-			Integer userId = user.getId();
-			
-			request.setAttribute("userId", userId);
+			request.setAttribute("user", user);
 			// フォワード
 			request.getRequestDispatcher("/WEB-INF/view/user/planShow.jsp")
 					.forward(request, response);
