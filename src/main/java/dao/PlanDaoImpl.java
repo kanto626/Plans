@@ -98,7 +98,14 @@ public class PlanDaoImpl implements PlanDao {
 
 	@Override
 	public void delete(Plan plan) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
+		try (Connection con = ds.getConnection()) {
+			String sql = "DELETE FROM plans WHERE id = ?";
+			var stmt = con.prepareStatement(sql);
+			stmt.setObject(1, plan.getId(), Types.INTEGER);
+			stmt.executeUpdate();
+			} catch (Exception e) {
+			throw e;
+			}
 
 	}
 

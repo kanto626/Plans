@@ -18,6 +18,16 @@
 		<li>目的: <c:out value="${plan.category}" /></li>
 		<li>スケジュール: <c:out value="${plan.detail}" /></li>
 	</ul>
-	 <a href="${sessionScope.previousPage}">前のページに戻る</a>
+	<!-- plan.user.id と sessionScope.userId の値を表示して確認 -->
+	<p>
+		plan.user.id =
+		<c:out value="${plan.user.id}" />
+	</p>
+	<!-- 削除ボタン表示の条件 -->
+	<c:if test="${plan.user.id == sessionScope.userId}">
+		<!-- 削除リンク -->
+		<a href="deletePlan?id=<c:out value="${plan.id}" />">削除</a>
+	</c:if>
+	<a href="${sessionScope.previousPage}">戻る</a>
 </body>
 </html>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.DaoFactory;
 import dao.PlanDao;
+import domain.User;
 
 /**
  * Servlet implementation class UserPlanShowServlet
@@ -31,7 +32,12 @@ public class UserPlanShowServlet extends HttpServlet {
 			// 旅行プラン情報をリクエストスコープに格納
 			PlanDao dao = DaoFactory.createPlanDao();
 			request.setAttribute("plan", dao.findById(id));
-
+			
+			// セッションからUserオブジェクトを取得
+			User user = (User) request.getSession().getAttribute("user");
+			Integer userId = user.getId();
+			
+			request.setAttribute("userId", userId);
 			// フォワード
 			request.getRequestDispatcher("/WEB-INF/view/user/planShow.jsp")
 					.forward(request, response);
