@@ -26,11 +26,14 @@ public class AdminUsersServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			// DAO によるデータ取得
+			// UserDaoを使って、ユーザーリストを取得
 			UserDao userDao = DaoFactory.createUserDao();
 			List<User> userList = userDao.findAll();
-			// JSP へフォワード
+
+			// 取得したプランリストをリクエストスコープに格納
 			request.setAttribute("userList", userList);
+
+			// JSP へフォワード
 			request.getRequestDispatcher("/WEB-INF/view/admin/users.jsp")
 					.forward(request, response);
 		} catch (Exception e) {

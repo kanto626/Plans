@@ -19,8 +19,9 @@
 		<c:forEach items="${userList}" var="user">
 			<tr>
 				<td><c:out value="${user.id}" /></td>
-				<td><a href="userShow?id=<c:out value="${user.name}" />"><c:out
-							value="${user.name}" /></td>
+				<td><a href="userShow?id=${user.id}"><c:out
+							value="${user.name}" /></a></td>
+
 			</tr>
 		</c:forEach>
 	</table>
