@@ -8,7 +8,6 @@
 <title>トップページ</title>
 </head>
 <body>
-	<h1>旅行プラン投稿サイト</h1>
 	<%-- ユーザーがログインしているかどうかをチェック --%>
 	<%
 	// セッションからログインIDを取得
@@ -18,7 +17,8 @@
 
 
 	<!-- ログイン状態の場合 -->
-
+	<h1>Plans</h1>
+	<h2>旅行プラン投稿サイト</h2>
 	<p>
 		<a href="<%=request.getContextPath()%>/user/selectPrefecture">旅行プラン検索トップ</a>
 	</p>
@@ -38,6 +38,8 @@
 	%>
 
 	<!-- ログインしていない場合 -->
+	<h1>Plans</h1>
+	<h2>旅行プラン投稿サイト</h2>
 	<p>
 		<a href="<%=request.getContextPath()%>/user/login">ログイン</a>
 	</p>
