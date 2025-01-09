@@ -38,7 +38,8 @@
 						<p class="error">
 							<c:out value="${errorCategory}" />
 						</p>
-					</c:if> <input type="text" name="category" value="<c:out value="${category}" />"></td>
+					</c:if> <input type="text" name="category"
+					value="<c:out value="${category}" />"></td>
 			</tr>
 			<tr>
 				<th>詳細</th>
@@ -50,5 +51,9 @@
 			</tr>
 		</table>
 	</form>
+	<p>
+		<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
+	</p>
+</body>
 </body>
 </html>

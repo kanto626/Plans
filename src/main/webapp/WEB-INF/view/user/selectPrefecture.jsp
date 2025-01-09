@@ -9,7 +9,8 @@
 </head>
 <body>
 	<h1>旅行プラン検索</h1>
-	<form action="<%=request.getContextPath()%>/user/selectPrefecture" method="post">
+	<form action="<%=request.getContextPath()%>/user/selectPrefecture"
+		method="post">
 		<label for="prefecture">都道府県を選んでください：</label> <select
 			name="prefecture" id="prefecture">
 			<option value="北海道">北海道</option>
@@ -62,5 +63,8 @@
 		</select>
 		<button type="submit">検索</button>
 	</form>
+	<p>
+		<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
+	</p>
 </body>
 </html>

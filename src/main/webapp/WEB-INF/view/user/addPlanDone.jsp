@@ -38,5 +38,12 @@
 			<td><c:out value="${plan.registeredAt}" /></td>
 		</tr>
 	</table>
+	<p>
+		<a href="<%=request.getContextPath()%>/user/addPlan">旅行プラン作成に戻る </a>
+	</p>
+	<p>
+		<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
+	</p>
+</body>
 </body>
 </html>
