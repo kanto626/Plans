@@ -1,0 +1,21 @@
+/* style.css */
+.display-2x {
+    font-size: 200px; /* display-1.5 よりさらに大きいサイズ */
+}
+.display-1_5x {
+    font-size: 150px; /* display-1 よりさらに大きいサイズ */
+}
+
+/* 共通のリンクスタイルを定義 */
+.custom-link {
+    color: #1c4877;  /* デフォルトリンクカラー */
+    text-decoration: underline;
+    text-underline-offset: 15px;
+    text-decoration-color: rgba(9, 150, 155, 0.25);
+    transition: text-decoration-color 0.3s;
+}
+
+.custom-link:hover {
+    color: #22b4eefb;  /* ホバー時にリンクの色を変更 */
+    text-decoration-color: rgba(201, 14, 14, 0.75); /* ホバー時に下線の色を変更 */
+}
