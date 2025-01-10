@@ -23,6 +23,6 @@
 		<!-- 削除リンク -->
 		<a href="deletePlan?id=<c:out value="${plan.id}" />">削除</a>
 	</c:if>
-	<a href="${sessionScope.previousPage}">戻る</a>
+	<a href="${not empty sessionScope.previousPage ? sessionScope.previousPage : '/defaultPage'}">戻る</a>
 </body>
 </html>

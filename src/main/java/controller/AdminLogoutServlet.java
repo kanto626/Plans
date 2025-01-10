@@ -22,6 +22,6 @@ public class AdminLogoutServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// ログイン情報の破棄
 		request.getSession().removeAttribute("adminId");
-		response.sendRedirect("users");
+		response.sendRedirect("login");
 	}
 }

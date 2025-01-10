@@ -25,6 +25,11 @@ public class UserPlanShowServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			// 直前のページURLをセッションに格納
+			String previousPage = request.getHeader("Referer");
+			if (previousPage != null) {
+				request.getSession().setAttribute("previousPage", previousPage);
+			}
 			// ?id=○○を取得
 			int id = Integer.parseInt(request.getParameter("id"));
 
@@ -32,7 +37,7 @@ public class UserPlanShowServlet extends HttpServlet {
 			// 旅行プラン情報をリクエストスコープに格納
 			PlanDao dao = DaoFactory.createPlanDao();
 			request.setAttribute("plan", dao.findById(id));
-			
+
 			// セッションからUserオブジェクトを取得
 			User user = (User) request.getSession().getAttribute("user");
 			request.setAttribute("user", user);
