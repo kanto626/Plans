@@ -19,8 +19,8 @@
 		<div class="row justify-content-center">
 			<form action="" method="post"
 				class="border rounded bg-white col-md-4 p-3">
-
 				<h2 class="mt-3 mb-5">Login</h2>
+
 				<c:if test="${not empty error}">
 					<p>アカウントが見つかりませんでした。ログインID 又はパスワードを確認してください。</p>
 					<p>
@@ -28,18 +28,42 @@
 							href="${pageContext.request.contextPath}/user/register">コチラ</a>から作成してください
 					</p>
 				</c:if>
+
 				<div class="mb-3">
 					<input type="text" name="loginId"
-						class="form-control rounded-pill w-75 m-auto" placeholder="ログインID">
+						class="form-control rounded-pill w-75 m-auto" placeholder="ログインID"
+						value="<c:out value='${loginId}'/>">
+					<c:if test="${not empty loginIdError}">
+						<p class="text-danger small mt-2 w-75 m-auto">
+
+							<style>
+input[name="loginId"] {
+	background-color: #f8d7da;
+}
+</style>
+							<c:out value="${loginIdError}" />
+						</p>
+					</c:if>
 				</div>
+
 				<div class="mb-3">
 					<input type="password" name="loginPass"
 						class="form-control rounded-pill w-75 m-auto" placeholder="パスワード">
+					<c:if test="${not empty loginPassError}">
+						<p class="text-danger small mt-2 w-75 m-auto">
+							<style>
+input[name="loginPass"] {
+	background-color: #f8d7da;
+}
+</style>
+							<c:out value="${loginPassError}" />
+						</p>
+					</c:if>
 				</div>
 				<button type="submit" class="btn btn-primary rounded-pill my-4 px-5">ログイン</button>
 			</form>
 		</div>
 	</div>
-	<script src="js/bootstrap.bundle.min.js"></script>
+	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

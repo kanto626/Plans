@@ -45,11 +45,12 @@ public class UserRegisterServlet extends HttpServlet {
 		if (name.isBlank()) {
 			// エラーメッセージの作成
 			request.setAttribute("nameError", "ユーザー名が未入力です。");
-			isError = true; // 入力に不備ありと判定
+			isError = true; 
 		} else if (name.length() > 15) {
 			request.setAttribute("nameError", "15 字以内で入力してください。");
 			isError = true;
 		}
+		
 		// loginIdのバリデーション
 		String loginId = request.getParameter("loginId");
 		request.setAttribute("loginId", loginId); // 再表示用
