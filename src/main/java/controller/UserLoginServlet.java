@@ -32,30 +32,57 @@ public class UserLoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			//フォームから送信されたログインIDとパスワードを取得
-			String loginId = request.getParameter("loginId");
-			String loginPass = request.getParameter("loginPass");
+		boolean isError = false;
 
-			//Factoryを使いDAOオブジェクトを生成、利用する
+		// フォームから送信されたログインIDとパスワードを取得
+		String loginId = request.getParameter("loginId");
+
+		// loginIdのバリデーション
+		request.setAttribute("loginId", loginId); // 再表示用
+		if (loginId == null || loginId.isBlank()) {
+			// エラーメッセージの作成
+			request.setAttribute("loginIdError", "ログインIDが未入力です。");
+			isError = true;
+		} else if (loginId.length() > 30) {
+			request.setAttribute("loginIdError", "ログインIDは30文字以内で入力してください。");
+			isError = true;
+		}
+
+		// loginPassのバリデーション
+		String loginPass = request.getParameter("loginPass");
+		if (loginPass == null || loginPass.isBlank()) {
+			request.setAttribute("loginPassError", "パスワードが未入力です。");
+			isError = true;
+		} else if (loginPass.length() < 4) {
+			request.setAttribute("loginPassError", "パスワードは4文字以上で入力してください。");
+			isError = true;
+		}
+
+		// エラーがある場合、再表示
+		if (isError == true) {
+			request.getRequestDispatcher("/WEB-INF/view/user/login.jsp").forward(request, response);
+			return;
+		}
+
+		// 入力に不備がなければ、ユーザー情報を取得
+		try {
+			// Factoryを使いDAOオブジェクトを生成、利用する
 			UserDao userDao = DaoFactory.createUserDao();
-			User user =
-					//loginIdとloginPassを使ってユーザー情報を検索
-					userDao.findByLoginIdAndLoginPass(loginId, loginPass);
+			User user = userDao.findByLoginIdAndLoginPass(loginId, loginPass);
+
 			if (user != null) {
-				//ログイン成功⇒セッションにログインIDを格納
+				// ログイン成功 ⇒ セッションにログインIDを格納
 				request.getSession().setAttribute("loginId", user.getLoginId());
 				request.getSession().setAttribute("user", user);
-				//ログイン後はトップページへリダイレクト
+				// ログイン後はトップページへリダイレクト
 				response.sendRedirect("top");
 			} else {
+				// ログイン失敗 ⇒ エラーメッセージを表示
 				request.setAttribute("error", true);
-				request.getRequestDispatcher("/WEB-INF/view/user/login.jsp")
-						.forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/view/user/login.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
 	}
-
 }

@@ -1,47 +1,80 @@
-<%@ page pageEncoding="UTF-8"%>
+ <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>アカウント作成</title>
-</head>
-<body>
-	<h1>アカウント作成</h1>
-	<form action="" method="post">
-		<p>
-			ユーザー名: <input type="text" name="name" 
-				value="<c:out value="${name}" />">
-		</p>
-		<c:if test="${not empty nameError}">
-			<p style="color: red;">
-				※
-				<c:out value="${nameError}" />
-			</p>
-		</c:if>
-		<p>
-			ログインID: <input type="text" name="loginId" placeholder="30字以内"
-				value="<c:out value="${loginId}" />">
-		</p>
-		<c:if test="${not empty loginIdError}">
-			<p style="color: red;">
-				※
-				<c:out value="${loginIdError}" />
-			</p>
-		</c:if>
-		<p>
-			パスワード: <input type="password" name="loginPass" placeholder="4文字以上">
-		</p>
-		<c:if test="${not empty loginPassError}">
-			<p style="color: red;">
-				※
-				<c:out value="${loginPassError}" />
-			</p>
-		</c:if>
-		<p>
-			<input type="submit" value="作成する">
-		</p>
-	</form>
+<title>PlansRegister</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="<%=request.getContextPath()%>/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="<%=request.getContextPath()%>/css/style.css"
+	rel="stylesheet">
+<head>
+<body class="bg-light text-center">
+	<h1 class="my-5">Plans</h1>
+	<div class="container text-center">
+		<div class="row justify-content-center">
+			<form action="" method="post"
+				class="border rounded bg-white col-md-6 p-4">
+				<h2 class="mt-3 mb-5">アカウント登録</h2>
+
+				<div class="mb-3">
+					<input type="text" name="name"
+						class="form-control rounded-pill w-75 m-auto" placeholder="ユーザー名"
+						value="<c:out value='${name}'/>">
+					<c:if test="${not empty nameError}">
+						<p class="text-danger small mt-2 w-75 m-auto">
+
+							<style>
+input[name="name"] {
+	background-color: #f8d7da;
+}
+</style>
+							<c:out value="${nameError}" />
+						</p>
+					</c:if>
+				</div>
+
+				<div class="mb-3">
+					<input type="text" name="loginId"
+						class="form-control rounded-pill w-75 m-auto"
+						placeholder="ログインID (30字以内)" value="<c:out value='${loginId}'/>">
+					<c:if test="${not empty loginIdError}">
+						<p class="text-danger small mt-2 w-75 m-auto">
+
+							<style>
+input[name="loginId"] {
+	background-color: #f8d7da;
+}
+</style>
+							<c:out value="${loginIdError}" />
+						</p>
+					</c:if>
+				</div>
+
+				<div class="mb-3">
+					<input type="password" name="loginPass"
+						class="form-control rounded-pill w-75 m-auto"
+						placeholder="パスワード (4文字以上)">
+					<c:if test="${not empty loginPassError}">
+						<p class="text-danger small mt-2 w-75 m-auto">
+							<style>
+input[name="loginPass"] {
+	background-color: #f8d7da;
+}
+</style>
+							<c:out value="${loginPassError}" />
+						</p>
+					</c:if>
+				</div>
+
+
+				<button type="submit" class="btn btn-primary rounded-pill my-4 px-5">作成する</button>
+			</form>
+		</div>
+	</div>
+	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
