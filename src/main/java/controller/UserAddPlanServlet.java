@@ -37,17 +37,17 @@ public class UserAddPlanServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// パラメータの取得
 		String title = request.getParameter("title");
-		String detail = request.getParameter("detail");
+		String schedule = request.getParameter("schedule");
 		String place = request.getParameter("place");
 		String category = request.getParameter("category");
-		
+
 		// ユーザー情報をセッションから取得
 		User user = (User) request.getSession().getAttribute("user");
 
 		// データの追加
 		Plan plan = new Plan();
 		plan.setTitle(title);
-		plan.setDetail(detail);
+		plan.setSchedule(schedule);
 		plan.setPlace(place);
 		plan.setCategory(category);
 		plan.setUser(user); // User オブジェクトを Plan に設定

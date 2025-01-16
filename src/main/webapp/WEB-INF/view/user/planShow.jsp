@@ -16,7 +16,7 @@
 		<li>登録日: <c:out value="${plan.registeredAt}" /></li>
 		<li>場所: <c:out value="${plan.place}" /></li>
 		<li>目的: <c:out value="${plan.category}" /></li>
-		<li>スケジュール: <c:out value="${plan.detail}" /></li>
+		<li>スケジュール: <c:out value="${plan.schedule}" /></li>
 	</ul>
 	<!-- 削除ボタン表示の条件 -->
 	<c:if test="${plan.user.id == sessionScope.user.id}">

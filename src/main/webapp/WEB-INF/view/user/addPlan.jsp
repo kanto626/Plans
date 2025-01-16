@@ -91,7 +91,7 @@
 				</select></td>
 			</tr>
 			<tr>
-				<th>目的</th>
+				<th>カテゴリー</th>
 				<td><c:if test="${!empty errorCategory}">
 						<p class="error">
 							<c:out value="${errorCategory}" />
@@ -101,8 +101,8 @@
 			</tr>
 			<tr>
 				<th>詳細</th>
-				<td><textarea name="detail" rows="5" cols="30"><c:out
-							value="${detail}" /></textarea></td>
+				<td><textarea name="schedule" rows="5" cols="30"><c:out
+							value="${schedule}" /></textarea></td>
 			</tr>
 			<tr>
 				<td colspan="2"><input type="submit" value="登録"></td>
