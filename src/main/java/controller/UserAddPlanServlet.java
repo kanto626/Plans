@@ -55,7 +55,7 @@ public class UserAddPlanServlet extends HttpServlet {
 			scheduleData.append("スポット名: ").append(schedulePlaces[i])
 					.append(" | コメント: ").append(scheduleComments[i] != null ? scheduleComments[i] : "")
 					.append(" | 写真: ").append(scheduleImages[i] != null ? scheduleImages[i] : "")
-					.append(" | 移動手段: ").append(scheduleTransports[i] != null ? scheduleTransports[i] : "")
+					.append(" | 移動: ").append(scheduleTransports[i] != null ? scheduleTransports[i] : "")
 					.append(" | 時間: ").append(scheduleTimes[i] != null ? scheduleTimes[i] : "")
 					.append("\n"); // 次のスポットを区切る
 		}
