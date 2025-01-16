@@ -65,7 +65,7 @@ public class AdminDaoImpl implements AdminDao {
 			if (rs.next()) {
 				// 送信されたlogin_passをハッシュ化し比較
 				if (BCrypt.checkpw(loginPass, rs.getString("login_pass"))) {
-					// 一致した場合、mapToAdmin(rs) で作成した User オブジェクトをセット
+					// 一致した場合、mapToAdmin(rs) で作成した Admin オブジェクトをセット
 					admin = mapToAdmin(rs);
 				}
 			}
@@ -76,7 +76,7 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	private Admin mapToAdmin(ResultSet rs) throws Exception {
-		// DBから取得した行データをUserクラスのインスタンスに変換
+		// DBから取得した行データをAdminクラスのインスタンスに変換
 		Admin admin = new Admin();
 		admin.setId(rs.getInt("id"));
 		admin.setName(rs.getString("name"));
