@@ -37,9 +37,31 @@ public class UserAddPlanServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// パラメータの取得
 		String title = request.getParameter("title");
-		String schedule = request.getParameter("schedule");
 		String place = request.getParameter("place");
 		String category = request.getParameter("category");
+
+		// スケジュールの項目を取得
+		String[] schedulePlaces = request.getParameterValues("schedulePlace[]");
+		String[] scheduleComments = request.getParameterValues("scheduleComment[]");
+		String[] scheduleImages = request.getParameterValues("scheduleImage[]");
+		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
+		String[] scheduleTimes = request.getParameterValues("scheduleTime[]");
+
+		// スケジュールデータを結合して1つのテキストにする
+		StringBuilder scheduleData = new StringBuilder();
+
+		for (int i = 0; i < schedulePlaces.length; i++) {
+			// append()は、StringBuilderに文字列を追加するメソッド
+			scheduleData.append("スポット名: ").append(schedulePlaces[i])
+					.append(" | コメント: ").append(scheduleComments[i] != null ? scheduleComments[i] : "")
+					.append(" | 写真: ").append(scheduleImages[i] != null ? scheduleImages[i] : "")
+					.append(" | 移動手段: ").append(scheduleTransports[i] != null ? scheduleTransports[i] : "")
+					.append(" | 時間: ").append(scheduleTimes[i] != null ? scheduleTimes[i] : "")
+					.append("\n"); // 次のスポットを区切る
+		}
+
+		// 1つの文字列としてデータベースに保存
+		String scheduleText = scheduleData.toString();
 
 		// ユーザー情報をセッションから取得
 		User user = (User) request.getSession().getAttribute("user");
@@ -47,7 +69,7 @@ public class UserAddPlanServlet extends HttpServlet {
 		// データの追加
 		Plan plan = new Plan();
 		plan.setTitle(title);
-		plan.setSchedule(schedule);
+		plan.setSchedule(scheduleText);
 		plan.setPlace(place);
 		plan.setCategory(category);
 		plan.setUser(user); // User オブジェクトを Plan に設定

@@ -6,11 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>addPlan</title>
-<style>
-.error {
-	color: #f00;
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="<%=request.getContextPath()%>/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/css/style.css" rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+	rel="stylesheet">
+
 </head>
 <body>
 	<h1>旅行プラン投稿</h1>
@@ -18,7 +20,7 @@
 		<table border="1" cellspacing="0" cellpadding="5">
 			<tr>
 				<th>タイトル</th>
-				<td><c:if test="${!empty errorTitle}">
+				<td><c:if test="${not empty errorTitle}">
 						<p class="error">
 							<c:out value="${errorTitle}" />
 						</p>
@@ -92,15 +94,11 @@
 			</tr>
 			<tr>
 				<th>カテゴリー</th>
-				<td><c:if test="${!empty errorCategory}">
-						<p class="error">
-							<c:out value="${errorCategory}" />
-						</p>
-					</c:if> <input type="text" name="category"
+				<td><input type="text" name="category"
 					value="<c:out value="${category}" />"></td>
 			</tr>
 			<tr>
-				<th>詳細</th>
+				<th>スケジュール</th>
 				<td><textarea name="schedule" rows="5" cols="30"><c:out
 							value="${schedule}" /></textarea></td>
 			</tr>
@@ -112,6 +110,7 @@
 	<p>
 		<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
 	</p>
+	 <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </body>
 </html>

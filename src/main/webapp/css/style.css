@@ -14,9 +14,12 @@
     text-decoration-color: rgba(9, 150, 155, 0.25);
     transition: text-decoration-color 0.3s;
 }
-
 .custom-link:hover {
     color: #22b4eefb;  /* ホバー時にリンクの色を変更 */
     text-decoration-color: rgba(201, 14, 14, 0.75); /* ホバー時に下線の色を変更 */
 }
 
+
+.error {
+	color: #f00;
+}
