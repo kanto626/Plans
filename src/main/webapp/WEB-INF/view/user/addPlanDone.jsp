@@ -14,11 +14,21 @@
 	<h2>登録内容</h2>
 	<table border="1" cellpadding="10">
 		<tr>
+			<th>登録者</th>
+			<td><c:out value="${plan.user.name}" /></td>
+		</tr>
+		<tr>
+			<th>登録日</th>
+			<td>
+			<fmt:formatDate value="${plan.registeredAt}" pattern="y/M/d" />
+			</td>
+		</tr>
+		<tr>
 			<th>タイトル</th>
 			<td><c:out value="${plan.title}" /></td>
 		</tr>
 		<tr>
-			<th>場所</th>
+			<th>目的地</th>
 			<td><c:out value="${plan.place}" /></td>
 		</tr>
 		<tr>
@@ -28,14 +38,6 @@
 		<tr>
 			<th>スケジュール</th>
 			<td><c:out value="${plan.detail}" /></td>
-		</tr>
-		<tr>
-			<th>登録者</th>
-			<td><c:out value="${plan.user.name}" /></td>
-		</tr>
-		<tr>
-			<th>登録日</th>
-			<td><c:out value="${plan.registeredAt}" /></td>
 		</tr>
 	</table>
 	<p>
