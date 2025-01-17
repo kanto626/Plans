@@ -21,77 +21,40 @@ div {
 </style>
 </head>
 <body>
-	<div class="container">
-
-		<div class="alert alert-success" role="alert">
-			<h4 class="alert-heading">以下の内容で投稿しました。</h4>
-
+	<div class="container mt-5">
+		<div class="alert alert-success text-center" role="alert">
+			<h2>旅行プランが正常に登録されました！</h2>
 		</div>
-
-		<div class="container">
-
-			<div class="mb-3">
-				<p>
-					<strong>登録者:</strong>
-					<c:out value="${plan.user.name}" />
-				</p>
-				<p>
-					<strong>登録日:</strong>
-					<fmt:formatDate value="${plan.registeredAt}" pattern="y/M/d" />
-				</p>
-				<p>
-					<strong>タイトル:</strong> ${plan.title}
-				</p>
-				<p>
-					<strong>目的地:</strong> ${plan.place}
-				</p>
-				<p>
-					<strong>カテゴリ:</strong> ${plan.category}
-				</p>
-				<div class="schedule-container">
-					<h3 class="mt-4">- スケジュール -</h3>
-
-
-					<!-- スケジュールデータを取得 -->
-					<c:if test="${not empty scheduleText}">
-						<c:forEach var="scheduleList" items="${scheduleList}">
-							<!-- 1行ずつ処理 -->
-							<c:set var="fields" value="${fn:split(scheduleLine, ' //| ')}" />
-
-							<div class="d-flex flex-row align-items-start mt-3">
-								<!-- スポット、コメントエリア、スポット間アイコンを縦に並べる -->
-								<div class="d-flex flex-column w-75">
-									<!-- スポット名 -->
-									<p>スポット名: <c:out value="${fields[0]}" /></p>
-
-									<!-- コメントエリア -->
-									 <p>コメント: <c:out value="${fields[1]}" /></p>
-									<!-- スポット間のアイコンと選択項目 -->
-									<div class="d-flex align-items-center">
-										<div class="display-6 d-flex flex-column me-3">
-											<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-											<i class="bi bi-caret-down"></i>
-										</div>
-										<div class="container">
-											<p>移動手段と所要時間</p>
-											<div class="d-flex align-items-center gap-2">
-												<!-- Transport Selection -->
-												 <p>移動手段: <c:out value="${fields[3]}" /></p>
-												<<p>所要時間: <c:out value="${fields[4]}" /></p>
-											</div>
-										</div>
-									</div>
-									<!-- 画像 -->
-									 <p>写真: <c:out value="${fields[2]}" /></p>
-								</div>
-							</div>
-						</c:forEach>
-					</c:if>
-				</div>
+		<div class="card">
+			<div class="card-header">
+				<h4>プラン内容</h4>
 			</div>
+			<div class="card-body">
+				<p>
+					<strong>タイトル：</strong> ${plan.title}
+				</p>
+				<p>
+					<strong>場所：</strong> ${plan.place}
+				</p>
+				<p>
+					<strong>カテゴリ：</strong> ${plan.category}
+				</p>
+				<h5 class="mt-4">スケジュール</h5>
+				<ul class="list-group">
+					<c:forEach var="scheduleItem" items="${scheduleList}">
+						<c:if test="${not empty scheduleItem}">
+							<li class="list-group-item">${scheduleItem}</li>
+						</c:if>
+					</c:forEach>
+				</ul>
 
+			</div>
 		</div>
-
-		<script src="js/bootstrap.bundle.min.js"></script>
+		<div class="mt-4 text-center">
+			<a href="/user/addPlan" class="btn btn-primary">別のプランを登録</a> <a
+				href="/user/plans" class="btn btn-secondary">登録済みプラン一覧へ</a>
+		</div>
+	</div>
+	<script src="<%=request.getContextPath()%>js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

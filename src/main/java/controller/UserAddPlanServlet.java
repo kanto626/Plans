@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,6 +50,7 @@ public class UserAddPlanServlet extends HttpServlet {
 		String[] hours = request.getParameterValues("hours[]");
 		String[] minutes = request.getParameterValues("minutes[]");
 
+
 		StringBuilder scheduleData = new StringBuilder();
 
 		for (int i = 0; i < scheduleTransports.length; i++) {
@@ -89,11 +92,13 @@ public class UserAddPlanServlet extends HttpServlet {
 			PlanDao planDao = DaoFactory.createPlanDao();
 			planDao.insert(plan);
 
+			// スケジュール文字列を分割してリストに変換
+	        List<String> scheduleList = Arrays.asList(scheduleText.split("\n"));
+	        
 			// 保存後、登録したプランの情報をリクエストスコープにセット
+	        request.setAttribute("scheduleList", scheduleList);
 			request.setAttribute("plan", plan);
-			// スケジュールを改行で分割してリストに変換
-		    String[] scheduleList = scheduleText.split("\n");
-		    request.setAttribute("scheduleLines", scheduleList);
+
 			// 登録完了ページに遷移
 			request.getRequestDispatcher("/WEB-INF/view/user/addPlanDone.jsp")
 					.forward(request, response);
