@@ -25,35 +25,58 @@ div {
 		<div class="alert alert-success text-center" role="alert">
 			<h2>旅行プランが正常に登録されました！</h2>
 		</div>
+
 		<div class="card">
 			<div class="card-header">
 				<h4>プラン内容</h4>
 			</div>
 			<div class="card-body">
 				<p>
-					<strong>タイトル：</strong> ${plan.title}
-				</p>
+					<strong>タイトル：</strong>${plan.title}</p>
 				<p>
-					<strong>場所：</strong> ${plan.place}
-				</p>
+					<strong>場所：</strong>${plan.place}</p>
 				<p>
-					<strong>カテゴリ：</strong> ${plan.category}
-				</p>
-				<h5 class="mt-4">スケジュール</h5>
-				<ul class="list-group">
-					<c:forEach var="scheduleItem" items="${scheduleList}">
-						<c:if test="${not empty scheduleItem}">
-							<li class="list-group-item">${scheduleItem}</li>
-						</c:if>
-					</c:forEach>
-				</ul>
+					<strong>カテゴリ：</strong>${plan.category}</p>
 
+				<h5 class="mt-4">スケジュール</h5>
+				<div class="schedule">
+					<c:forEach var="scheduleItem" items="${scheduleList}">
+						<div class="schedule-item">
+							<c:if test="${not empty scheduleItem['スポット名']}">
+								<p>
+									<strong>スポット名:</strong> ${scheduleItem['スポット名']}
+								</p>
+							</c:if>
+							<c:if test="${not empty scheduleItem['コメント']}">
+								<p>
+									<strong>コメント:</strong> ${scheduleItem['コメント']}
+								</p>
+							</c:if>
+							<c:if test="${not empty scheduleItem['写真']}">
+								<p>
+									<strong>写真:</strong> ${scheduleItem['写真']}
+								</p>
+							</c:if>
+							<c:if test="${not empty scheduleItem['移動手段']}">
+								<p>
+									<strong>移動手段:</strong> ${scheduleItem['移動手段']}
+								</p>
+							</c:if>
+							<c:if test="${not empty scheduleItem['所要時間']}">
+								<p>
+									<strong>所要時間:</strong> ${scheduleItem['所要時間']}
+								</p>
+							</c:if>
+						</div>
+					</c:forEach>
+				</div>
 			</div>
 		</div>
-		<div class="mt-4 text-center">
-			<a href="/user/addPlan" class="btn btn-primary">別のプランを登録</a> <a
-				href="/user/plans" class="btn btn-secondary">登録済みプラン一覧へ</a>
-		</div>
+	</div>
+	<div class="mt-4 text-center">
+		<a href="<%=request.getContextPath()%>/user/addPlan">別の旅行プランを投稿</a> <a
+			href="<%=request.getContextPath()%>/user/myPlans">マイプランリスト</a>
+	</div>
 	</div>
 	<script src="<%=request.getContextPath()%>js/bootstrap.bundle.min.js"></script>
 </body>
