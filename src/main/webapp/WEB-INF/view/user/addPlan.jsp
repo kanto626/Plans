@@ -14,7 +14,11 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
 	rel="stylesheet">
-
+<style>
+div {
+	border: 1px solid #000; /* 境界線のスタイル */
+}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -164,91 +168,154 @@
 
 
 				</div>
-				<h3 class="mt-4">- スケジュール -</h3>
+				<div class="schedule-container">
+					<h3 class="mt-4">- スケジュール -</h3>
 
-				<!-- スポット入力欄の初期表示 -->
-				<div id="scheduleContainer"
-					class="d-flex flex-row align-items-start mt-3">
-					<!-- スポット、コメントエリア、スポット間アイコンを縦に並べる -->
-					<div class="d-flex flex-column w-75">
-						<!-- スポット名入力 -->
-						<input type="text" name="schedulePlace[]"
-							class="form-control mb-2" placeholder="スポット名">
+					<!-- スポット入力欄の初期表示 -->
+					<div id="scheduleContainer"
+						class="d-flex flex-row align-items-start mt-3">
+						<!-- スポット、コメントエリア、スポット間アイコンを縦に並べる -->
+						<div class="d-flex flex-column w-75">
+							<!-- スポット名入力 -->
+							<input type="text" name="schedulePlace[]"
+								class="form-control mb-2" placeholder="スポット名">
 
-						<!-- コメントエリア -->
-						<textarea name="scheduleComment[]" class="form-control mb-2"
-							placeholder="説明やおすすめポイント"></textarea>
+							<!-- コメントエリア -->
+							<textarea name="scheduleComment[]" class="form-control mb-2"
+								placeholder="説明やおすすめポイント"></textarea>
 
-						<!-- スポット間のアイコンと選択項目 -->
-						<div class="d-flex align-items-center">
-							<div class="display-6 d-flex flex-column me-3">
-								<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-								<i class="bi bi-caret-down"></i>
+							<!-- スポット間のアイコンと選択項目 -->
+							<div class="d-flex align-items-center">
+								<div class="display-6 d-flex flex-column me-3">
+									<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+									<i class="bi bi-caret-down"></i>
+								</div>
+								<div class="container">
+									<p>移動手段と所要時間</p>
+									<div class="d-flex align-items-center gap-2">
+										<!-- Transport Selection -->
+										<select name="scheduleTransport[]" class="form-select">
+											<option value="">設定しない</option>
+											<option value="徒歩">徒歩</option>
+											<option value="自転車">自転車</option>
+											<option value="車">車</option>
+											<option value="バス">バス</option>
+											<option value="電車">電車</option>
+											<option value="電車">新幹線</option>
+											<option value="電車">フェリー</option>
+											<option value="電車">飛行機</option>
+										</select> <span>:</span>
+										<!-- Hour Selection -->
+										<select id="hourSelect" name="hours[]" class="form-select">
+											<option value="">設定しない</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+										</select> <span>時間</span>
+										<!-- Minute Selection -->
+										<select id="minuteSelect" name="minutes[]" class="form-select">
+											<option value="">設定しない</option>
+											<option value="3">3</option>
+											<option value="5">5</option>
+											<option value="10">10</option>
+											<option value="15">15</option>
+											<option value="20">20</option>
+											<option value="25">25</option>
+											<option value="30">30</option>
+											<option value="35">35</option>
+											<option value="40">40</option>
+											<option value="45">45</option>
+											<option value="50">50</option>
+											<option value="55">55</option>
+										</select> <span>分</span>
+									</div>
+								</div>
 							</div>
-							<div class="container">
-								<select name="scheduleTransport[]">
-									<option value="徒歩">徒歩</option>
-									<option value="自転車">自転車</option>
-									<option value="車">車</option>
-									<option value="バス">バス</option>
-									<option value="電車">電車</option>
-								</select>
-								<!-- アイコンが入ったドロップダウンメニュー
-                                <div class="dropdown me-3">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    徒歩
-                                </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#" data-value="徒歩" data-icon="bi-person-walking">
-                                    徒歩</a></li>
-                                    <li><a class="dropdown-item" href="#" data-value="自転車" data-icon="bi-bicycle">
-                                        自転車</a></li>
-                                        <li><a class="dropdown-item" href="#" data-value="車" data-icon="bi-car-front-fill">
-                                            車</a></li>
-                                            <li><a class="dropdown-item" href="#" data-value="バス" data-icon="bi-bus-front">
-                                                バス</a></li>
-                                                <li><a class="dropdown-item" href="#" data-value="電車" data-icon="bi-train-front-fill">
-                                                    <i class="bi bi-train-front-fill"></i> 電車</a></li>
-                                                </ul>
-                                            </div>
-                                            -->
+						</div>
 
-								<!--   
-<input type="text" name="scheduleTime[]" class="form-control mb-2" placeholder="時間 (例: 10:00)">
-                                          -->
+						<!-- 写真を追加ボタン: 右側に配置 -->
+						<div class="photo-section ms-3">
+							<input type="text" name="scheduleImage[]"
+								class="form-control mb-2" placeholder="写真の追加">
+						</div>
+					</div>
 
-								<label for="hourSelect"></label> <select id="hourSelect"
-									name="hours" class="form-select">
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="8">8</option>
-									<option value="9">9</option>
-									<option value="10">10</option>
-									<option value="11">11</option>
-									<option value="12">12</option>
-								</select> 時間 <label for="minuteSelect"></label> <select
-									id="minuteSelect" name="minutes" class="form-select">
-									<option value="0">0</option>
-									<option value="3">3</option>
-									<option value="5">5</option>
-									<option value="10">10</option>
-									<option value="15">15</option>
-									<option value="20">20</option>
-									<option value="25">25</option>
-									<option value="30">30</option>
-									<option value="35">35</option>
-									<option value="40">40</option>
-									<option value="45">45</option>
-									<option value="50">50</option>
-									<option value="55">55</option>
-								</select> 分
+					<div id="scheduleContainer"
+						class="d-flex flex-row align-items-start mt-3">
+						<!-- スポット、コメントエリア、スポット間アイコンを縦に並べる -->
+						<div class="d-flex flex-column w-75">
+							<!-- スポット名入力 -->
+							<input type="text" name="schedulePlace[]"
+								class="form-control mb-2" placeholder="スポット名">
+
+							<!-- コメントエリア -->
+							<textarea name="scheduleComment[]" class="form-control mb-2"
+								placeholder="説明やおすすめポイント"></textarea>
+
+							<!-- スポット間のアイコンと選択項目 -->
+							<div class="d-flex align-items-center">
+								<div class="display-6 d-flex flex-column me-3">
+									<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+									<i class="bi bi-caret-down"></i>
+								</div>
+								<div class="container">
+									<p>移動手段と所要時間</p>
+									<div class="d-flex align-items-center gap-2">
+										<!-- Transport Selection -->
+										<select name="scheduleTransport[]" class="form-select">
+											<option value="">設定しない</option>
+											<option value="徒歩">徒歩</option>
+											<option value="自転車">自転車</option>
+											<option value="車">車</option>
+											<option value="バス">バス</option>
+											<option value="電車">電車</option>
+											<option value="電車">新幹線</option>
+											<option value="電車">フェリー</option>
+											<option value="電車">飛行機</option>
+										</select> <span>:</span>
+										<!-- Hour Selection -->
+										<select id="hourSelect" name="hours[]" class="form-select">
+											<option value="">設定しない</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+										</select> <span>時間</span>
+										<!-- Minute Selection -->
+										<select id="minuteSelect" name="minutes[]" class="form-select">
+											<option value="">設定しない</option>
+											<option value="3">3</option>
+											<option value="5">5</option>
+											<option value="10">10</option>
+											<option value="15">15</option>
+											<option value="20">20</option>
+											<option value="25">25</option>
+											<option value="30">30</option>
+											<option value="35">35</option>
+											<option value="40">40</option>
+											<option value="45">45</option>
+											<option value="50">50</option>
+											<option value="55">55</option>
+										</select> <span>分</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -256,7 +323,7 @@
 					<!-- 写真を追加ボタン: 右側に配置 -->
 					<div class="photo-section ms-3">
 						<input type="text" name="scheduleImage[]"
-							class="form-control mb-2" placeholder="写真のURL">
+							class="form-control mb-2" placeholder="写真の追加">
 					</div>
 
 				</div>

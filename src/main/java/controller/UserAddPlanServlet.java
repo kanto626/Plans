@@ -45,19 +45,29 @@ public class UserAddPlanServlet extends HttpServlet {
 		String[] scheduleComments = request.getParameterValues("scheduleComment[]");
 		String[] scheduleImages = request.getParameterValues("scheduleImage[]");
 		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
-		String[] scheduleTimes = request.getParameterValues("scheduleTime[]");
+		String[] hours = request.getParameterValues("hours[]");
+		String[] minutes = request.getParameterValues("minutes[]");
 
-		// スケジュールデータを結合して1つのテキストにする
 		StringBuilder scheduleData = new StringBuilder();
 
-		for (int i = 0; i < schedulePlaces.length; i++) {
-			// append()は、StringBuilderに文字列を追加するメソッド
+		for (int i = 0; i < scheduleTransports.length; i++) {
+			// 時間と分の結合
+			String time = "";
+			if (hours[i] != null && !hours[i].isEmpty() && minutes[i] != null && !minutes[i].isEmpty()) {
+				time = hours[i] + "時間 " + minutes[i] + "分";
+			} else if (hours[i] != null && !hours[i].isEmpty()) {
+				time = hours[i] + "時間";
+			} else if (minutes[i] != null && !minutes[i].isEmpty()) {
+				time = minutes[i] + "分";
+			}
+
+			// データを組み立てる
 			scheduleData.append("スポット名: ").append(schedulePlaces[i])
 					.append(" | コメント: ").append(scheduleComments[i] != null ? scheduleComments[i] : "")
 					.append(" | 写真: ").append(scheduleImages[i] != null ? scheduleImages[i] : "")
-					.append(" | 移動: ").append(scheduleTransports[i] != null ? scheduleTransports[i] : "")
-					.append(" | 時間: ").append(scheduleTimes[i] != null ? scheduleTimes[i] : "")
-					.append("\n"); // 次のスポットを区切る
+					.append(" | 移動手段: ").append(scheduleTransports[i] != null ? scheduleTransports[i] : "")
+					.append(" | 所要時間: ").append(time)
+					.append("\n");
 		}
 
 		// 1つの文字列としてデータベースに保存
@@ -81,7 +91,9 @@ public class UserAddPlanServlet extends HttpServlet {
 
 			// 保存後、登録したプランの情報をリクエストスコープにセット
 			request.setAttribute("plan", plan);
-
+			// スケジュールを改行で分割してリストに変換
+		    String[] scheduleList = scheduleText.split("\n");
+		    request.setAttribute("scheduleLines", scheduleList);
 			// 登録完了ページに遷移
 			request.getRequestDispatcher("/WEB-INF/view/user/addPlanDone.jsp")
 					.forward(request, response);

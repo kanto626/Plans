@@ -108,7 +108,7 @@ public class PlanDaoImpl implements PlanDao {
 			}
 
 	}
-
+	
 	@Override
 	public List<Plan> findByPrefecture(String prefecture) throws Exception {
 		List<Plan> planList = new ArrayList<>();
