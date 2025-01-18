@@ -15,69 +15,106 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
 	rel="stylesheet">
 <style>
-div {
-	border: 1px solid #000; /* 境界線のスタイル */
-}
+   div {
+                border: 1px solid #000;
+                /* 境界線のスタイル */
+                margin: 1rem;
+                /* すべての方向に余白を追加 */
+                padding: 1rem;
+                /* 境界線の内側に余白を追加 */
+            }
+
+            body {
+                text-align: center;
+                background-color: #f9f9f9;
+            }
 </style>
 </head>
 <body>
-	<div class="container mt-5">
-		<div class="card">
-			<div class="card-header">
-				<h4>プラン内容</h4>
-			</div>
-			<div class="card-body">
-				<p>
-					<strong>タイトル：</strong>${plan.title}</p>
-				<p>
-					<strong>場所：</strong>${plan.place}</p>
-				<p>
-					<strong>カテゴリ：</strong>${plan.category}</p>
+	  <div class="container mt-5">
+            <h1>旅行プラン詳細</h1>
+            <!-- 基本情報 -->
+            <div class="container">
+                <strong>投稿者 : </strong> ${plan.user.name} <strong>投稿日 :
+                    ${plan.registeredAt}</strong>
+            </div>
+            <div class="container">
+                <strong>タイトル : </strong>${plan.title}
+            </div>
+            <div class="container">
+                <strong>場所 : </strong>${plan.place}
+            </div>
+            <div class="container">
+                <strong>カテゴリ : </strong>${plan.category}
+            </div>
+            <div id="scheduleContainer">
+                <h3>- スケジュール -</h3>
+                <!-- スポットとその情報を表示 -->
+                <div class="d-flex flex-column mt-3">
+                    <c:forEach var="scheduleItem" items="${scheduleList}">
+                        <div class="schedule-item d-flex flex-row align-items-start mb-4">
+                            <!-- 左側にスポット名とコメントを表示 -->
+                            <div class="d-flex flex-column w-75">
+                                <!-- スポット名 -->
+                                <c:if test="${not empty scheduleItem['スポット名']}">
+                                    <p>
+                                        <strong>スポット名:</strong> ${scheduleItem['スポット名']}
+                                    </p>
+                                </c:if>
+                                <!-- コメント -->
+                                <c:if test="${not empty scheduleItem['コメント']}">
+                                    ${scheduleItem['コメント']}
+                                </c:if>
+                            </div>
+                            <!-- 右側に写真と移動手段、所要時間を表示 -->
+                            <div class="d-flex flex-column">
+                                <!-- 写真 -->
+                                <c:if test="${not empty scheduleItem['写真']}">
+                                    <p>
+                                        <strong>写真:</strong> ${scheduleItem['写真']}
+                                    </p>
+                                </c:if>
+                            </div>
+                        </div>
+                        <!-- 次のスポットまでの所要時間(アイコンと所要時間) -->
+                        <div class="d-flex justify-content-center">
 
-				<h5 class="mt-4">スケジュール</h5>
-				<div class="schedule">
-					<c:forEach var="scheduleItem" items="${scheduleList}">
-						<div class="schedule-item">
-							<c:if test="${not empty scheduleItem['スポット名']}">
-								<p>
-									<strong>スポット名:</strong> ${scheduleItem['スポット名']}
-								</p>
-							</c:if>
-							<c:if test="${not empty scheduleItem['コメント']}">
-								<p>
-									<strong>コメント:</strong> ${scheduleItem['コメント']}
-								</p>
-							</c:if>
-							<c:if test="${not empty scheduleItem['写真']}">
-								<p>
-									<strong>写真:</strong> ${scheduleItem['写真']}
-								</p>
-							</c:if>
-							<c:if test="${not empty scheduleItem['移動手段']}">
-								<p>
-									<strong>移動手段:</strong> ${scheduleItem['移動手段']}
-								</p>
-							</c:if>
-							<c:if test="${not empty scheduleItem['所要時間']}">
-								<p>
-									<strong>所要時間:</strong> ${scheduleItem['所要時間']}
-								</p>
-							</c:if>
-						</div>
-					</c:forEach>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="mt-4 text-center">
-	<!-- 削除ボタン表示の条件 -->
+                            <div class="display-5 d-flex flex-column me-0">
+                                <i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+                                <i class="bi bi-caret-down"></i>
+                            </div>
+
+                            <div>
+                                <!-- 所要時間のフォーム -->
+
+                                <span>次のスポットまでの所要時間</span>
+                                <div class="d-flex align-items-center gap-3 ms-0">
+                                    <c:if test="${not empty scheduleItem['所要時間']}">
+                                        <p>
+                                            <strong>
+                                                <c:if test="${not empty scheduleItem['移動手段']}">
+                                                    ${scheduleItem['移動手段']}
+                                                </c:if>:
+                                            </strong> ${scheduleItem['所要時間']}
+                                        </p>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+                <!-- 削除ボタン表示の条件 -->
 	<c:if test="${plan.user.id == sessionScope.user.id}">
 		<!-- 削除リンク -->
 		<a href="deletePlan?id=<c:out value="${plan.id}" />">削除</a>
 	</c:if>
-	<a href="${not empty sessionScope.previousPage ? sessionScope.previousPage : '/defaultPage'}">戻る</a>		
-	</div>
-	</div>
+            </div>
+           <a href="${not empty sessionScope.previousPage ? sessionScope.previousPage : '/defaultPage'}">戻る</a>		
+        </div>
+        <script src="js/bootstrap.bundle.min.js"></script>
+	
+	
+
 	
 </body>
 </html>
