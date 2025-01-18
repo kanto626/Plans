@@ -66,6 +66,26 @@ public class PlanDaoImpl implements PlanDao {
 	}
 
 	@Override
+	public List<Plan> findByUserId(Integer userId) throws Exception {
+		List<Plan> planList = new ArrayList<>();
+		try (Connection con = ds.getConnection()) {
+			// SQLを実行準備
+			String sql = createSelectClauseWithJoin()
+					+ " WHERE p.user_id = ?";
+			var stmt = con.prepareStatement(sql);
+			stmt.setObject(1, userId, Types.INTEGER);
+			ResultSet rs = stmt.executeQuery();
+			// ResultSet ⇒ Planリストに変換
+			while (rs.next()) {
+				planList.add(mapToPlan(rs));
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return planList;
+	}
+
+	@Override
 	public void insert(Plan plan) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			// SQLを実行準備
@@ -103,12 +123,12 @@ public class PlanDaoImpl implements PlanDao {
 			var stmt = con.prepareStatement(sql);
 			stmt.setObject(1, plan.getId(), Types.INTEGER);
 			stmt.executeUpdate();
-			} catch (Exception e) {
+		} catch (Exception e) {
 			throw e;
-			}
+		}
 
 	}
-	
+
 	@Override
 	public List<Plan> findByPrefecture(String prefecture) throws Exception {
 		List<Plan> planList = new ArrayList<>();
@@ -118,26 +138,6 @@ public class PlanDaoImpl implements PlanDao {
 					+ " WHERE p.place = ?";
 			var stmt = con.prepareStatement(sql);
 			stmt.setString(1, prefecture); // 一致する県名を検索
-			ResultSet rs = stmt.executeQuery();
-			// ResultSet ⇒ Planリストに変換
-			while (rs.next()) {
-				planList.add(mapToPlan(rs));
-			}
-		} catch (Exception e) {
-			throw e;
-		}
-		return planList;
-	}
-
-	@Override
-	public List<Plan> findByUserId(Integer userId) throws Exception {
-		List<Plan> planList = new ArrayList<>();
-		try (Connection con = ds.getConnection()) {
-			// SQLを実行準備
-			String sql = createSelectClauseWithJoin()
-					+ " WHERE p.user_id = ?";
-			var stmt = con.prepareStatement(sql);
-			stmt.setObject(1, userId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
 			// ResultSet ⇒ Planリストに変換
 			while (rs.next()) {

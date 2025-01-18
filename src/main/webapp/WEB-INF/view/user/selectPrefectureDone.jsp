@@ -29,6 +29,6 @@
 			</tr>
 		</c:forEach>
 	</table>
-	<a href="${sessionScope.previousPage}">前のページに戻る</a>
+	
 </body>
 </html>

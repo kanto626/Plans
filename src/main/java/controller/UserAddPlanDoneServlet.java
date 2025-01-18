@@ -12,10 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.DaoFactory;
-import dao.PlanDao;
 import domain.Plan;
-import domain.User;
 
 /**
  * Servlet implementation class UserAddPlanDoneServlet
@@ -27,22 +24,13 @@ public class UserAddPlanDoneServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // セッションからログインユーザーを取得
-            User user = (User) request.getSession().getAttribute("user");
+            // セッションからPlanオブジェクトを取得
+            Plan plan = (Plan) request.getSession().getAttribute("Plan");
 
-            // PlanDaoを使用してユーザーIDに基づくプランを取得
-            PlanDao planDao = DaoFactory.createPlanDao();
-            List<Plan> plans = planDao.findByUserId(user.getId());
-
-            // プランが存在する場合、最初のプランを取得（もし複数あれば適宜調整）
-            Plan plan = plans.isEmpty() ? null : plans.get(0); 
-
-            // プランが見つかった場合、スケジュールテキストをMapに変換
-            if (plan != null) {
-                String scheduleText = plan.getSchedule();
-                String[] scheduleItems = scheduleText.split("\n");
-
-                List<Map<String, String>> scheduleList = new ArrayList<>();
+            // スケジュールテキストをMapに変換
+            List<Map<String, String>> scheduleList = new ArrayList<>();
+            if (plan != null && plan.getSchedule() != null) {
+                String[] scheduleItems = plan.getSchedule().split("\n");
                 for (String item : scheduleItems) {
                     Map<String, String> scheduleItem = new HashMap<>();
                     String[] parts = item.split(" \\| ");
@@ -54,13 +42,13 @@ public class UserAddPlanDoneServlet extends HttpServlet {
                     }
                     scheduleList.add(scheduleItem);
                 }
-
-                // JSPにデータを渡す
-                request.setAttribute("plan", plan);
-                request.setAttribute("scheduleList", scheduleList);
             }
 
-            // JSPに転送
+            // JSPにデータを渡す
+            request.setAttribute("plan", plan);
+            request.setAttribute("scheduleList", scheduleList);
+
+            // JSPにフォワード
             request.getRequestDispatcher("/WEB-INF/view/user/addPlanDone.jsp").forward(request, response);
 
         } catch (Exception e) {

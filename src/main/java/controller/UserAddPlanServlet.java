@@ -69,7 +69,6 @@ public class UserAddPlanServlet extends HttpServlet {
 					.append(" | 所要時間: ").append(time)
 					.append("\n");
 		}
-
 		// 1つの文字列としてデータベースに保存
 		String scheduleText = scheduleData.toString();
 
@@ -90,6 +89,7 @@ public class UserAddPlanServlet extends HttpServlet {
 			planDao.insert(plan);
 
 			// 保存後、UserAddPlanDoneServletにリダイレクト
+			request.getSession().setAttribute("Plan", plan);
 			response.sendRedirect(request.getContextPath() + "/user/addPlanDone");
 		} catch (Exception e) {
 			throw new ServletException(e);
