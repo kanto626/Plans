@@ -16,20 +16,20 @@
 				<td><c:out value="${plan.user.name}" /></td>
 			</tr>
 			<tr>
-				<th>スケジュール</th>
-				<td><c:out value="${plan.detail}" /></td>
+				<th>登録日</th>
+				<td><c:out value="${plan.registeredAt}" /></td>
 			</tr>
 			<tr>
 				<th>場所</th>
 				<td><c:out value="${plan.place}" /></td>
 			</tr>
 			<tr>
-				<th>目的</th>
+				<th>カテゴリー</th>
 				<td><c:out value="${plan.category}" /></td>
 			</tr>
 			<tr>
-				<th>登録日</th>
-				<td><c:out value="${plan.registeredAt}" /></td>
+				<th>スケジュール</th>
+				<td><c:out value="${plan.schedule}" /></td>
 			</tr>
 		</table>
 		<p>

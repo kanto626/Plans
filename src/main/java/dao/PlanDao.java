@@ -14,7 +14,7 @@ public interface PlanDao {
 	void update(Plan plan) throws Exception;
 
 	void delete(Plan plan) throws Exception;
-
+	
 	List<Plan> findByPrefecture(String prefecture) throws Exception;
 
 	List<Plan> findByUserId(Integer userId) throws Exception;
