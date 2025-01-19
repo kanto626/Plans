@@ -66,17 +66,37 @@ public class PlanDaoImpl implements PlanDao {
 	}
 
 	@Override
+	public List<Plan> findByUserId(Integer userId) throws Exception {
+		List<Plan> planList = new ArrayList<>();
+		try (Connection con = ds.getConnection()) {
+			// SQLを実行準備
+			String sql = createSelectClauseWithJoin()
+					+ " WHERE p.user_id = ?";
+			var stmt = con.prepareStatement(sql);
+			stmt.setObject(1, userId, Types.INTEGER);
+			ResultSet rs = stmt.executeQuery();
+			// ResultSet ⇒ Planリストに変換
+			while (rs.next()) {
+				planList.add(mapToPlan(rs));
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return planList;
+	}
+
+	@Override
 	public void insert(Plan plan) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			// SQLを実行準備
 			String sql = "INSERT INTO plans "
-					+ " (title, detail, place, "
+					+ " (title, schedule, place, "
 					+ " category, user_id, registered_at) "
 					+ " VALUES (?, ?, ?, ?, ?, CURDATE())";
 			var stmt = con.prepareStatement(sql);
 			// ? の設定
 			stmt.setString(1, plan.getTitle());
-			stmt.setString(2, plan.getDetail());
+			stmt.setString(2, plan.getSchedule());
 			stmt.setString(3, plan.getPlace());
 			stmt.setString(4, plan.getCategory());
 			User user = plan.getUser();
@@ -103,9 +123,9 @@ public class PlanDaoImpl implements PlanDao {
 			var stmt = con.prepareStatement(sql);
 			stmt.setObject(1, plan.getId(), Types.INTEGER);
 			stmt.executeUpdate();
-			} catch (Exception e) {
+		} catch (Exception e) {
 			throw e;
-			}
+		}
 
 	}
 
@@ -129,31 +149,11 @@ public class PlanDaoImpl implements PlanDao {
 		return planList;
 	}
 
-	@Override
-	public List<Plan> findByUserId(Integer userId) throws Exception {
-		List<Plan> planList = new ArrayList<>();
-		try (Connection con = ds.getConnection()) {
-			// SQLを実行準備
-			String sql = createSelectClauseWithJoin()
-					+ " WHERE p.user_id = ?";
-			var stmt = con.prepareStatement(sql);
-			stmt.setObject(1, userId, Types.INTEGER);
-			ResultSet rs = stmt.executeQuery();
-			// ResultSet ⇒ Planリストに変換
-			while (rs.next()) {
-				planList.add(mapToPlan(rs));
-			}
-		} catch (Exception e) {
-			throw e;
-		}
-		return planList;
-	}
-
 	private Plan mapToPlan(ResultSet rs) throws Exception {
 		// ResultSet からデータを取得して Plan オブジェクトにマッピングする
 		Integer id = (Integer) rs.getObject("id");// プランID
 		String title = rs.getString("title"); // タイトル
-		String detail = rs.getString("detail"); // プラン内容（詳細）
+		String schedule = rs.getString("schedule"); // スケジュール
 		String place = rs.getString("place"); // 目的地
 		String category = rs.getString("category"); // カテゴリ 
 		Date registeredAt = rs.getDate("registered_at"); // 登録日
@@ -163,13 +163,13 @@ public class PlanDaoImpl implements PlanDao {
 		// Userオブジェクトを作成
 		User user = new User(userId, userName);
 		// Planオブジェクトに設定
-		return new Plan(id, title, detail, place, category, user, registeredAt);
+		return new Plan(id, title, schedule, place, category, user, registeredAt);
 	}
 
 	//JOIN句までのSELECT文を生成
 	private String createSelectClauseWithJoin() {
 		return "SELECT "
-				+ " p.id, p.title, p.detail, "
+				+ " p.id, p.title, p.schedule, "
 				+ " p.place, p.category, p.registered_at, "
 				+ " u.id AS user_id, "
 				+ " u.name "

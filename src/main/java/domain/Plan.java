@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Plan {
 	private int id; // 旅行プランID
 	private String title; // タイトル
-	private String detail; // プラン内容
+	private String schedule; // プラン内容
 	private String place; // 目的地
 	private String category; // カテゴリ
 	private User user; // 作成者のユーザーID

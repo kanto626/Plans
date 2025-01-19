@@ -5,13 +5,13 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>都道府県選択</title>
+<title>searchPrefecture</title>
 </head>
 <body>
 	<h1>旅行プラン検索</h1>
 	<form action="<%=request.getContextPath()%>/user/selectPrefecture"
 		method="post">
-		<label for="prefecture">都道府県を選んでください：</label> <select
+		<label for="prefecture">目的地を選択：</label> <select
 			name="prefecture" id="prefecture">
 			<option value="北海道">北海道</option>
 			<optgroup label="東北">
