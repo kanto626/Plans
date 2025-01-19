@@ -99,7 +99,7 @@ body {
 											<strong> <c:if
 													test="${not empty scheduleItem['移動手段']}">
                                                     ${scheduleItem['移動手段']}
-                                                </c:if>:
+                                                </c:if>:約
 											</strong> ${scheduleItem['所要時間']}
 										</p>
 									</c:if>
