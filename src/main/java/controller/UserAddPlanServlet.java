@@ -1,12 +1,18 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import dao.DaoFactory;
 import dao.PlanDao;
@@ -14,6 +20,7 @@ import domain.Plan;
 import domain.User;
 
 @WebServlet("/user/addPlan")
+@MultipartConfig(location = "C:/temp")
 public class UserAddPlanServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -25,18 +32,20 @@ public class UserAddPlanServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		boolean isError = false;
 
-		// パラメータの取得
+		// パラメータの取得とバリデーション
 		String title = request.getParameter("title");
 		request.setAttribute("title", title); // 再表示用
-		if (title.isBlank()) {
+		if (title == null || title.isBlank()) {
 			request.setAttribute("titleError", "タイトルを入力してください");
 			isError = true;
 		} else if (title.length() > 50) {
 			request.setAttribute("titleError", "全角で50字以内、または半角100字以内で入力してください。");
 			isError = true;
 		}
+
 		String place = request.getParameter("place");
 		if (place.isBlank()) {
 			request.setAttribute("placeError", "目的地を選択してください");
@@ -49,7 +58,37 @@ public class UserAddPlanServlet extends HttpServlet {
 
 		String[] schedulePlaces = request.getParameterValues("schedulePlace[]");
 		String[] scheduleComments = request.getParameterValues("scheduleComment[]");
-		String[] scheduleImages = request.getParameterValues("scheduleImage[]");
+
+		// 画像ファイル名を格納するリスト
+		List<String> scheduleImages = new ArrayList<>();
+
+		// パート情報を取得
+		Collection<Part> parts = request.getParts();
+		for (Part part : parts) {
+			// scheduleImage[] の名前を持つパートを処理
+			if (part.getName().equals("scheduleImage[]")) {
+				String type = part.getContentType();
+
+				// 画像ファイルか否かのチェック
+				if (type != null && type.startsWith("image/")) {
+					// ファイル名を生成
+					String fileName = System.currentTimeMillis() + "-" + part.getSubmittedFileName();
+
+					// 保存先のパスを指定
+					ServletContext ctx = request.getServletContext();
+					String path = ctx.getRealPath("/photo");
+
+					// 画像を保存
+					part.write(path + "/" + fileName);
+
+					// 画像の相対パスをリストに追加
+					scheduleImages.add("/photo/" + fileName);
+				} else {
+					// 画像以外のファイルが選択された場合、エラーメッセージを設定
+					request.setAttribute("typeError", "画像を選択してください");
+				}
+			}
+		}
 		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
 		String[] hours = request.getParameterValues("hours[]");
 		String[] minutes = request.getParameterValues("minutes[]");
@@ -79,7 +118,7 @@ public class UserAddPlanServlet extends HttpServlet {
 		for (int i = 0; i < schedulePlaces.length; i++) {
 			if ((schedulePlaces[i] == null || schedulePlaces[i].isBlank()) &&
 					((scheduleComments != null && !scheduleComments[i].isBlank()) ||
-							(scheduleImages != null && !scheduleImages[i].isBlank()) ||
+							(scheduleImages != null) ||
 							(scheduleTransports != null && !scheduleTransports[i].isBlank()) ||
 							(hours != null && !hours[i].isBlank()) ||
 							(minutes != null && !minutes[i].isBlank()))) {
@@ -116,7 +155,7 @@ public class UserAddPlanServlet extends HttpServlet {
 
 			scheduleData.append("スポット名: ").append(schedulePlaces[i])
 					.append(" | コメント: ").append(scheduleComments[i] != null ? scheduleComments[i] : "")
-					.append(" | 写真: ").append(scheduleImages[i] != null ? scheduleImages[i] : "")
+					.append(" | 写真: ").append(scheduleImages.size() > i ? scheduleImages.get(i) : "")
 					.append(" | 移動手段: ").append(scheduleTransports[i] != null ? scheduleTransports[i] : "")
 					.append(" | 所要時間: ").append(time)
 					.append("\n");

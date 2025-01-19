@@ -34,7 +34,7 @@ body {
 	<div>
 		<h1>旅行プラン作成</h1>
 	</div>
-	<form action="" method="post" class="">
+	<form action="" method="post" class="" enctype="multipart/form-data">
 		<!-- 基本情報 -->
 		<div class="container">
 
@@ -206,9 +206,15 @@ body {
 						<textarea name="scheduleComment[]" class="form-control mb-2"
 							placeholder="説明やおすすめポイント"></textarea>
 					</div>
+					<c:if test="${not empty typeError}">
+							<p>
+								※
+								<c:out value="${typeError}" />
+							</p>
+						</c:if>
 					<!-- 写真を追加ボタン: 右側に配置 -->
 					<div class="photo-section ms-3">
-						<input type="text" name="scheduleImage[]"
+						<input type="file" name="scheduleImage[]"
 							class="form-control mb-2" placeholder="写真の追加">
 					</div>
 				</div>
@@ -290,8 +296,14 @@ body {
 						<textarea name="scheduleComment[]" class="form-control mb-2"
 							placeholder="説明やおすすめポイント"></textarea>
 					</div>
+					<c:if test="${not empty typeError}">
+							<p>
+								※
+								<c:out value="${typeError}" />
+							</p>
+						</c:if>
 					<div class="photo-section ms-3">
-						<input type="text" name="scheduleImage[]"
+						<input type="file" name="scheduleImage[]"
 							class="form-control mb-2" placeholder="写真の追加">
 					</div>
 					<button class="remove-button btn btn-danger ms-3">削除</button>
