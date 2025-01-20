@@ -28,6 +28,10 @@ body {
 	text-align: center;
 	background-color: #f9f9f9;
 }
+img {
+width: 300px;
+height: 200px;
+}
 </style>
 </head>
 <body>
@@ -41,7 +45,7 @@ body {
 			<!-- 基本情報 -->
 			<div class="container">
 				<strong>投稿者 : </strong> ${plan.user.name} <strong>投稿日 :
-					${plan.registeredAt}</strong>
+					</strong> <fmt:formatDate value="${plan.registeredAt}" pattern="yyyy-MM-dd" />
 			</div>
 			<div class="container">
 				<strong>タイトル : </strong>${plan.title}
@@ -76,7 +80,8 @@ body {
 								<!-- 写真 -->
 								<c:if test="${not empty scheduleItem['写真']}">
 									<p>
-										<strong>写真:</strong> ${scheduleItem['写真']}
+										<img
+											src="${pageContext.request.contextPath}${scheduleItem['写真']}"/ >
 									</p>
 								</c:if>
 							</div>
@@ -99,7 +104,7 @@ body {
 											<strong> <c:if
 													test="${not empty scheduleItem['移動手段']}">
                                                     ${scheduleItem['移動手段']}
-                                                </c:if>:
+                                                </c:if>:約
 											</strong> ${scheduleItem['所要時間']}
 										</p>
 									</c:if>
