@@ -43,6 +43,7 @@ public class UserPlanShowServlet extends HttpServlet {
 			Plan plan = dao.findById(id);
 			request.setAttribute("plan", plan);
 
+
 			// スケジュールテキストをMapに変換
 			if (plan != null) {
 				String scheduleText = plan.getSchedule(); // スケジュールテキストを取得

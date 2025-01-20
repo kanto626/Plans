@@ -28,6 +28,10 @@ body {
 	text-align: center;
 	background-color: #f9f9f9;
 }
+img {
+width: 300px;
+height: 200px;
+}
 </style>
 </head>
 <body>
@@ -36,7 +40,7 @@ body {
 		<!-- 基本情報 -->
 		<div class="container">
 			<strong>投稿者 : </strong> ${plan.user.name} <strong>投稿日 :
-				${plan.registeredAt}</strong>
+				</strong>${plan.registeredAt}
 		</div>
 		<div class="container">
 			<strong>タイトル : </strong>${plan.title}
@@ -71,9 +75,8 @@ body {
 							<!-- 写真 -->
 							<c:if test="${not empty scheduleItem['写真']}">
 								<p>
-									<strong>写真:</strong><img
-										src="${pageContext.request.contextPath}/${scheduleItem['写真']}alt="
-										画像が表示できません" style="max-width: 300px; max-height: 300px;" />
+									
+									<img src="${pageContext.request.contextPath}${scheduleItem['写真']}" / >
 								</p>
 							</c:if>
 						</div>

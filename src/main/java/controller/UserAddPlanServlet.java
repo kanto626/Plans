@@ -64,31 +64,37 @@ public class UserAddPlanServlet extends HttpServlet {
 
 		// パート情報を取得
 		Collection<Part> parts = request.getParts();
+
 		for (Part part : parts) {
-			// scheduleImage[] の名前を持つパートを処理
-			if (part.getName().equals("scheduleImage[]")) {
-				String type = part.getContentType();
+		    // フォームの name 属性が "scheduleImage[]" であるか確認
+		    if (part.getName().equals("scheduleImage[]")) {
+		        String type = part.getContentType();
+		        // ファイル名が空でない場合に処理を続行
+		        if (part.getSize() > 0 && type != null) {
+		            // 画像ファイルか否かのチェック
+		            if (type.startsWith("image/")) {
+		                // ファイル名を生成
+		                String fileName = System.currentTimeMillis() + "-" + part.getSubmittedFileName();
 
-				// 画像ファイルか否かのチェック
-				if (type != null && type.startsWith("image/")) {
-					// ファイル名を生成
-					String fileName = System.currentTimeMillis() + "-" + part.getSubmittedFileName();
+		                // 画像アップロード
+		                ServletContext ctx = request.getServletContext(); // ServletContextを取得
+		                String path = ctx.getRealPath("/photo"); // 保存先のフォルダパスを取得
+		                part.write(path + "/" + fileName); // ファイルを保存
 
-					// 保存先のパスを指定
-					ServletContext ctx = request.getServletContext();
-					String path = ctx.getRealPath("/photo");
-
-					// 画像を保存
-					part.write(path + "/" + fileName);
-
-					// 画像の相対パスをリストに追加
-					scheduleImages.add("/photo/" + fileName);
-				} else {
-					// 画像以外のファイルが選択された場合、エラーメッセージを設定
-					request.setAttribute("typeError", "画像を選択してください");
-				}
-			}
+		                // 画像の相対パスをリストに追加
+		                scheduleImages.add("/photo/" + fileName);
+		            } else {
+		                // 画像以外のファイルが選択された場合、エラーメッセージを設定
+		                request.setAttribute("scheduleImagesError", "画像形式のファイルを選択してください");
+		                isError = true;
+		                scheduleImages.add(""); // プレースホルダーとして空文字を追加
+		            }
+		        } else {
+		            scheduleImages.add(""); // 画像がアップロードされなかった場合のプレースホルダー
+		        }
+		    }
 		}
+
 		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
 		String[] hours = request.getParameterValues("hours[]");
 		String[] minutes = request.getParameterValues("minutes[]");
@@ -155,7 +161,7 @@ public class UserAddPlanServlet extends HttpServlet {
 
 			scheduleData.append("スポット名: ").append(schedulePlaces[i])
 					.append(" | コメント: ").append(scheduleComments[i] != null ? scheduleComments[i] : "")
-					.append(" | 写真: ").append(scheduleImages.size() > i ? scheduleImages.get(i) : "")
+					.append(" | 写真: ").append(scheduleImages.get(i)) // 必ずインデックスが一致する
 					.append(" | 移動手段: ").append(scheduleTransports[i] != null ? scheduleTransports[i] : "")
 					.append(" | 所要時間: ").append(time)
 					.append("\n");
