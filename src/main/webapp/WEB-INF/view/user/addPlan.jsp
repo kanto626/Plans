@@ -197,6 +197,7 @@ body {
 								<c:out value="${schedulePlacesError}" />
 							</div>
 						</c:if>
+						
 						<input type="text" name="schedulePlace[]"
 							class="form-control mb-2" placeholder="スポット名">
 						<!-- コメントエリア -->

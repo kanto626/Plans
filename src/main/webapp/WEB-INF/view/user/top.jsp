@@ -51,8 +51,8 @@
 							href="<%=request.getContextPath()%>/user/addPlan"
 							class="custom-link">旅行プラン作成</a></li>
 						<li class="mb-5"><a
-							href="<%=request.getContextPath()%>/user/myPage"
-							class="custom-link">マイページ</a></li>
+							href="<%=request.getContextPath()%>/user/myPlans"
+							class="custom-link">マイプランリスト</a></li>
 					</ul>
 				</div>
 			</div>

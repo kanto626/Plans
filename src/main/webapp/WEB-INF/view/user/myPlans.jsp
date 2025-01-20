@@ -26,6 +26,6 @@
 			</tr>
 		</c:forEach>
 	</table>
-	<a href="<%=request.getContextPath()%>/user/myPage">マイページに戻る</a>
+	<a href="<%=request.getContextPath()%>/user/top">トップに戻る</a>
 </body>
 </html>

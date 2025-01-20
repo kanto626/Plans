@@ -66,33 +66,33 @@ public class UserAddPlanServlet extends HttpServlet {
 		Collection<Part> parts = request.getParts();
 
 		for (Part part : parts) {
-		    // フォームの name 属性が "scheduleImage[]" であるか確認
-		    if (part.getName().equals("scheduleImage[]")) {
-		        String type = part.getContentType();
-		        // ファイル名が空でない場合に処理を続行
-		        if (part.getSize() > 0 && type != null) {
-		            // 画像ファイルか否かのチェック
-		            if (type.startsWith("image/")) {
-		                // ファイル名を生成
-		                String fileName = System.currentTimeMillis() + "-" + part.getSubmittedFileName();
+			// フォームの name 属性が "scheduleImage[]" であるか確認
+			if (part.getName().equals("scheduleImage[]")) {
+				String type = part.getContentType();
+				// ファイル名が空でない場合に処理を続行
+				if (part.getSize() > 0 && type != null) {
+					// 画像ファイルか否かのチェック
+					if (type.startsWith("image/")) {
+						// ファイル名を生成
+						String fileName = System.currentTimeMillis() + "-" + part.getSubmittedFileName();
 
-		                // 画像アップロード
-		                ServletContext ctx = request.getServletContext(); // ServletContextを取得
-		                String path = ctx.getRealPath("/photo"); // 保存先のフォルダパスを取得
-		                part.write(path + "/" + fileName); // ファイルを保存
+						// 画像アップロード
+						ServletContext ctx = request.getServletContext(); // ServletContextを取得
+						String path = ctx.getRealPath("/photo"); // 保存先のフォルダパスを取得
+						part.write(path + "/" + fileName); // ファイルを保存
 
-		                // 画像の相対パスをリストに追加
-		                scheduleImages.add("/photo/" + fileName);
-		            } else {
-		                // 画像以外のファイルが選択された場合、エラーメッセージを設定
-		                request.setAttribute("scheduleImagesError", "画像形式のファイルを選択してください");
-		                isError = true;
-		                scheduleImages.add(""); // プレースホルダーとして空文字を追加
-		            }
-		        } else {
-		            scheduleImages.add(""); // 画像がアップロードされなかった場合のプレースホルダー
-		        }
-		    }
+						// 画像の相対パスをリストに追加
+						scheduleImages.add("/photo/" + fileName);
+					} else {
+						// 画像以外のファイルが選択された場合、エラーメッセージを設定
+						request.setAttribute("scheduleImagesError", "画像形式のファイルを選択してください");
+						isError = true;
+						scheduleImages.add(""); // プレースホルダーとして空文字を追加
+					}
+				} else {
+					scheduleImages.add(""); // 画像がアップロードされなかった場合のプレースホルダー
+				}
+			}
 		}
 
 		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
@@ -108,7 +108,7 @@ public class UserAddPlanServlet extends HttpServlet {
 
 		// バリデーション: スポット名のチェック
 		if (schedulePlaces == null || schedulePlaces[0].isBlank()) {
-			request.setAttribute("schedulePlacesError", "少なくとも1つのスポットを入力してください。");
+			request.setAttribute("schedulePlacesError", "スポット名を入力してください。");
 			isError = true;
 		} else {
 			for (int i = 1; i < schedulePlaces.length; i++) {
@@ -124,7 +124,7 @@ public class UserAddPlanServlet extends HttpServlet {
 		for (int i = 0; i < schedulePlaces.length; i++) {
 			if ((schedulePlaces[i] == null || schedulePlaces[i].isBlank()) &&
 					((scheduleComments != null && !scheduleComments[i].isBlank()) ||
-							(scheduleImages != null) ||
+							!scheduleImages.get(i).isBlank() ||  // 修正: 画像がアップロードされているか確認
 							(scheduleTransports != null && !scheduleTransports[i].isBlank()) ||
 							(hours != null && !hours[i].isBlank()) ||
 							(minutes != null && !minutes[i].isBlank()))) {
