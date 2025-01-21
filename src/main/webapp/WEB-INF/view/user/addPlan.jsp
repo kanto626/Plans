@@ -324,13 +324,11 @@ body {
 							<select name="scheduleTransport[]" class="form-select">
 								<option value="">設定しない</option>
 								<option value="徒歩">徒歩</option>
-								<option value="自転車">自転車</option>
 								<option value="車">車</option>
 								<option value="バス">バス</option>
 								<option value="電車">電車</option>
-								<option value="新幹線">新幹線</option>
+								<option value="自転車">自転車</option>
 								<option value="フェリー">フェリー</option>
-								<option value="飛行機">飛行機</option>
 							</select> <span>:</span> <select name="hours[]" class="form-select">
 								<option value="">設定しない</option>
 								<option value="1">1</option>
