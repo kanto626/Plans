@@ -53,9 +53,6 @@ public class UserAddPlanServlet extends HttpServlet {
 		}
 		request.setAttribute("place", place); // 再表示用
 
-		String category = request.getParameter("category");
-		request.setAttribute("category", category); // 再表示用
-
 		String[] schedulePlaces = request.getParameterValues("schedulePlace[]");
 		String[] scheduleComments = request.getParameterValues("scheduleComment[]");
 
@@ -174,7 +171,6 @@ public class UserAddPlanServlet extends HttpServlet {
 		plan.setTitle(title);
 		plan.setSchedule(scheduleText);
 		plan.setPlace(place);
-		plan.setCategory(category);
 		plan.setUser(user);
 
 		try {

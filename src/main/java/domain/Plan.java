@@ -15,7 +15,6 @@ public class Plan {
 	private String title; // タイトル
 	private String schedule; // プラン内容
 	private String place; // 目的地
-	private String category; // カテゴリ
 	private User user; // 作成者のユーザーID
 	private Date registeredAt; // 作成日時
 }

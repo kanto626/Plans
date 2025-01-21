@@ -48,8 +48,7 @@ height: 200px;
 		<div class="container">
 			<strong>場所 : </strong>${plan.place}
 		</div>
-		<div class="container">
-			<strong>カテゴリ : </strong>${plan.category}
+		<!-- カテゴリーを表示 -->
 		</div>
 		<div id="scheduleContainer">
 			<h3>- スケジュール -</h3>

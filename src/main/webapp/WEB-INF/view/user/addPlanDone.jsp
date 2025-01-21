@@ -52,11 +52,11 @@ height: 200px;
 			</div>
 			<div class="container">
 				<strong>場所 : </strong>${plan.place}
+				
 			</div>
-			<div class="container">
-				<strong>カテゴリ : </strong>${plan.category}
-			</div>
+				<!-- カテゴリーを表示 -->
 			<div id="scheduleContainer">
+			
 				<h3>- スケジュール -</h3>
 				<!-- スポットとその情報を表示 -->
 				<div class="d-flex flex-column mt-3">

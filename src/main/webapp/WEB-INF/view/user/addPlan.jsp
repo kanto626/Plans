@@ -143,45 +143,9 @@ body {
 			</div>
 
 			<div class="container">
-
-				<label class="form-label">カテゴリを選択 :</label>
-
-				<!-- 目的 -->
-				<fieldset>
-					<legend>目的</legend>
-					<div class="checkbox-group">
-						<label> <input type="checkbox" name="category"
-							value="食べ歩き"> 食べ歩き
-						</label> <label> <input type="checkbox" name="category"
-							value="カフェ"> カフェ巡り
-						</label> <label> <input type="checkbox" name="category"
-							value="ショッピング"> ショッピング
-						</label> <label> <input type="checkbox" name="category" value="運動">
-							運動
-						</label>
-					</div>
-				</fieldset>
-
-				<!-- その他 -->
-				<fieldset>
-					<legend>その他</legend>
-					<div class="checkbox-group">
-						<label> <input type="checkbox" name="category" value="観光">
-							観光
-						</label> <label> <input type="checkbox" name="category"
-							value="リラックス"> リラックス
-						</label> <label> <input type="checkbox" name="category"
-							value="アクティブ"> アクティブ
-						</label> <label> <input type="checkbox" name="category"
-							value="ファミリー向け"> ファミリー向け
-						</label> <label> <input type="checkbox" name="category"
-							value="カップル向け"> カップル向け
-						</label> <label> <input type="checkbox" name="category"
-							value="一人旅"> 一人旅
-						</label>
-					</div>
-				</fieldset>
+				<!-- カテゴリーの選択 -->
 			</div>
+
 			<div>
 				<h3 class="">- スケジュール -</h3>
 			</div>
@@ -197,7 +161,7 @@ body {
 								<c:out value="${schedulePlacesError}" />
 							</div>
 						</c:if>
-						
+
 						<input type="text" name="schedulePlace[]"
 							class="form-control mb-2" placeholder="スポット名">
 						<!-- コメントエリア -->

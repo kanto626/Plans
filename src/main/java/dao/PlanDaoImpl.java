@@ -91,16 +91,16 @@ public class PlanDaoImpl implements PlanDao {
 			// SQLを実行準備
 			String sql = "INSERT INTO plans "
 					+ " (title, schedule, place, "
-					+ " category, user_id, registered_at) "
-					+ " VALUES (?, ?, ?, ?, ?, CURDATE())";
+					+ " user_id, registered_at) "
+					+ " VALUES (?, ?, ?, ?, CURDATE())";
 			var stmt = con.prepareStatement(sql);
 			// ? の設定
 			stmt.setString(1, plan.getTitle());
 			stmt.setString(2, plan.getSchedule());
 			stmt.setString(3, plan.getPlace());
-			stmt.setString(4, plan.getCategory());
+
 			User user = plan.getUser();
-			stmt.setObject(5, user.getId(), Types.INTEGER);
+			stmt.setObject(4, user.getId(), Types.INTEGER);
 			plan.setRegisteredAt(new Date());
 
 			// SQLを実行
@@ -154,8 +154,7 @@ public class PlanDaoImpl implements PlanDao {
 		Integer id = (Integer) rs.getObject("id");// プランID
 		String title = rs.getString("title"); // タイトル
 		String schedule = rs.getString("schedule"); // スケジュール
-		String place = rs.getString("place"); // 目的地
-		String category = rs.getString("category"); // カテゴリ 
+		String place = rs.getString("place"); // 目的地 
 		Date registeredAt = rs.getDate("registered_at"); // 登録日
 
 		Integer userId = (Integer) rs.getObject("user_id");
@@ -163,7 +162,7 @@ public class PlanDaoImpl implements PlanDao {
 		// Userオブジェクトを作成
 		User user = new User(userId, userName);
 		// Planオブジェクトに設定
-		return new Plan(id, title, schedule, place, category, user, registeredAt);
+		return new Plan(id, title, schedule, place, user, registeredAt);
 	}
 
 	//JOIN句までのSELECT文を生成
