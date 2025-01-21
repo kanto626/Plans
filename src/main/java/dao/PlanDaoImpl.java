@@ -1,7 +1,9 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +24,7 @@ public class PlanDaoImpl implements PlanDao {
 	}
 
 	@Override
+	// データベース内のすべてのプランを取得する
 	public List<Plan> findAll() throws Exception {
 		List<Plan> planList = new ArrayList<>();
 		try (Connection con = ds.getConnection()) {
@@ -44,6 +47,7 @@ public class PlanDaoImpl implements PlanDao {
 	}
 
 	@Override
+	// 指定されたIDに対応するプランを取得する
 	public Plan findById(Integer id) throws Exception {
 		Plan plan = null;
 		try (Connection con = ds.getConnection()) {
@@ -66,6 +70,7 @@ public class PlanDaoImpl implements PlanDao {
 	}
 
 	@Override
+	// 指定されたユーザーIDに関連するすべてのプランを取得する
 	public List<Plan> findByUserId(Integer userId) throws Exception {
 		List<Plan> planList = new ArrayList<>();
 		try (Connection con = ds.getConnection()) {
@@ -85,6 +90,22 @@ public class PlanDaoImpl implements PlanDao {
 		return planList;
 	}
 
+	// プランに関連付けられたカテゴリを取得するメソッド
+	public List<Integer> getCategoriesByPlanId(int planId) throws Exception {
+		List<Integer> categoryIds = new ArrayList<>();
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT category_id FROM categories_relations WHERE plan_id = ?";
+			try (PreparedStatement stmt = con.prepareStatement(sql)) {
+				stmt.setInt(1, planId);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					categoryIds.add(rs.getInt("category_id"));
+				}
+			}
+		}
+		return categoryIds;
+	}
+
 	@Override
 	public void insert(Plan plan) throws Exception {
 		try (Connection con = ds.getConnection()) {
@@ -93,20 +114,39 @@ public class PlanDaoImpl implements PlanDao {
 					+ " (title, schedule, place, "
 					+ " user_id, registered_at) "
 					+ " VALUES (?, ?, ?, ?, CURDATE())";
-			var stmt = con.prepareStatement(sql);
-			// ? の設定
-			stmt.setString(1, plan.getTitle());
-			stmt.setString(2, plan.getSchedule());
-			stmt.setString(3, plan.getPlace());
 
-			User user = plan.getUser();
-			stmt.setObject(4, user.getId(), Types.INTEGER);
-			plan.setRegisteredAt(new Date());
+			// `sql` を使用
+			try (PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+				// ? の設定
+				stmt.setString(1, plan.getTitle());
+				stmt.setString(2, plan.getSchedule());
+				stmt.setString(3, plan.getPlace());
+				User user = plan.getUser();
+				stmt.setObject(4, user.getId(), Types.INTEGER);
+				plan.setRegisteredAt(new Date());
 
-			// SQLを実行
-			stmt.executeUpdate();
-		} catch (Exception e) {
-			throw e;
+				// SQLを実行
+				stmt.executeUpdate();
+
+				// 登録されたプランのIDを取得
+				ResultSet rs = stmt.getGeneratedKeys();
+				if (rs.next()) {
+					plan.setId(rs.getInt(1));
+				}
+			}
+
+			// カテゴリ関連付け
+			if (plan.getCategoryIds() != null && !plan.getCategoryIds().isEmpty()) {
+				String categorySql = "INSERT INTO categories_relations (plan_id, category_id) VALUES (?, ?)";
+				try (PreparedStatement categoryStmt = con.prepareStatement(categorySql)) {
+					for (int categoryId : plan.getCategoryIds()) {
+						categoryStmt.setInt(1, plan.getId());
+						categoryStmt.setInt(2, categoryId);
+						categoryStmt.addBatch();
+					}
+					categoryStmt.executeBatch();
+				}
+			}
 		}
 	}
 
@@ -130,6 +170,7 @@ public class PlanDaoImpl implements PlanDao {
 	}
 
 	@Override
+	// 指定された都道府県に関連するプランを取得する
 	public List<Plan> findByPrefecture(String prefecture) throws Exception {
 		List<Plan> planList = new ArrayList<>();
 		try (Connection con = ds.getConnection()) {
@@ -149,6 +190,7 @@ public class PlanDaoImpl implements PlanDao {
 		return planList;
 	}
 
+	// SQLの結果セット（ResultSet）をPlanオブジェクトに変換する
 	private Plan mapToPlan(ResultSet rs) throws Exception {
 		// ResultSet からデータを取得して Plan オブジェクトにマッピングする
 		Integer id = (Integer) rs.getObject("id");// プランID
@@ -169,7 +211,7 @@ public class PlanDaoImpl implements PlanDao {
 	private String createSelectClauseWithJoin() {
 		return "SELECT "
 				+ " p.id, p.title, p.schedule, "
-				+ " p.place, p.category, p.registered_at, "
+				+ " p.place, p.registered_at, "
 				+ " u.id AS user_id, "
 				+ " u.name "
 				+ " FROM plans AS p "

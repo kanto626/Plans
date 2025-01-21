@@ -28,9 +28,10 @@ body {
 	text-align: center;
 	background-color: #f9f9f9;
 }
+
 img {
-width: 300px;
-height: 200px;
+	width: 300px;
+	height: 200px;
 }
 </style>
 </head>
@@ -44,19 +45,24 @@ height: 200px;
 			<p>以下の内容で登録しました</p>
 			<!-- 基本情報 -->
 			<div class="container">
-				<strong>投稿者 : </strong> ${plan.user.name} <strong>投稿日 :
-					</strong> <fmt:formatDate value="${plan.registeredAt}" pattern="yyyy-MM-dd" />
+				<strong>投稿者 : </strong> ${plan.user.name} <strong>投稿日 : </strong>
+				<fmt:formatDate value="${plan.registeredAt}" pattern="yyyy-MM-dd" />
 			</div>
 			<div class="container">
 				<strong>タイトル : </strong>${plan.title}
 			</div>
 			<div class="container">
 				<strong>場所 : </strong>${plan.place}
-				
+
 			</div>
-				<!-- カテゴリーを表示 -->
+			<!-- カテゴリーを表示 -->
 			<div id="scheduleContainer">
-			
+				<div class="container">
+					<strong>カテゴリ :</strong><br />
+					<c:forEach var="categoryName" items="${categoryNames}">
+						<span>${categoryName}</span>
+					</c:forEach>
+				</div>
 				<h3>- スケジュール -</h3>
 				<!-- スポットとその情報を表示 -->
 				<div class="d-flex flex-column mt-3">

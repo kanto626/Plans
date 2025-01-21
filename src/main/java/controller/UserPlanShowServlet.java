@@ -12,69 +12,84 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.CategoryDao;
 import dao.DaoFactory;
 import dao.PlanDao;
+import domain.Category;
 import domain.Plan;
 
-/**
- * Servlet implementation class UserPlanShowServlet
- */
 @WebServlet("/user/planShow")
 public class UserPlanShowServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		try {
-			// 直前のページURLをセッションに格納
-			String previousPage = request.getHeader("Referer");
-			if (previousPage != null) {
-				request.getSession().setAttribute("previousPage", previousPage);
-			}
-			// ?id=○○を取得
-			int id = Integer.parseInt(request.getParameter("id"));
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // 前のページURLをセッションに格納
+            String previousPage = request.getHeader("Referer");
+            if (previousPage != null) {
+                request.getSession().setAttribute("previousPage", previousPage);
+            }
 
-			// DAOを使い、IDに基づく旅行プランを取得
-			// 旅行プラン情報をリクエストスコープに格納
-			PlanDao dao = DaoFactory.createPlanDao();
-			Plan plan = dao.findById(id);
-			request.setAttribute("plan", plan);
+            // パラメータからIDを取得
+            int id = Integer.parseInt(request.getParameter("id"));
+            System.out.println("Plan ID: " + id); // デバッグログ
 
+            // プランを取得
+            PlanDao planDao = DaoFactory.createPlanDao();
+            Plan plan = planDao.findById(id);
+            if (plan != null) {
+                System.out.println("Plan found: " + plan.getTitle());
+            } else {
+                System.out.println("No plan found for ID: " + id);
+            }
+            request.setAttribute("plan", plan);
 
-			// スケジュールテキストをMapに変換
-			if (plan != null) {
-				String scheduleText = plan.getSchedule(); // スケジュールテキストを取得
-				if (scheduleText != null && !scheduleText.isEmpty()) {
-					String[] scheduleItems = scheduleText.split("\n"); // 各行を改行文字で分割
-					// 各行を Map に変換したものをリストに格納
-					List<Map<String, String>> scheduleList = new ArrayList<>();
-					for (String item : scheduleItems) {
-						Map<String, String> scheduleItem = new HashMap<>();
-						String[] parts = item.split(" \\| "); // 行を項目ごとに分割
-						for (String part : parts) {
-							String[] keyValue = part.split(": "); // 項目を": " を基準にキーと値に分割
-							if (keyValue.length == 2) { // 無効な形式（例：キーや値が欠けている場合）を除外
-								scheduleItem.put(keyValue[0].trim(), keyValue[1].trim());
-							}
-						}
-						// 1行分のデータを scheduleItem に格納し、それを scheduleList に追加
-						scheduleList.add(scheduleItem);
-					}
-					request.setAttribute("scheduleList", scheduleList); // 変換結果をリクエストスコープに格納
-				}
-			}
+            // カテゴリ名リストを取得
+            List<String> categoryNames = new ArrayList<>();
+            if (plan != null && plan.getCategoryIds() != null) {
+                CategoryDao categoryDao = DaoFactory.createCategoryDao();
+                for (Integer categoryId : plan.getCategoryIds()) {
+                    System.out.println("Fetching category for ID: " + categoryId); // デバッグログ
+                    Category category = categoryDao.getCategoryById(categoryId);
+                    if (category != null) {
+                        System.out.println("Category found: " + category.getName());
+                        categoryNames.add(category.getName());
+                    } else {
+                        System.out.println("No category found for ID: " + categoryId);
+                    }
+                }
+            }
+            request.setAttribute("categoryNames", categoryNames);
 
-			// セッションからUserオブジェクトを取得
-			// User user = (User) request.getSession().getAttribute("user");
-			// request.setAttribute("user", user);
-			// フォワード
-			request.getRequestDispatcher("/WEB-INF/view/user/planShow.jsp")
-					.forward(request, response);
-		} catch (Exception e) {
-			throw new ServletException(e);
-		}
-	}
+            // スケジュールを取得しMapに変換
+            if (plan != null) {
+                String scheduleText = plan.getSchedule();
+                if (scheduleText != null && !scheduleText.isEmpty()) {
+                    System.out.println("Processing schedule text...");
+                    String[] scheduleItems = scheduleText.split("\n");
+                    List<Map<String, String>> scheduleList = new ArrayList<>();
+                    for (String item : scheduleItems) {
+                        Map<String, String> scheduleItem = new HashMap<>();
+                        String[] parts = item.split(" \\| ");
+                        for (String part : parts) {
+                            String[] keyValue = part.split(": ");
+                            if (keyValue.length == 2) {
+                                scheduleItem.put(keyValue[0].trim(), keyValue[1].trim());
+                            }
+                        }
+                        scheduleList.add(scheduleItem);
+                    }
+                    request.setAttribute("scheduleList", scheduleList);
+                }
+            }
+
+            // フォワード
+            request.getRequestDispatcher("/WEB-INF/view/user/planShow.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace(); // デバッグログ
+            throw new ServletException(e);
+        }
+    }
 }

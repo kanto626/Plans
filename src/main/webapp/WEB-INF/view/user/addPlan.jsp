@@ -144,6 +144,10 @@ body {
 
 			<div class="container">
 				<!-- カテゴリーの選択 -->
+				<label>カテゴリ:</label><br>
+				<c:forEach var="category" items="${categories}">
+					<input type="checkbox" name="categoryIds" value="${category.id}"> ${category.name}<br>
+				</c:forEach>
 			</div>
 
 			<div>

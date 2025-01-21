@@ -28,9 +28,10 @@ body {
 	text-align: center;
 	background-color: #f9f9f9;
 }
+
 img {
-width: 300px;
-height: 200px;
+	width: 300px;
+	height: 200px;
 }
 </style>
 </head>
@@ -39,8 +40,7 @@ height: 200px;
 		<h1>旅行プラン詳細</h1>
 		<!-- 基本情報 -->
 		<div class="container">
-			<strong>投稿者 : </strong> ${plan.user.name} <strong>投稿日 :
-				</strong>${plan.registeredAt}
+			<strong>投稿者 : </strong> ${plan.user.name} <strong>投稿日 : </strong>${plan.registeredAt}
 		</div>
 		<div class="container">
 			<strong>タイトル : </strong>${plan.title}
@@ -49,72 +49,78 @@ height: 200px;
 			<strong>場所 : </strong>${plan.place}
 		</div>
 		<!-- カテゴリーを表示 -->
-		</div>
-		<div id="scheduleContainer">
-			<h3>- スケジュール -</h3>
-			<!-- スポットとその情報を表示 -->
-			<div class="d-flex flex-column mt-3">
-				<c:forEach var="scheduleItem" items="${scheduleList}">
-					<div class="schedule-item d-flex flex-row align-items-start mb-4">
-						<!-- 左側にスポット名とコメントを表示 -->
-						<div class="d-flex flex-column w-75">
-							<!-- スポット名 -->
-							<c:if test="${not empty scheduleItem['スポット名']}">
-								<p>
-									<strong>スポット名:</strong> ${scheduleItem['スポット名']}
-								</p>
-							</c:if>
-							<!-- コメント -->
-							<c:if test="${not empty scheduleItem['コメント']}">
+		<strong>カテゴリ :</strong><br />
+		<c:forEach var="categoryName" items="${categoryNames}">
+			<span>${categoryName}</span>
+			<br />
+		</c:forEach>
+	</div>
+	<div id="scheduleContainer">
+		<h3>- スケジュール -</h3>
+		<!-- スポットとその情報を表示 -->
+		<div class="d-flex flex-column mt-3">
+			<c:forEach var="scheduleItem" items="${scheduleList}">
+				<div class="schedule-item d-flex flex-row align-items-start mb-4">
+					<!-- 左側にスポット名とコメントを表示 -->
+					<div class="d-flex flex-column w-75">
+						<!-- スポット名 -->
+						<c:if test="${not empty scheduleItem['スポット名']}">
+							<p>
+								<strong>スポット名:</strong> ${scheduleItem['スポット名']}
+							</p>
+						</c:if>
+						<!-- コメント -->
+						<c:if test="${not empty scheduleItem['コメント']}">
                                     ${scheduleItem['コメント']}
                                 </c:if>
-						</div>
-						<!-- 右側に写真と移動手段、所要時間を表示 -->
-						<div class="d-flex flex-column">
-							<!-- 写真 -->
-							<c:if test="${not empty scheduleItem['写真']}">
+					</div>
+					<!-- 右側に写真と移動手段、所要時間を表示 -->
+					<div class="d-flex flex-column">
+						<!-- 写真 -->
+						<c:if test="${not empty scheduleItem['写真']}">
+							<p>
+
+								<img
+									src="${pageContext.request.contextPath}${scheduleItem['写真']}"/ >
+							</p>
+						</c:if>
+					</div>
+				</div>
+				<!-- 次のスポットまでの所要時間(アイコンと所要時間) -->
+				<div class="d-flex justify-content-center">
+
+					<div class="display-5 d-flex flex-column me-0">
+						<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+						<i class="bi bi-caret-down"></i>
+					</div>
+
+					<div>
+						<!-- 所要時間のフォーム -->
+
+						<span>次のスポットまでの所要時間</span>
+						<div class="d-flex align-items-center gap-3 ms-0">
+							<c:if test="${not empty scheduleItem['所要時間']}">
 								<p>
-									
-									<img src="${pageContext.request.contextPath}${scheduleItem['写真']}" / >
+									<strong> <c:if
+											test="${not empty scheduleItem['移動手段']}">
+                                                    ${scheduleItem['移動手段']}
+                                                </c:if>:
+									</strong> ${scheduleItem['所要時間']}
 								</p>
 							</c:if>
 						</div>
 					</div>
-					<!-- 次のスポットまでの所要時間(アイコンと所要時間) -->
-					<div class="d-flex justify-content-center">
-
-						<div class="display-5 d-flex flex-column me-0">
-							<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-							<i class="bi bi-caret-down"></i>
-						</div>
-
-						<div>
-							<!-- 所要時間のフォーム -->
-
-							<span>次のスポットまでの所要時間</span>
-							<div class="d-flex align-items-center gap-3 ms-0">
-								<c:if test="${not empty scheduleItem['所要時間']}">
-									<p>
-										<strong> <c:if
-												test="${not empty scheduleItem['移動手段']}">
-                                                    ${scheduleItem['移動手段']}
-                                                </c:if>:
-										</strong> ${scheduleItem['所要時間']}
-									</p>
-								</c:if>
-							</div>
-						</div>
-					</div>
-				</c:forEach>
-			</div>
-			<!-- 削除ボタン表示の条件 -->
-			<c:if test="${plan.user.id == sessionScope.user.id}">
-				<!-- 削除リンク -->
-				<a href="deletePlan?id=<c:out value="${plan.id}" />">削除</a>
-			</c:if>
+				</div>
+			</c:forEach>
 		</div>
-		<a
-			href="${not empty sessionScope.previousPage ? sessionScope.previousPage : '/defaultPage'}">戻る</a>
+		<!-- 削除ボタン表示の条件 -->
+		<c:if test="${plan.user.id == sessionScope.user.id}">
+			<!-- 削除リンク -->
+			<a href="deletePlan?id=<c:out value="${plan.id}" />">削除</a>
+		</c:if>
+	</div>
+	<a
+		href="${not empty sessionScope.previousPage ? sessionScope.previousPage : '/defaultPage'}">戻る</a>
 	</div>
 	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 

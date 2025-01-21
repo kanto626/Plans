@@ -20,6 +20,11 @@ public class DaoFactory {
 		return new PlanDaoImpl(getDataSource());
 	}
 
+	// CategoryDaoを生成するメソッド
+	public static CategoryDao createCategoryDao() {
+		return new CategoryDaoImpl(getDataSource());
+	}
+
 	// データソースを生成するためのメソッド
 	private static DataSource getDataSource() {
 		InitialContext ctx = null;

@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import dao.CategoryDao;
 import dao.DaoFactory;
 import dao.PlanDao;
+import domain.Category;
 import domain.Plan;
 import domain.User;
 
@@ -26,6 +28,17 @@ public class UserAddPlanServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		try {
+			// カテゴリリストを取得
+			CategoryDao categoryDao = DaoFactory.createCategoryDao();
+			List<Category> categories = categoryDao.getAllCategories();
+			// カテゴリリストをリクエストスコープにセット
+			request.setAttribute("categories", categories);
+		} catch (Exception e) {
+			throw new ServletException("カテゴリ情報の取得中にエラーが発生しました", e);
+		}
+
+		// プラン作成フォームを表示
 		request.getRequestDispatcher("/WEB-INF/view/user/addPlan.jsp")
 				.forward(request, response);
 	}
@@ -53,6 +66,22 @@ public class UserAddPlanServlet extends HttpServlet {
 		}
 		request.setAttribute("place", place); // 再表示用
 
+		// カテゴリIDの取得
+		String[] categoryIdStrings = request.getParameterValues("categoryIds");
+		List<Integer> categoryIds = new ArrayList<>();
+		if (categoryIdStrings != null) {
+			for (String id : categoryIdStrings) {
+				try {
+					categoryIds.add(Integer.parseInt(id));
+				} catch (NumberFormatException e) {
+					request.setAttribute("categoryError", "無効なカテゴリが選択されました");
+					isError = true;
+					break;
+				}
+			}
+		}
+
+		request.setAttribute("categoryIds", categoryIds); // 再表示用
 		String[] schedulePlaces = request.getParameterValues("schedulePlace[]");
 		String[] scheduleComments = request.getParameterValues("scheduleComment[]");
 
@@ -121,7 +150,7 @@ public class UserAddPlanServlet extends HttpServlet {
 		for (int i = 0; i < schedulePlaces.length; i++) {
 			if ((schedulePlaces[i] == null || schedulePlaces[i].isBlank()) &&
 					((scheduleComments != null && !scheduleComments[i].isBlank()) ||
-							!scheduleImages.get(i).isBlank() ||  // 修正: 画像がアップロードされているか確認
+							!scheduleImages.get(i).isBlank() || // 修正: 画像がアップロードされているか確認
 							(scheduleTransports != null && !scheduleTransports[i].isBlank()) ||
 							(hours != null && !hours[i].isBlank()) ||
 							(minutes != null && !minutes[i].isBlank()))) {
@@ -172,8 +201,9 @@ public class UserAddPlanServlet extends HttpServlet {
 		plan.setSchedule(scheduleText);
 		plan.setPlace(place);
 		plan.setUser(user);
+		plan.setCategoryIds(categoryIds); // カテゴリIDリストをセット
 
-		try {
+ 		try {
 			PlanDao planDao = DaoFactory.createPlanDao();
 			planDao.insert(plan);
 			request.getSession().setAttribute("Plan", plan);
