@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,4 +58,43 @@ public class CategoryDaoImpl implements CategoryDao {
 		}
 		return category;
 	}
+
+	@Override
+	public List<Category> getCategoriesByPlanId(Integer id) throws Exception {
+		List<Category> categoryList = new ArrayList<>();
+		try (Connection con = ds.getConnection()) {
+			// SQLを実行準備
+			String sql = createSelectClauseWithJoin()
+					+ " WHERE p.id = ?";
+			var stmt = con.prepareStatement(sql);
+			stmt.setObject(1, id, Types.INTEGER);
+			ResultSet rs = stmt.executeQuery();
+			// ResultSet ⇒ Planリストに変換
+			while (rs.next()) {
+				Category category = new Category();
+				category.setId(rs.getInt("category_id"));
+				category.setName(rs.getString("category_name"));
+				categoryList.add(category);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return categoryList;
+	}
+
+	//JOIN句までのSELECT文を生成
+	private String createSelectClauseWithJoin() {
+		return "SELECT "
+				+ " p.id AS plan_id, "
+				+ " c.id AS category_id, "
+				+ " c.name AS category_name "
+				+ " FROM "
+				+ " plans p "
+				+ " JOIN "
+				+ " categories_relations cr ON p.id = cr.plan_id "
+				+ " JOIN "
+				+ " categories c ON cr.category_id = c.id";
+
+	}
+
 }

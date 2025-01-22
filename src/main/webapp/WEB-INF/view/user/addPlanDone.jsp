@@ -56,7 +56,7 @@ img {
 
 			</div>
 			<!-- カテゴリーを表示 -->
-			<div id="scheduleContainer">
+			<div id="Container">
 				<div class="container">
 					<strong>カテゴリ :</strong><br />
 					<c:forEach var="categoryName" items="${categoryNames}">

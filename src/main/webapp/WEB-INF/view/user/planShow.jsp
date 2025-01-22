@@ -49,9 +49,10 @@ img {
 			<strong>場所 : </strong>${plan.place}
 		</div>
 		<!-- カテゴリーを表示 -->
+		<div id="Container">
 		<strong>カテゴリ :</strong><br />
-		<c:forEach var="categoryName" items="${categoryNames}">
-			<span>${categoryName}</span>
+		<c:forEach var="category" items="${categories}">
+			<span>${category.name}</span>
 			<br />
 		</c:forEach>
 	</div>

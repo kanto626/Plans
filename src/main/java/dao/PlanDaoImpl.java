@@ -90,22 +90,6 @@ public class PlanDaoImpl implements PlanDao {
 		return planList;
 	}
 
-	// プランに関連付けられたカテゴリを取得するメソッド
-	public List<Integer> getCategoriesByPlanId(int planId) throws Exception {
-		List<Integer> categoryIds = new ArrayList<>();
-		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT category_id FROM categories_relations WHERE plan_id = ?";
-			try (PreparedStatement stmt = con.prepareStatement(sql)) {
-				stmt.setInt(1, planId);
-				ResultSet rs = stmt.executeQuery();
-				while (rs.next()) {
-					categoryIds.add(rs.getInt("category_id"));
-				}
-			}
-		}
-		return categoryIds;
-	}
-
 	@Override
 	public void insert(Plan plan) throws Exception {
 		try (Connection con = ds.getConnection()) {

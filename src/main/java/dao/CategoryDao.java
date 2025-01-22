@@ -10,4 +10,6 @@ public interface CategoryDao {
 
 	// カテゴリIDを基にカテゴリを取得するメソッド
 	Category getCategoryById(int categoryId) throws SQLException;
+	
+	 List<Category> getCategoriesByPlanId(Integer id) throws Exception;
 }
