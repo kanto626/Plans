@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +51,23 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User findById(Integer id) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		User user = new User();
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT"
+					+ " users.id, users.login_id, "
+					+ " users.login_pass, users.name "
+					+ " FROM users "
+					+ " WHERE users.id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, id, Types.INTEGER);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next() == true) {
+				user = mapToUser(rs);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return user;
 	}
 
 	@Override
@@ -72,15 +88,21 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void update(User admin) throws Exception {
+	public void update(User user) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
-	public void delete(User admin) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-
+	public void delete(User user) throws Exception {
+		try (Connection con = ds.getConnection()) {
+			String sql = "DELETE FROM users WHERE id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, user.getId(), Types.INTEGER);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
