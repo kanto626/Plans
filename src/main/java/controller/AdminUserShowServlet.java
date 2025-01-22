@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.DaoFactory;
 import dao.PlanDao;
+import dao.UserDao;
 import domain.Plan;
+import domain.User;
 
 /**
  * Servlet implementation class AdminUserShowServlet
@@ -32,11 +34,15 @@ public class AdminUserShowServlet extends HttpServlet {
 			// ユーザーIDを整数に変換
 			int userId = Integer.parseInt(userIdStr);
 
-			// PlanDaoを使って、user_idに基づくプランを取得
+			// Daoを使って、idに基づくユーザーのデータを取得
+			UserDao userDao = DaoFactory.createUserDao();
 			PlanDao plandao = DaoFactory.createPlanDao();
+
+			User user = userDao.findById(userId);
 			List<Plan> plans = plandao.findByUserId(userId); // userIdを渡す
 
-			// ユーザー情報をリクエストスコープに格納
+			// ユーザー情報とプランリストをリクエストスコープに格納
+			request.setAttribute("user", user);
 			request.setAttribute("plans", plans);
 
 			// フォワード
