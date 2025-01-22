@@ -9,22 +9,24 @@
 </head>
 <body>
 	<h1>ユーザー情報</h1>
-	<p>ID: ${plans[0].user.id}</p>
-	<p>ユーザー名: ${plans[0].user.name}</p>
+	<p>管理番号:${user.id}</p>
+	<p>ID: ${user.loginId}</p>
+	<p>ユーザー名: ${user.name}</p>
 
 	<h2>旅行プラン</h2>
 	<!-- 旅行プランの一覧を表示 -->
-	<table border="1" cellspacing="0">
-		<tr>
-			<th>タイトル</th>
-		</tr>
-		<c:forEach items="${plans}" var="p">
-			<tr>
-				<td><a href="<%=request.getContextPath()%>/user/planShow?id=<c:out value="${p.id}" />"> <c:out
-							value="${p.title}" /></a></td>
-			</tr>
-		</c:forEach>
-	</table>
+<h2>登録した旅行プラン</h2>
+            
+                    <ul>
+                        <c:forEach var="plan" items="${plans}">
+                            <li>
+                                <strong><a href="<%=request.getContextPath()%>/user/planShow?id=${plan.id}">${plan.title}</strong><br>
+                                場所: ${plan.place}<br>
+                                登録日: ${plan.registeredAt}
+                            </li>
+                        </c:forEach>
+                    </ul>
+         
 	<a href="<%=request.getContextPath()%>/admin/users">ユーザーリストに戻る</a>
 </body>
 </html>

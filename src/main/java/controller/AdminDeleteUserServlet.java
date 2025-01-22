@@ -28,6 +28,7 @@ public class AdminDeleteUserServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// Get パラメータの取得
 		String strId = request.getParameter("id");
 		Integer id = Integer.parseInt(strId);
 
@@ -48,11 +49,11 @@ public class AdminDeleteUserServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		// Get パラメータの取得
 		String strId = request.getParameter("id");
 		Integer id = Integer.parseInt(strId);
-		
+
 		// 削除メソッドの引数用にUserオブジェクトを作成
 		User user = new User();
 		user.setId(id);
@@ -60,7 +61,7 @@ public class AdminDeleteUserServlet extends HttpServlet {
 			// データの削除
 			UserDao userDao = DaoFactory.createUserDao();
 			userDao.delete(user);
-			
+
 			// 削除完了ページの表示
 			request.getRequestDispatcher("/WEB-INF/view/admin/deleteUserDone.jsp")
 					.forward(request, response);
