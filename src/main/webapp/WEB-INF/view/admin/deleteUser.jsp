@@ -21,7 +21,7 @@
 			</tr>
 			<tr>
 				<th>ID</th>
-				<td><c:out value="${user.login_id}" /></td>
+				<td><c:out value="${user.loginId}" /></td>
 			</tr>
 		</table>
 		<p>

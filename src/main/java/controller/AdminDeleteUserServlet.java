@@ -28,19 +28,27 @@ public class AdminDeleteUserServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// Get パラメータの取得
-		String strId = request.getParameter("id");
-		Integer id = Integer.parseInt(strId);
-
 		try {
+			// Get パラメータの取得
+			String strId = request.getParameter("id");
+			Integer id = Integer.parseInt(strId);
+
 			UserDao userDao = DaoFactory.createUserDao();
 			User user = userDao.findById(id);
+
+			if (user == null) {
+				// ユーザーが見つからない場合のエラーメッセージ
+				request.setAttribute("error", "指定されたIDのユーザーが存在しません。");
+				request.getRequestDispatcher("/WEB-INF/view/admin/error.jsp").forward(request, response);
+				return;
+			}
+
 			// 削除ページの表示
 			request.setAttribute("user", user);
-			request.getRequestDispatcher("/WEB-INF/view/admin/deleteUser.jsp")
-					.forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/view/admin/deleteUser.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new ServletException("削除ページの表示中にエラーが発生しました。", e);
 		}
 	}
 

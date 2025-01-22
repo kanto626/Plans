@@ -39,26 +39,26 @@ public class UserRegisterServlet extends HttpServlet {
 		// バリデーション用のフラグ
 		boolean isError = false;
 
-		// パラメータの取得 + バリデーション
+		// nameのバリデーション
 		String name = request.getParameter("name");
 		request.setAttribute("name", name); // 再表示用
 		if (name.isBlank()) {
 			// エラーメッセージの作成
 			request.setAttribute("nameError", "ユーザー名が未入力です。");
-			isError = true; 
+			isError = true;
 		} else if (name.length() > 15) {
 			request.setAttribute("nameError", "15 字以内で入力してください。");
 			isError = true;
 		}
-		
+
 		// loginIdのバリデーション
 		String loginId = request.getParameter("loginId");
 		request.setAttribute("loginId", loginId); // 再表示用
 		if (loginId == null || loginId.isBlank()) {
 			request.setAttribute("loginIdError", "ログインIDが未入力です。");
 			isError = true;
-		} else if (loginId.length() > 30) {
-			request.setAttribute("loginIdError", "ログインIDは30文字以内で入力してください。");
+		} else if (loginId.length() < 5 || loginId.length() > 30) {
+			request.setAttribute("loginIdError", "ログインIDは5～30文字以内で入力してください。");
 			isError = true;
 		}
 		// loginPassのバリデーション
@@ -80,6 +80,7 @@ public class UserRegisterServlet extends HttpServlet {
 			return;
 		}
 		// 入力に不備がなければ、データの追加
+
 		User user = new User();
 		user.setName(name);
 		user.setLoginId(loginId);
@@ -91,8 +92,17 @@ public class UserRegisterServlet extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/view/user/registerDone.jsp")
 					.forward(request, response);
 		} catch (Exception e) {
-			throw new ServletException(e);
+			// データベースエラーが発生した場合
+			if (e.getMessage().contains("Duplicate entry")) { // 重複エラーを判別
+				request.setAttribute("loginIdError", "すでに使用されているログインIDです。");
+				request.setAttribute("name", user.getName());
+				request.setAttribute("loginId", user.getLoginId());
+
+				// `register.jsp` に戻す
+				request.getRequestDispatcher("/WEB-INF/view/user/register.jsp").forward(request, response);
+			} else {
+				throw new ServletException(e); // 他のエラーはそのままスロー
+			}
 		}
 	}
-
 }

@@ -43,8 +43,8 @@ public class UserLoginServlet extends HttpServlet {
 			// エラーメッセージの作成
 			request.setAttribute("loginIdError", "ログインIDが未入力です。");
 			isError = true;
-		} else if (loginId.length() > 30) {
-			request.setAttribute("loginIdError", "ログインIDは30文字以内で入力してください。");
+		} else if (loginId.length() < 5 || loginId.length() > 30) {
+			request.setAttribute("loginIdError", "ログインIDは5～30文字以内で入力してください。");
 			isError = true;
 		}
 
