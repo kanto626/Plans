@@ -5,7 +5,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>ユーザー情報</title>
+<title>userManage</title>
 </head>
 <body>
 	<h1>ユーザー情報</h1>
