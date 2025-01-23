@@ -124,9 +124,5 @@ img {
 		href="${not empty sessionScope.previousPage ? sessionScope.previousPage : '/defaultPage'}">戻る</a>
 	</div>
 	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
-
-
-
-
 </body>
 </html>

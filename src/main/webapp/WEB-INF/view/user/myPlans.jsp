@@ -14,6 +14,13 @@
 		<h2>${user.name}さんの旅行プランリスト</h2>
 	</c:if>
 
+	<!-- フラッシュメッセージの表示 -->
+	<c:if test="${not empty sessionScope.flashMessage}">
+		<div style="color: green; font-weight: bold;">
+			${sessionScope.flashMessage}</div>
+		<!-- 表示後にセッションから削除 -->
+		<c:set var="flashMessage" scope="session" value="" />
+	</c:if>
 	<!-- 旅行プランの一覧を表示 -->
 	<table border="1" cellspacing="0">
 		<tr>

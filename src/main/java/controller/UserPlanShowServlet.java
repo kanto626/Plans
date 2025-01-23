@@ -38,6 +38,7 @@ public class UserPlanShowServlet extends HttpServlet {
 			// プランを取得
 			PlanDao planDao = DaoFactory.createPlanDao();
 			Plan plan = planDao.findById(id);
+			
 			// プランに関連するカテゴリリストを取得
 			CategoryDao categoryDao = DaoFactory.createCategoryDao();
 			List<Category> categories = categoryDao.getCategoriesByPlanId(id);
