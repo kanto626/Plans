@@ -202,7 +202,7 @@ body {
 													<c:if test="${entry.value == '飛行機'}">selected</c:if>>飛行機</option>
 											</select>
 										</c:when>
-										<c:when test="${entry.key == 'image'}">
+										<c:when test="${entry.key == '写真'}">
 											<!-- 画像の場合は、画像を表示 -->
 											<img src="${pageContext.request.contextPath}${entry.value}" alt="スポット画像"
 												class="img-thumbnail" />
