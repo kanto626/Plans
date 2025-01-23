@@ -82,7 +82,29 @@ public class UserUpdatePlanServlet extends HttpServlet {
 						for (String part : parts) {
 							String[] keyValue = part.split(": ");
 							if (keyValue.length == 2) {
-								scheduleItem.put(keyValue[0].trim(), keyValue[1].trim());
+								String key = keyValue[0].trim();
+								String value = keyValue[1].trim();
+
+								// 「所要時間」を解析して分解
+								if (key.equals("所要時間")) {
+									String hours = "";
+									String minutes = "";
+
+									if (value.contains("時間")) {
+										int hourIndex = value.indexOf("時間");
+										hours = value.substring(0, hourIndex).trim(); // 時間部分を抽出
+									}
+									if (value.contains("分")) {
+										int minIndex = value.indexOf("分");
+										int startIndex = value.contains("時間") ? value.indexOf("時間") + 2 : 0;
+										minutes = value.substring(startIndex, minIndex).trim(); // 分部分を抽出
+									}
+
+									scheduleItem.put("時間", hours);
+									scheduleItem.put("分", minutes);
+								} else {
+									scheduleItem.put(key, value);
+								}
 							}
 						}
 						scheduleList.add(scheduleItem);

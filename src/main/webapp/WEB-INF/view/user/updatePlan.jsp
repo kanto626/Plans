@@ -42,7 +42,6 @@ body {
 					</c:if> <input type="text" name="title" value="<c:out value="${title}" />">
 				</td>
 			</tr>
-			<c:out value="${place}" />
 			<tr>
 				<th>場所</th>
 				<td><select name="place">
@@ -179,7 +178,7 @@ body {
 						<div>
 							<c:forEach var="entry" items="${schedule}">
 								<label> ${entry.key}: <c:choose>
-										<c:when test="${entry.key == 'transport'}">
+										<c:when test="${entry.key == '移動手段'}">
 											<!-- Transportの場合はドロップダウンリスト -->
 											<select name="schedule[${status.index}][${entry.key}]"
 												class="form-select">
@@ -204,67 +203,35 @@ body {
 										</c:when>
 										<c:when test="${entry.key == '写真'}">
 											<!-- 画像の場合は、画像を表示 -->
-											<img src="${pageContext.request.contextPath}${entry.value}" alt="スポット画像"
-												class="img-thumbnail" />
+											<img src="${pageContext.request.contextPath}${entry.value}"
+												alt="スポット画像" class="img-thumbnail" />
 										</c:when>
-										<c:when test="${entry.key == 'hours'}">
+										<c:when test="${entry.key == '時間'}">
 											<!-- 時間の場合はドロップダウンリスト -->
 											<select name="schedule[${status.index}][${entry.key}]"
 												class="form-select">
 												<option value="">0</option>
-												<option value="1"
-													<c:if test="${entry.value == '1'}">selected</c:if>>1</option>
-												<option value="2"
-													<c:if test="${entry.value == '2'}">selected</c:if>>2</option>
-												<option value="3"
-													<c:if test="${entry.value == '3'}">selected</c:if>>3</option>
-												<option value="4"
-													<c:if test="${entry.value == '4'}">selected</c:if>>4</option>
-												<option value="5"
-													<c:if test="${entry.value == '5'}">selected</c:if>>5</option>
-												<option value="6"
-													<c:if test="${entry.value == '6'}">selected</c:if>>6</option>
-												<option value="7"
-													<c:if test="${entry.value == '7'}">selected</c:if>>7</option>
-												<option value="8"
-													<c:if test="${entry.value == '8'}">selected</c:if>>8</option>
-												<option value="9"
-													<c:if test="${entry.value == '9'}">selected</c:if>>9</option>
-												<option value="10"
-													<c:if test="${entry.value == '10'}">selected</c:if>>10</option>
+												<c:forEach begin="1" end="10" var="hour">
+													<option value="${hour}"
+														<c:if test="${entry.value == hour}">selected</c:if>>${hour}</option>
+												</c:forEach>
 											</select>
 										</c:when>
-										<c:when test="${entry.key == 'minutes'}">
+
+										<c:when test="${entry.key == '分'}">
 											<!-- 分の場合はドロップダウンリスト -->
 											<select name="schedule[${status.index}][${entry.key}]"
 												class="form-select">
 												<option value="">0</option>
-												<option value="3"
-													<c:if test="${entry.value == '3'}">selected</c:if>>3</option>
-												<option value="5"
-													<c:if test="${entry.value == '5'}">selected</c:if>>5</option>
-												<option value="10"
-													<c:if test="${entry.value == '10'}">selected</c:if>>10</option>
-												<option value="15"
-													<c:if test="${entry.value == '15'}">selected</c:if>>15</option>
-												<option value="20"
-													<c:if test="${entry.value == '20'}">selected</c:if>>20</option>
-												<option value="25"
-													<c:if test="${entry.value == '25'}">selected</c:if>>25</option>
-												<option value="30"
-													<c:if test="${entry.value == '30'}">selected</c:if>>30</option>
-												<option value="35"
-													<c:if test="${entry.value == '35'}">selected</c:if>>35</option>
-												<option value="40"
-													<c:if test="${entry.value == '40'}">selected</c:if>>40</option>
-												<option value="45"
-													<c:if test="${entry.value == '45'}">selected</c:if>>45</option>
-												<option value="50"
-													<c:if test="${entry.value == '50'}">selected</c:if>>50</option>
-												<option value="55"
-													<c:if test="${entry.value == '55'}">selected</c:if>>55</option>
+												<c:forEach
+													items="${[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]}"
+													var="minute">
+													<option value="${minute}"
+														<c:if test="${entry.value == minute}">selected</c:if>>${minute}</option>
+												</c:forEach>
 											</select>
 										</c:when>
+
 										<c:otherwise>
 											<!-- その他の入力項目はテキストフィールド -->
 											<input type="text"
