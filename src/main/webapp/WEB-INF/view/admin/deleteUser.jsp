@@ -33,7 +33,7 @@
 	<script>
 		$(document).ready(function() {
 			$("form").submit(function() {
-				return confirm("本当に削除しますか？");
+				return confirm("関連する旅行プランも削除されます。本当に削除しますか？");
 			});
 		});
 	</script>

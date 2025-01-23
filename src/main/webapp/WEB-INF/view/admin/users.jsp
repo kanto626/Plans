@@ -13,19 +13,14 @@
 	<h2>ユーザーリスト</h2>
 	<table border="1">
 		<tr>
-			<th>ID</th>
+			<th>管理番号</th>
 			<th>名前</th>
-			<th colspan="2">データの操作</th>
 		</tr>
 		<c:forEach items="${userList}" var="user">
 			<tr>
 				<td><c:out value="${user.id}" /></td>
 				<td><a href="userShow?id=${user.id}"><c:out
 							value="${user.name}" /></a></td>
-				</a>
-				</td>
-				<td><a href="deleteUser?id=<c:out value="${user.id}" />">削除
-</a></td>
 			</tr>
 		</c:forEach>
 	</table>

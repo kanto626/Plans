@@ -12,7 +12,8 @@
 	<p>管理番号:${user.id}</p>
 	<p>ID: ${user.loginId}</p>
 	<p>ユーザー名: ${user.name}</p>
-
+<a href="deleteUser?id=<c:out value="${user.id}" />">削除
+</a>
 	<h2>旅行プラン</h2>
 	<!-- 旅行プランの一覧を表示 -->
 <h2>登録した旅行プラン</h2>
