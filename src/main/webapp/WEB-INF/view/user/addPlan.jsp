@@ -61,7 +61,6 @@ body {
 				</c:if>
 				<select name="place" id="place" class="form-select">
 					<option value="">都道府県を選択</option>
-
 					<!-- 北海道・東北地方 -->
 					<optgroup label="北海道・東北">
 						<option value="北海道" <c:if test="${'北海道' == place}">selected</c:if>>北海道</option>
@@ -126,7 +125,7 @@ body {
 						<option value="高知県" <c:if test="${'高知県' == place}">selected</c:if>>高知県</option>
 					</optgroup>
 
-					<!-- 九州地方 -->
+					<!-- 九州地方・沖縄 -->
 					<optgroup label="九州・沖縄">
 						<option value="福岡県" <c:if test="${'福岡県' == place}">selected</c:if>>福岡県</option>
 						<option value="佐賀県" <c:if test="${'佐賀県' == place}">selected</c:if>>佐賀県</option>

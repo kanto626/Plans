@@ -136,8 +136,21 @@ public class PlanDaoImpl implements PlanDao {
 
 	@Override
 	public void update(Plan plan) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-
+		try (Connection con = ds.getConnection()) {
+			String sql = "UPDATE plans"
+					+ " SET title = ?, schedule = ?, place = ?"
+					+ " WHERE id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, plan.getTitle());
+			stmt.setObject(2, plan.getSchedule());
+			stmt.setString(3, plan.getPlace());
+			stmt.setObject(4, plan.getId(), Types.INTEGER);
+			stmt.executeUpdate();
+			
+			
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override

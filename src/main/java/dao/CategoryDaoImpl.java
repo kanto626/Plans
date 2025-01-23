@@ -97,4 +97,53 @@ public class CategoryDaoImpl implements CategoryDao {
 
 	}
 
+	@Override
+	public void insert(Category category) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	@Override
+	public void update(Category category) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	public void updateCategoriesRelations(int planId, List<Integer> categoryIds) throws Exception {
+		try (Connection con = ds.getConnection()) {
+			con.setAutoCommit(false);
+			try {
+				// カテゴリ関連の削除
+				String deleteSql = "DELETE FROM categories_relations WHERE plan_id = ?";
+				try (PreparedStatement deleteStmt = con.prepareStatement(deleteSql)) {
+					deleteStmt.setInt(1, planId);
+					deleteStmt.executeUpdate();
+				}
+
+				// 新しいカテゴリ関連の挿入
+				if (categoryIds != null && !categoryIds.isEmpty()) {
+					String insertSql = "INSERT INTO categories_relations (plan_id, category_id) VALUES (?, ?)";
+					try (PreparedStatement insertStmt = con.prepareStatement(insertSql)) {
+						for (int categoryId : categoryIds) {
+							insertStmt.setInt(1, planId);
+							insertStmt.setInt(2, categoryId);
+							insertStmt.addBatch();
+						}
+						insertStmt.executeBatch();
+					}
+				}
+				con.commit();
+			} catch (Exception e) {
+				con.rollback();
+				throw e;
+			}
+		}
+	}
+
+	@Override
+	public void delete(Category category) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
 }

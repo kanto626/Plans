@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class Category {
 	 private int id; // カテゴリID
 	    private String name; // カテゴリ名
+	    private boolean isSelected;
 }
