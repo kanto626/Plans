@@ -143,8 +143,12 @@ body {
 				<!-- カテゴリーの選択 -->
 				<label>カテゴリ:</label><br>
 				<c:forEach var="category" items="${categories}">
-					<input type="checkbox" name="categoryIds" value="${category.id}"> ${category.name}<br>
+					<input type="checkbox" name="categoryIds" value="${category.id}"
+						id="category-${category.id}">
+					<label for="category-${category.id}">${category.name}</label>
+					<br>
 				</c:forEach>
+
 			</div>
 
 			<div>
@@ -176,12 +180,13 @@ body {
 					</c:if>
 					<!-- 写真を追加ボタン: 右側に配置 -->
 					<div class="container">
-					<!-- ファイル選択 -->
-					<input type="file" name="scheduleImage[]" class="form-control mb-2"
-						placeholder="写真の追加" onchange="previewImage(event, this)">
-					<!-- プレビュー画像 -->
-					<img id="imagePreview" src="#" alt="プレビュー画像"
-						style="max-width: 300px; display: none; margin-top: 10px;">
+						<!-- ファイル選択 -->
+						<input type="file" name="scheduleImage[]"
+							class="form-control mb-2" placeholder="写真の追加"
+							onchange="previewImage(event, this)">
+						<!-- プレビュー画像 -->
+						<img id="imagePreview" src="#" alt="プレビュー画像"
+							style="max-width: 300px; display: none; margin-top: 10px;">
 					</div>
 				</div>
 
@@ -273,67 +278,67 @@ body {
 						</div>
 
 					</div>
-					<button class="remove-button btn btn-danger ms-3">削除</button>
-			
 
-				<div class="d-flex justify-content-center">
-					<div class="display-5 d-flex flex-column me-0">
-						<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-						<i class="bi bi-caret-down"></i>
-					</div>
 
-					<div>
-						<span>次のスポットまでの所要時間</span>
-						<c:if test="${not empty scheduleTransportsError}">
-							<div class="alert alert-danger">
-								<c:out value="${scheduleTransportsError}" />
+					<div class="d-flex justify-content-center">
+						<div class="display-5 d-flex flex-column me-0">
+							<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+							<i class="bi bi-caret-down"></i>
+						</div>
+
+						<div>
+							<span>次のスポットまでの所要時間</span>
+							<c:if test="${not empty scheduleTransportsError}">
+								<div class="alert alert-danger">
+									<c:out value="${scheduleTransportsError}" />
+								</div>
+							</c:if>
+							<div class="d-flex align-items-center gap-3 ms-0">
+								<select name="scheduleTransport[]" class="form-select">
+									<option value="">設定しない</option>
+									<option value="徒歩">徒歩</option>
+									<option value="車">車</option>
+									<option value="バス">バス</option>
+									<option value="電車">電車</option>
+									<option value="自転車">自転車</option>
+									<option value="フェリー">フェリー</option>
+								</select> <span>:</span> <select name="hours[]" class="form-select">
+									<option value="">設定しない</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+								</select> <span style="white-space: nowrap;">時間</span> <select
+									name="minutes[]" class="form-select">
+									<option value="">設定しない</option>
+									<option value="3">3</option>
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="15">15</option>
+									<option value="20">20</option>
+									<option value="25">25</option>
+									<option value="30">30</option>
+									<option value="35">35</option>
+									<option value="40">40</option>
+									<option value="45">45</option>
+									<option value="50">50</option>
+									<option value="55">55</option>
+								</select> <span>分</span>
 							</div>
-						</c:if>
-						<div class="d-flex align-items-center gap-3 ms-0">
-							<select name="scheduleTransport[]" class="form-select">
-								<option value="">設定しない</option>
-								<option value="徒歩">徒歩</option>
-								<option value="車">車</option>
-								<option value="バス">バス</option>
-								<option value="電車">電車</option>
-								<option value="自転車">自転車</option>
-								<option value="フェリー">フェリー</option>
-							</select> <span>:</span> <select name="hours[]" class="form-select">
-								<option value="">設定しない</option>
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
-								<option value="7">7</option>
-								<option value="8">8</option>
-								<option value="9">9</option>
-								<option value="10">10</option>
-							</select> <span style="white-space: nowrap;">時間</span> <select
-								name="minutes[]" class="form-select">
-								<option value="">設定しない</option>
-								<option value="3">3</option>
-								<option value="5">5</option>
-								<option value="10">10</option>
-								<option value="15">15</option>
-								<option value="20">20</option>
-								<option value="25">25</option>
-								<option value="30">30</option>
-								<option value="35">35</option>
-								<option value="40">40</option>
-								<option value="45">45</option>
-								<option value="50">50</option>
-								<option value="55">55</option>
-							</select> <span>分</span>
 						</div>
 					</div>
+					<button class="remove-button btn btn-danger ms-3">このスポットを削除</button>
 				</div>
-		</div>
-		</template>
+			</template>
 
-		<!-- 項目を追加するボタン -->
-		<button id="addSpotButton">スポットを追加</button>
+			<!-- 項目を追加するボタン -->
+			<button id="addSpotButton">スポットを追加</button>
 		</div>
 		<button type="submit" class="btn btn-primary">登録</button>
 		</div>
