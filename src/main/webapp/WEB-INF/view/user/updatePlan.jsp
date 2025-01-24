@@ -36,9 +36,7 @@ body {
 			<tr>
 				<th>タイトル</th>
 				<td><c:if test="${not empty titleError}">
-						<p>
-							<c:out value="※${titleError}" />
-						</p>
+						<c:out value="※${titleError}" />
 					</c:if> <input type="text" name="title" value="<c:out value="${title}" />">
 				</td>
 			</tr>
@@ -231,6 +229,15 @@ body {
 												</c:forEach>
 											</select>
 										</c:when>
+
+										<c:when test="${entry.key == '写真'}">
+											<!-- 画像の場合は、画像を表示 -->
+											<img src="${pageContext.request.contextPath}${entry.value}"
+												alt="スポット画像" class="img-thumbnail" />
+										</c:when>
+
+
+
 
 										<c:otherwise>
 											<!-- その他の入力項目はテキストフィールド -->

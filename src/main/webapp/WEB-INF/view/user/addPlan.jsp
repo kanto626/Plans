@@ -39,7 +39,7 @@ body {
 		<div class="container">
 
 			<div class="container">
-				<h3 label for="title" class="form-label">タイトル</h3>
+				<label for="title" class="form-label"><h3>タイトル</h3>
 				<c:if test="${not empty titleError}">
 					<div class="alert alert-danger">
 						<c:out value="${titleError}" />
@@ -53,7 +53,7 @@ body {
 
 			<div class="container">
 
-				<label for="place" class="form-label">目的地 : </label>
+				<label for="place" class="form-label">目的地</label>
 				<c:if test="${not empty placeError}">
 					<div class="alert alert-danger">
 						<c:out value="${placeError}" />

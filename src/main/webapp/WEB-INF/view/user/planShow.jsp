@@ -41,7 +41,7 @@ img {
 		<p>
 			<c:if test="${plan.user.id == sessionScope.user.id}">
 				<!-- 更新リンク -->
-				<a href="updatePlan?id=<c:out value="${plan.id}" />">編集</a>
+				<a href="editPlan?id=<c:out value="${plan.id}" />">編集</a>
 			</c:if>
 		</p>
 		<!-- 基本情報 -->
