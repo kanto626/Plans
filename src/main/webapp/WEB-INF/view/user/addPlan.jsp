@@ -39,21 +39,19 @@ body {
 		<div class="container">
 
 			<div class="container">
-				<label for="title" class="form-label"><h3>タイトル</h3>
-				<c:if test="${not empty titleError}">
-					<div class="alert alert-danger">
-						<c:out value="${titleError}" />
-					</div>
-				</c:if>
-				<input type="text" id="title" name="title"
+				<label for="title" class="form-label"><h3>タイトル</h3> <c:if
+						test="${not empty titleError}">
+						<div class="alert alert-danger">
+							<c:out value="${titleError}" />
+						</div>
+					</c:if> <input type="text" id="title" name="title"
 					value="<c:out value="${title}" />" class="form-control"
 					placeholder="タイトルを入力">
-
 			</div>
 
 			<div class="container">
 
-				<label for="place" class="form-label">目的地</label>
+				<label for="place" class="form-label"><h3>目的地</h3></label>
 				<c:if test="${not empty placeError}">
 					<div class="alert alert-danger">
 						<c:out value="${placeError}" />
@@ -177,9 +175,13 @@ body {
 						</div>
 					</c:if>
 					<!-- 写真を追加ボタン: 右側に配置 -->
-					<div class="photo-section ms-3">
-						<input type="file" name="scheduleImage[]"
-							class="form-control mb-2" placeholder="写真の追加">
+					<div class="container">
+					<!-- ファイル選択 -->
+					<input type="file" name="scheduleImage[]" class="form-control mb-2"
+						placeholder="写真の追加" onchange="previewImage(event, this)">
+					<!-- プレビュー画像 -->
+					<img id="imagePreview" src="#" alt="プレビュー画像"
+						style="max-width: 300px; display: none; margin-top: 10px;">
 					</div>
 				</div>
 
@@ -272,7 +274,7 @@ body {
 
 					</div>
 					<button class="remove-button btn btn-danger ms-3">削除</button>
-				</div>
+			
 
 				<div class="d-flex justify-content-center">
 					<div class="display-5 d-flex flex-column me-0">
@@ -341,7 +343,24 @@ body {
 			<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
 		</p>
 	</div>
+	<script>
+		function previewImage(event, input) {
+			// ファイルが選択されているか確認
+			if (input.files && input.files[0]) {
+				const reader = new FileReader();
 
+				// ファイル読み込みが完了したら、画像プレビューを設定
+				reader.onload = function(e) {
+					const preview = document.getElementById('imagePreview');
+					preview.src = e.target.result; // 選択された画像のデータURLを設定
+					preview.style.display = 'block'; // 画像を表示
+				};
+
+				// ファイルを読み込む
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+	</script>
 	<script>
 		// 項目を追加するボタンのクリックイベント
 		document.getElementById('addSpotButton').addEventListener('click',

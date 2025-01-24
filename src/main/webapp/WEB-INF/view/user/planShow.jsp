@@ -49,14 +49,14 @@ img {
 			<strong>投稿者 : </strong> ${plan.user.name} <strong>投稿日 : </strong>${plan.registeredAt}
 		</div>
 		<div class="container">
-			<strong>タイトル : </strong>${plan.title}
+			<h3>タイトル</h3>${plan.title}
 		</div>
 		<div class="container">
-			<strong>場所 : </strong>${plan.place}
+			<h3>目的地</h3>${plan.place}
 		</div>
 		<!-- カテゴリーを表示 -->
 		<div id="Container">
-			<strong>カテゴリ :</strong><br />
+			<h3>カテゴリー</h3>
 			<c:forEach var="category" items="${categories}">
 				<span>${category.name}</span>
 				<br />
@@ -72,13 +72,12 @@ img {
 						<div class="d-flex flex-column w-75">
 							<!-- スポット名 -->
 							<c:if test="${not empty scheduleItem['スポット名']}">
-								<p>
-									<strong>スポット名:</strong> ${scheduleItem['スポット名']}
-								</p>
+								<p>最初のスポット</p>
+								<h4>${scheduleItem['スポット名']}</h4>
 							</c:if>
 							<!-- コメント -->
 							<c:if test="${not empty scheduleItem['コメント']}">
-                                    ${scheduleItem['コメント']}
+                                 ${scheduleItem['コメント']}
                                 </c:if>
 						</div>
 						<!-- 右側に写真と移動手段、所要時間を表示 -->
@@ -88,7 +87,9 @@ img {
 								<p>
 
 									<img
-										src="${pageContext.request.contextPath}${scheduleItem['写真']}"/ >
+										src="${pageContext.request.contextPath}${scheduleItem['写真']}"
+										style="max-width: 300px; display: block; margin-bottom: 10px;">
+
 								</p>
 							</c:if>
 						</div>
