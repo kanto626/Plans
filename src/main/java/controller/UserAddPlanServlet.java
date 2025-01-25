@@ -66,6 +66,8 @@ public class UserAddPlanServlet extends HttpServlet {
 		}
 		request.setAttribute("place", place); // 再表示用
 
+		/*
+		 
 		// カテゴリIDの取得
 		String[] categoryIdStrings = request.getParameterValues("categoryIds");
 		List<Integer> categoryIds = new ArrayList<>();
@@ -80,10 +82,36 @@ public class UserAddPlanServlet extends HttpServlet {
 				}
 			}
 		}
-
+		
 		request.setAttribute("categoryIds", categoryIds); // 再表示用
+		 */
+
+		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
+		if (scheduleTransports == null) {
+			scheduleTransports = new String[0];
+		}
+		String[] hours = request.getParameterValues("hours[]");
+		if (hours == null) {
+			hours = new String[0];
+		}
+
+		String[] minutes = request.getParameterValues("minutes[]");
+		if (minutes == null) {
+			minutes = new String[0];
+		}
+
+		// 同様に schedulePlaces, scheduleTransports, scheduleComments なども
+		// null チェックして空配列に置き換える
+
 		String[] schedulePlaces = request.getParameterValues("schedulePlace[]");
+		if (schedulePlaces == null) {
+			schedulePlaces = new String[0];
+		}
+
 		String[] scheduleComments = request.getParameterValues("scheduleComment[]");
+		if (scheduleComments == null) {
+			scheduleComments = new String[0];
+		}
 
 		// 画像ファイル名を格納するリスト
 		List<String> scheduleImages = new ArrayList<>();
@@ -121,16 +149,12 @@ public class UserAddPlanServlet extends HttpServlet {
 			}
 		}
 
-		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
-		String[] hours = request.getParameterValues("hours[]");
-		String[] minutes = request.getParameterValues("minutes[]");
-
-		request.setAttribute("schedulePlaces", schedulePlaces);
-		request.setAttribute("scheduleComments", scheduleComments);
-		request.setAttribute("scheduleImages", scheduleImages);
 		request.setAttribute("scheduleTransports", scheduleTransports);
 		request.setAttribute("hours", hours);
 		request.setAttribute("minutes", minutes);
+		request.setAttribute("schedulePlaces", schedulePlaces);
+		request.setAttribute("scheduleComments", scheduleComments);
+		request.setAttribute("scheduleImages", scheduleImages);
 
 		// バリデーション: スポット名のチェック
 		if (schedulePlaces == null || schedulePlaces[0].isBlank()) {
@@ -143,20 +167,6 @@ public class UserAddPlanServlet extends HttpServlet {
 					isError = true;
 					break;
 				}
-			}
-		}
-
-		// バリデーション: スポット名が空の場合に他の入力があるかチェック
-		for (int i = 0; i < schedulePlaces.length; i++) {
-			if ((schedulePlaces[i] == null || schedulePlaces[i].isBlank()) &&
-					((scheduleComments != null && !scheduleComments[i].isBlank()) ||
-							!scheduleImages.get(i).isBlank() || // 修正: 画像がアップロードされているか確認
-							(scheduleTransports != null && !scheduleTransports[i].isBlank()) ||
-							(hours != null && !hours[i].isBlank()) ||
-							(minutes != null && !minutes[i].isBlank()))) {
-				request.setAttribute("schedulePlacesError", "スポット名が未入力の場合、他の項目を入力することはできません。");
-				isError = true;
-				break;
 			}
 		}
 
@@ -201,9 +211,9 @@ public class UserAddPlanServlet extends HttpServlet {
 		plan.setSchedule(scheduleText);
 		plan.setPlace(place);
 		plan.setUser(user);
-		plan.setCategoryIds(categoryIds); // カテゴリIDリストをセット
+		//		plan.setCategoryIds(categoryIds); // カテゴリIDリストをセット
 
- 		try {
+		try {
 			PlanDao planDao = DaoFactory.createPlanDao();
 			planDao.insert(plan);
 			request.getSession().setAttribute("Plan", plan);
