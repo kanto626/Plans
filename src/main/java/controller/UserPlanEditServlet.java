@@ -47,7 +47,7 @@ public class UserPlanEditServlet extends HttpServlet {
 
 			// カテゴリ情報を取得
 			CategoryDao categoryDao = DaoFactory.createCategoryDao();
-			List<Category> allCategories = categoryDao.getAllCategories();
+			List<Category> allCategories = categoryDao.findAll();
 			List<Category> categories = categoryDao.getCategoriesByPlanId(id);
 
 			// 選択済みのカテゴリIDをリスト化

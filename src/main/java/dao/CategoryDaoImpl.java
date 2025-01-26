@@ -22,7 +22,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public List<Category> getAllCategories() throws Exception {
+	public List<Category> findAll() throws Exception {
 		List<Category> categories = new ArrayList<>();
 		String sql = "SELECT id, name FROM categories";
 		try (Connection con = ds.getConnection();

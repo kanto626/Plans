@@ -14,10 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import dao.CategoryDao;
 import dao.DaoFactory;
 import dao.PlanDao;
-import domain.Category;
 import domain.Plan;
 import domain.User;
 
@@ -28,15 +26,6 @@ public class UserAddPlanServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			// カテゴリリストを取得
-			CategoryDao categoryDao = DaoFactory.createCategoryDao();
-			List<Category> categories = categoryDao.getAllCategories();
-			// カテゴリリストをリクエストスコープにセット
-			request.setAttribute("categories", categories);
-		} catch (Exception e) {
-			throw new ServletException("カテゴリ情報の取得中にエラーが発生しました", e);
-		}
 
 		// プラン作成フォームを表示
 		request.getRequestDispatcher("/WEB-INF/view/user/addPlan.jsp")
@@ -196,7 +185,8 @@ public class UserAddPlanServlet extends HttpServlet {
 			String image = (i < scheduleImages.size() && scheduleImages.get(i) != null) ? scheduleImages.get(i) : "";
 
 			// 文字列連結
-			scheduleData.append("スポット名: ").append(spot)
+			scheduleData
+					.append("スポット名: ").append(spot)
 					.append(" | コメント: ").append(comment)
 					.append(" | 写真: ").append(image)
 					.append(" | 移動手段: ").append(transport)

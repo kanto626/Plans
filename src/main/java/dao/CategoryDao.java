@@ -8,7 +8,7 @@ import domain.Category;
 public interface CategoryDao {
 	
 	// categories テーブル内のすべてのカテゴリを取得
-	List<Category> getAllCategories() throws Exception;
+	List<Category> findAll() throws Exception;
 
 	void insert(Category category) throws Exception;
 

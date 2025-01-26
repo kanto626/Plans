@@ -69,29 +69,18 @@ body {
 				</select>
 			</div>
 
-			<!-- カテゴリ選択 (必要ならコメントアウト解除) -->
-			<div class="container">
-				<!--
-            <label>カテゴリ:</label><br>
-            <c:forEach var="category" items="${categories}">
-                <input type="checkbox" name="categoryIds" value="${category.id}"
-                       id="category-${category.id}">
-                <label for="category-${category.id}">${category.name}</label>
-                <br>
-            </c:forEach>
-            -->
-			</div>
+
 
 			<!-- スケジュール部分 -->
 			<div>
 				<h3>- スケジュール -</h3>
 			</div>
 			<div id="scheduleContainer">
-						<c:if test="${not empty schedulePlacesError}">
-							<div class="alert alert-danger">
-								<c:out value="${schedulePlacesError}" />
-							</div>
-						</c:if>
+				<c:if test="${not empty schedulePlacesError}">
+					<div class="alert alert-danger">
+						<c:out value="${schedulePlacesError}" />
+					</div>
+				</c:if>
 
 
 
@@ -155,10 +144,10 @@ body {
 										<div class="ms-3">
 											<span>次のスポットまでの所要時間</span>
 											<c:if test="${not empty scheduleTransportsError}">
-							<div class="alert alert-danger">
-								<c:out value="${scheduleTransportsError}" />
-							</div>
-						</c:if>
+												<div class="alert alert-danger">
+													<c:out value="${scheduleTransportsError}" />
+												</div>
+											</c:if>
 											<div class="d-flex align-items-center gap-2 ms-0">
 												<select name="scheduleTransport[]" class="form-select">
 													<option value=""
