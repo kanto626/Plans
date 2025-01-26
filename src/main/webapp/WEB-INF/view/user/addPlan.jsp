@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!doctype html>
 <html lang="ja">
+
 <head>
 <meta charset="UTF-8">
 <title>addPlan</title>
@@ -18,19 +19,19 @@
 <style>
 div {
 	border: 1px solid #000;
-	/* 境界線のスタイル */
 	margin: 1rem;
-	/* すべての方向に余白を追加 */
 	padding: 1rem;
-	/* 境界線の内側に余白を追加 */
 }
-/* addPlan*/
+
 body {
 	text-align: center;
 	background-color: #f9f9f9;
 }
+
+/* 適宜スタイルは調整してください */
 </style>
 </head>
+
 <body>
 	<div>
 		<h1>旅行プラン作成</h1>
@@ -40,19 +41,21 @@ body {
 		<div class="container">
 
 			<div class="container">
-				<label for="title" class="form-label"><h3>タイトル</h3> <c:if
-						test="${not empty titleError}">
-						<div class="alert alert-danger">
-							<c:out value="${titleError}" />
-						</div>
-					</c:if> <input type="text" id="title" name="title"
-					value="<c:out value="${title}" />" class="form-control"
+				<h3 label for="title" class="form-label">タイトル</h3>
+				<c:if test="${not empty titleError}">
+					<div class="alert alert-danger">
+						<c:out value="${titleError}" />
+					</div>
+				</c:if>
+				<input type="text" id="title" name="title"
+					value="<c:out value=" ${title}" />" class="form-control"
 					placeholder="タイトルを入力">
+
 			</div>
 
 			<div class="container">
 
-				<label for="place" class="form-label"><h3>目的地</h3></label>
+				<label for="place" class="form-label">目的地 : </label>
 				<c:if test="${not empty placeError}">
 					<div class="alert alert-danger">
 						<c:out value="${placeError}" />
@@ -60,6 +63,7 @@ body {
 				</c:if>
 				<select name="place" id="place" class="form-select">
 					<option value="">都道府県を選択</option>
+
 					<!-- 北海道・東北地方 -->
 					<optgroup label="北海道・東北">
 						<option value="北海道" <c:if test="${'北海道' == place}">selected</c:if>>北海道</option>
@@ -124,7 +128,7 @@ body {
 						<option value="高知県" <c:if test="${'高知県' == place}">selected</c:if>>高知県</option>
 					</optgroup>
 
-					<!-- 九州地方・沖縄 -->
+					<!-- 九州地方 -->
 					<optgroup label="九州・沖縄">
 						<option value="福岡県" <c:if test="${'福岡県' == place}">selected</c:if>>福岡県</option>
 						<option value="佐賀県" <c:if test="${'佐賀県' == place}">selected</c:if>>佐賀県</option>
@@ -140,271 +144,58 @@ body {
 
 			</div>
 
-			<div class="container">
-				<!-- カテゴリーの選択 -->
-				<%-- <label>カテゴリ:</label><br>
-				<c:forEach var="category" items="${categories}">
-					<input type="checkbox" name="categoryIds" value="${category.id}"
-						id="category-${category.id}">
-					<label for="category-${category.id}">${category.name}</label>
-					<br>
-				</c:forEach> --%>
-
-			</div>
-
-			<!-- スケジュール部分 -->
 			<div>
-				<h3>- スケジュール -</h3>
+				<h3 class="">- スケジュール -</h3>
 			</div>
-
 			<div id="scheduleContainer">
-				<!-- 既に入力済みのデータがある場合は forEach で再表示、無い場合は初期表示用1つだけ表示 -->
-				<c:choose>
+				<!-- スポット入力欄の初期表示 -->
+				<div class="d-flex flex-row align-items-start mt-3">
+					<!-- スポット、コメントエリア、スポット間アイコンを縦に並べる -->
+					<div class="d-flex flex-column w-75">
+						<!-- スポット名入力 -->
+						<input type="text" name="schedulePlace[]"
+							class="form-control mb-2" placeholder="スポット名">
+						<!-- コメントエリア -->
+						<input type="text" name="scheduleComment[]"
+							class="form-control mb-2" placeholder="一言コメント">
+					</div>
 
-					<c:when test="${not empty schedulePlaces}">
-						<c:forEach var="i" begin="0"
-							end="${fn:length(schedulePlaces) - 1}">
-							<div class="schedule-item mb-3"
-								style="border: 1px solid #ccc; padding: 1rem;">
-
-								<div class="d-flex flex-row align-items-start">
-									<div class="d-flex flex-column w-75">
-										<input type="text" name="schedulePlace[]"
-											class="form-control mb-2" placeholder="スポット名"
-											value="${fn:escapeXml(schedulePlaces[i])}" />
-
-										<textarea name="scheduleComment[]" class="form-control mb-2"
-											placeholder="説明やおすすめポイント">${fn:escapeXml(scheduleComments[i])}</textarea>
-									</div>
-
-									
-									
-									<div class="photo-section ms-3">
-										<h5>画像の変更</h5>
-										<input type="file" name="scheduleImage[]"
-											class="form-control mb-2"
-											onchange="previewImage(event, this)" /> <img
-											class="imagePreview" src="#" alt="プレビュー画像"
-											style="max-width: 300px; display: none; margin-top: 10px;">
-										<c:if
-											test="${not empty scheduleImages and fn:length(scheduleImages) gt i}">
-
-											<c:if test="${not empty scheduleImages[i]}">
-
-												<img class="old-uploaded-image"
-													src="${pageContext.request.contextPath}${scheduleImages[i]}"
-													alt="アップロード画像" style="max-width: 300px; margin-top: 10px;" />
-											</c:if>
-										</c:if>
-									</div>
-								</div>
+				
+					<!-- 写真を追加ボタン: 右側に配置 -->
+					<div class="photo-section ms-3">
+						<input type="file" name="scheduleImage[]"
+							class="form-control mb-2" placeholder="写真の追加">
+					</div>
+				</div>
+			
 
 
-								<div
-									class="d-flex justify-content-center align-items-center mt-3">
-									<div class="display-5 d-flex flex-column me-0">
-										<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-										<i class="bi bi-caret-down"></i>
-									</div>
-									<div class="ms-3">
-										<span>次のスポットまでの所要時間</span>
-										<div class="d-flex align-items-center gap-2 ms-0">
-
-											<select name="scheduleTransport[]" class="form-select">
-												<option value=""
-													<c:if test="${empty scheduleTransports[i]}">selected</c:if>>
-													設定しない</option>
-												<option value="徒歩"
-													<c:if test="${scheduleTransports[i] == '徒歩'}">selected</c:if>>
-													徒歩</option>
-												<option value="車"
-													<c:if test="${scheduleTransports[i] == '車'}">selected</c:if>>
-													車</option>
-												<option value="バス"
-													<c:if test="${scheduleTransports[i] == 'バス'}">selected</c:if>>
-													バス</option>
-												<option value="電車"
-													<c:if test="${scheduleTransports[i] == '電車'}">selected</c:if>>
-													電車</option>
-												<option value="自転車"
-													<c:if test="${scheduleTransports[i] == '自転車'}">selected</c:if>>
-													自転車</option>
-												<option value="フェリー"
-													<c:if test="${scheduleTransports[i] == 'フェリー'}">selected</c:if>>
-													フェリー</option>
-											</select> <span>:</span> <select name="hours[]" class="form-select">
-												<option value=""
-													<c:if test="${empty hours[i]}">selected</c:if>>
-													設定しない</option>
-												<option value="1"
-													<c:if test="${hours[i] == '1'}">selected</c:if>>1</option>
-												<option value="2"
-													<c:if test="${hours[i] == '2'}">selected</c:if>>2</option>
-												<option value="3"
-													<c:if test="${hours[i] == '3'}">selected</c:if>>3</option>
-												<option value="4"
-													<c:if test="${hours[i] == '4'}">selected</c:if>>4</option>
-												<option value="5"
-													<c:if test="${hours[i] == '5'}">selected</c:if>>5</option>
-												<option value="6"
-													<c:if test="${hours[i] == '6'}">selected</c:if>>6</option>
-												<option value="7"
-													<c:if test="${hours[i] == '7'}">selected</c:if>>7</option>
-												<option value="8"
-													<c:if test="${hours[i] == '8'}">selected</c:if>>8</option>
-												<option value="9"
-													<c:if test="${hours[i] == '9'}">selected</c:if>>9</option>
-												<option value="10"
-													<c:if test="${hours[i] == '10'}">selected</c:if>>10</option>
-											</select> <span>時間</span> <select name="minutes[]" class="form-select">
-												<option value=""
-													<c:if test="${empty minutes[i]}">selected</c:if>>
-													設定しない</option>
-												<option value="3"
-													<c:if test="${minutes[i] == '3'}">selected</c:if>>3</option>
-												<option value="5"
-													<c:if test="${minutes[i] == '5'}">selected</c:if>>5</option>
-												<option value="10"
-													<c:if test="${minutes[i] == '10'}">selected</c:if>>10</option>
-												<option value="15"
-													<c:if test="${minutes[i] == '15'}">selected</c:if>>15</option>
-												<option value="20"
-													<c:if test="${minutes[i] == '20'}">selected</c:if>>20</option>
-												<option value="25"
-													<c:if test="${minutes[i] == '25'}">selected</c:if>>25</option>
-												<option value="30"
-													<c:if test="${minutes[i] == '30'}">selected</c:if>>30</option>
-												<option value="35"
-													<c:if test="${minutes[i] == '35'}">selected</c:if>>35</option>
-												<option value="40"
-													<c:if test="${minutes[i] == '40'}">selected</c:if>>40</option>
-												<option value="45"
-													<c:if test="${minutes[i] == '45'}">selected</c:if>>45</option>
-												<option value="50"
-													<c:if test="${minutes[i] == '50'}">selected</c:if>>50</option>
-												<option value="55"
-													<c:if test="${minutes[i] == '55'}">selected</c:if>>55</option>
-											</select> <span>分</span>
-										</div>
-									</div>
-								</div>
-
-
-
-								<button class="remove-button btn btn-danger mt-2" type="button"
-									onclick="removeScheduleItem(this)">このスポットを削除</button>
-							</div>
-						</c:forEach>
-					</c:when>
-
-
-					<c:otherwise>
-						<div class="schedule-item mb-3"
-							style="border: 1px solid #ccc; padding: 1rem;">
-							<div class="d-flex flex-row align-items-start">
-								<div class="d-flex flex-column w-75">
-									<input type="text" name="schedulePlace[]"
-										class="form-control mb-2" placeholder="スポット名" />
-									<textarea name="scheduleComment[]" class="form-control mb-2"
-										placeholder="説明やおすすめポイント"></textarea>
-								</div>
-
-								<div class="photo-section ms-3">
-									<input type="file" name="scheduleImage[]"
-										class="form-control mb-2" onchange="previewImage(event, this)" />
-									<img class="imagePreview" src="#" alt="プレビュー画像"
-										style="max-width: 300px; display: none; margin-top: 10px;">
-								</div>
-							</div>
-
-							<div
-								class="d-flex justify-content-center align-items-center mt-3">
-								<div class="display-5 d-flex flex-column me-0">
-									<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-									<i class="bi bi-caret-down"></i>
-								</div>
-								<div class="ms-3">
-									<span>次のスポットまでの所要時間</span>
-									<div class="d-flex align-items-center gap-2 ms-0">
-										<select name="scheduleTransport[]" class="form-select">
-											<option value="">設定しない</option>
-											<option value="徒歩">徒歩</option>
-											<option value="車">車</option>
-											<option value="バス">バス</option>
-											<option value="電車">電車</option>
-											<option value="自転車">自転車</option>
-											<option value="フェリー">フェリー</option>
-										</select> <span>:</span> <select name="hours[]" class="form-select">
-											<option value="">設定しない</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-											<option value="8">8</option>
-											<option value="9">9</option>
-											<option value="10">10</option>
-										</select> <span>時間</span> <select name="minutes[]" class="form-select">
-											<option value="">設定しない</option>
-											<option value="3">3</option>
-											<option value="5">5</option>
-											<option value="10">10</option>
-											<option value="15">15</option>
-											<option value="20">20</option>
-											<option value="25">25</option>
-											<option value="30">30</option>
-											<option value="35">35</option>
-											<option value="40">40</option>
-											<option value="45">45</option>
-											<option value="50">50</option>
-											<option value="55">55</option>
-										</select> <span>分</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</c:otherwise>
-				</c:choose>
 			</div>
 
-			<!-- テンプレート: 「スポットを追加」ボタンで複製する -->
+			<!-- ▼ テンプレート: 「スポットを追加」ボタンで複製するときの構造 (所要時間 → スポット名/画像 → 削除ボタン) -->
 			<template id="scheduleTemplate">
 				<div class="schedule-item mb-3"
 					style="border: 1px solid #ccc; padding: 1rem;">
-					<div class="d-flex flex-row align-items-start">
-						<div class="d-flex flex-column w-75">
-							<input type="text" name="schedulePlace[]"
-								class="form-control mb-2" placeholder="スポット名" />
-							<textarea name="scheduleComment[]" class="form-control mb-2"
-								placeholder="説明やおすすめポイント"></textarea>
-						</div>
 
-						<div class="photo-section ms-3">
-							<input type="file" name="scheduleImage[]"
-								class="form-control mb-2" onchange="previewImage(event, this)" />
-							<img class="imagePreview" src="#" alt="プレビュー画像"
-								style="max-width: 300px; display: none; margin-top: 10px;">
-						</div>
-					</div>
-
+					<!-- 移動手段 + 所要時間 -->
 					<div class="d-flex justify-content-center align-items-center mt-3">
 						<div class="display-5 d-flex flex-column me-0">
 							<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
 							<i class="bi bi-caret-down"></i>
 						</div>
-						<div class="ms-3">
+						<div>
 							<span>次のスポットまでの所要時間</span>
-							<div class="d-flex align-items-center gap-2 ms-0">
+							<div class="d-flex align-items-center gap-3 ms-0">
 								<select name="scheduleTransport[]" class="form-select">
 									<option value="">設定しない</option>
 									<option value="徒歩">徒歩</option>
+									<option value="自転車">自転車</option>
 									<option value="車">車</option>
 									<option value="バス">バス</option>
 									<option value="電車">電車</option>
-									<option value="自転車">自転車</option>
+									<option value="新幹線">新幹線</option>
 									<option value="フェリー">フェリー</option>
+									<option value="飛行機">飛行機</option>
 								</select> <span>:</span> <select name="hours[]" class="form-select">
 									<option value="">設定しない</option>
 									<option value="1">1</option>
@@ -436,75 +227,52 @@ body {
 						</div>
 					</div>
 
-					<button class="remove-button btn btn-danger mt-2" type="button">
-						このスポットを削除</button>
+					<!-- スポット名/コメント/画像 -->
+					<div class="d-flex flex-row align-items-start mt-3">
+						<div class="d-flex flex-column w-75">
+							<input type="text" name="schedulePlace[]"
+								class="form-control mb-2" placeholder="スポット名" />
+							<textarea name="scheduleComment[]" class="form-control mb-2"
+								placeholder="説明やおすすめポイント"></textarea>
+						</div>
+						<div class="photo-section ms-3">
+							<input type="file" name="scheduleImage[]"
+								class="form-control mb-2" placeholder="写真の追加">
+						</div>
+					</div>
 				</div>
 			</template>
 
-			<!-- スポット追加ボタン -->
-			<button id="addSpotButton" type="button" class="btn btn-success">
-				スポットを追加</button>
-			<br /> <br />
-
-			<!-- 登録ボタン -->
-			<button type="submit" class="btn btn-primary">登録</button>
+			<!-- 項目を追加するボタン -->
+			<button id="addSpotButton" type="button" class="btn btn-primary">スポットを追加</button>
+		</div>
+		<button type="submit" class="btn btn-primary">登録</button>
+		</div>
 	</form>
-
 	<div>
 		<p>
-			<a href="<%=request.getContextPath()%>/user/top">トップに戻る</a>
+			<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
 		</p>
 	</div>
 
-	<!-- プレビュー表示用JS -->
 	<script>
-		function previewImage(event, input) {
-			const container = input.closest('.photo-section');
-
-			// もし古いアップロード画像の <img> があれば削除する
-			const oldImage = container.querySelector('.old-uploaded-image');
-			if (oldImage) {
-				oldImage.remove();
-			}
-
-			// 新しく選んだファイルをプレビュー表示
-			if (input.files && input.files[0]) {
-				const reader = new FileReader();
-				reader.onload = function(e) {
-					const preview = container.querySelector('.imagePreview');
-					preview.src = e.target.result;
-					preview.style.display = 'block';
-				};
-				reader.readAsDataURL(input.files[0]);
-			}
-		}
-	</script>
-
-	<!-- 追加・削除ボタン用JS -->
-	<script>
+		// 「スポットを追加」ボタン → テンプレートを複製
 		document.getElementById('addSpotButton').addEventListener(
 				'click',
 				function() {
-					const container = document
-							.getElementById('scheduleContainer');
+					// テンプレートを取得
 					const template = document
 							.getElementById('scheduleTemplate').content
 							.cloneNode(true);
 
-					// 削除ボタンのイベント設定
-					template.querySelector('.remove-button').addEventListener(
-							'click', function() {
-								this.closest('.schedule-item').remove();
-							});
-
+					// コンテナに追加
+					const container = document
+							.getElementById('scheduleContainer');
 					container.appendChild(template);
 				});
-
-		function removeScheduleItem(button) {
-			button.closest('.schedule-item').remove();
-		}
 	</script>
 
 	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

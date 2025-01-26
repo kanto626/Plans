@@ -12,9 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.CategoryDao;
-import dao.DaoFactory;
-import domain.Category;
 import domain.Plan;
 
 /**
@@ -29,22 +26,10 @@ public class UserAddPlanDoneServlet extends HttpServlet {
     	try {
             // セッションからPlanオブジェクトを取得
             Plan plan = (Plan) request.getSession().getAttribute("Plan");
-
-            // カテゴリ名リストを取得
-            List<String> categoryNames = new ArrayList<>();
-            if (plan != null && plan.getCategoryIds() != null) {
-                CategoryDao categoryDao = DaoFactory.createCategoryDao();
-                for (Integer categoryId : plan.getCategoryIds()) {
-                    Category category = categoryDao.getCategoryById(categoryId);
-                    if (category != null) {
-                        categoryNames.add(category.getName());
-                    }
-                }
-            }
-
             
             // スケジュールテキストをMapに変換
             List<Map<String, String>> scheduleList = new ArrayList<>();
+            
             if (plan != null && plan.getSchedule() != null) {
                 String[] scheduleItems = plan.getSchedule().split("\n");
                 for (String item : scheduleItems) {
@@ -63,7 +48,7 @@ public class UserAddPlanDoneServlet extends HttpServlet {
             // JSPにデータを渡す
             request.setAttribute("plan", plan);
             request.setAttribute("scheduleList", scheduleList);
-            request.setAttribute("categoryNames", categoryNames);
+         
             // JSPにフォワード
             request.getRequestDispatcher("/WEB-INF/view/user/addPlanDone.jsp").forward(request, response);
 

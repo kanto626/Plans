@@ -12,10 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.CategoryDao;
 import dao.DaoFactory;
 import dao.PlanDao;
-import domain.Category;
 import domain.Plan;
 
 @WebServlet("/user/planShow")
@@ -38,14 +36,9 @@ public class UserPlanShowServlet extends HttpServlet {
 			// プランを取得
 			PlanDao planDao = DaoFactory.createPlanDao();
 			Plan plan = planDao.findById(id);
-			
-			// プランに関連するカテゴリリストを取得
-			CategoryDao categoryDao = DaoFactory.createCategoryDao();
-			List<Category> categories = categoryDao.getCategoriesByPlanId(id);
 
 			//リクエストスコープに格納
 			request.setAttribute("plan", plan);
-			request.setAttribute("categories", categories);
 
 			// スケジュールを取得しMapに変換
 			if (plan != null) {

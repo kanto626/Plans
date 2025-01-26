@@ -13,10 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.CategoryDao;
 import dao.DaoFactory;
 import dao.PlanDao;
-import domain.Category;
 import domain.Plan;
 
 /**
@@ -40,13 +38,10 @@ public class UserDeletePlanServlet extends HttpServlet {
 			PlanDao planDao = DaoFactory.createPlanDao();
 			Plan plan = planDao.findById(id);
 
-			// プランに関連するカテゴリリストを取得
-			CategoryDao categoryDao = DaoFactory.createCategoryDao();
-			List<Category> categories = categoryDao.getCategoriesByPlanId(id);
-
+		
 			//リクエストスコープに格納
 			request.setAttribute("plan", plan);
-			request.setAttribute("categories", categories);
+
 
 			// スケジュールを取得しMapに変換
 			if (plan != null) {

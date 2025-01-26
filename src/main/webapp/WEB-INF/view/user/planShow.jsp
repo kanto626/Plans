@@ -54,14 +54,6 @@ img {
 		<div class="container">
 			<h3>目的地</h3>${plan.place}
 		</div>
-		<!-- カテゴリーを表示 -->
-		<div id="Container">
-			<h3>カテゴリー</h3>
-			<c:forEach var="category" items="${categories}">
-				<span>${category.name}</span>
-				<br />
-			</c:forEach>
-		</div>
 		<div id="scheduleContainer">
 			<h3>- スケジュール -</h3>
 			<!-- スポットとその情報を表示 -->
@@ -72,7 +64,6 @@ img {
 						<div class="d-flex flex-column w-75">
 							<!-- スポット名 -->
 							<c:if test="${not empty scheduleItem['スポット名']}">
-								<p>最初のスポット</p>
 								<h4>${scheduleItem['スポット名']}</h4>
 							</c:if>
 							<!-- コメント -->

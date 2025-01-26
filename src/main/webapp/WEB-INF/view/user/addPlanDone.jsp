@@ -55,71 +55,57 @@ img {
 				<strong>場所 : </strong>${plan.place}
 
 			</div>
-			<!-- カテゴリーを表示 -->
-			<div id="Container">
-				<div class="container">
-					<strong>カテゴリ :</strong><br />
-					<c:forEach var="categoryName" items="${categoryNames}">
-						<span>${categoryName}</span>
-					</c:forEach>
-				</div>
-				<h3>- スケジュール -</h3>
-				<!-- スポットとその情報を表示 -->
-				<div class="d-flex flex-column mt-3">
-					<c:forEach var="scheduleItem" items="${scheduleList}">
-						<div class="schedule-item d-flex flex-row align-items-start mb-4">
-							<!-- 左側にスポット名とコメントを表示 -->
+			<!-- スケジュール表示 -->
+			<!-- スケジュール表示 -->
+			<div id="scheduleContainer">
+				<c:forEach var="schedule" items="${scheduleList}">
+					<div class="schedule-item mb-3"
+						style="border: 1px solid #ccc; padding: 1rem;">
+
+						<!-- スポット名/コメント/画像 -->
+						<div class="d-flex flex-row align-items-start mt-3">
 							<div class="d-flex flex-column w-75">
-								<!-- スポット名 -->
-								<c:if test="${not empty scheduleItem['スポット名']}">
-									<p>
-										<strong>スポット名:</strong> ${scheduleItem['スポット名']}
-									</p>
-								</c:if>
-								<!-- コメント -->
-								<c:if test="${not empty scheduleItem['コメント']}">
-                                    ${scheduleItem['コメント']}
-                                </c:if>
+								<label class="form-label">スポット名</label>
+								<p class="form-control">${schedule['スポット名']}</p>
+
+								<label class="form-label">コメント</label>
+								<p class="form-control">${schedule['コメント']}</p>
 							</div>
-							<!-- 右側に写真と移動手段、所要時間を表示 -->
-							<div class="d-flex flex-column">
-								<!-- 写真 -->
-								<c:if test="${not empty scheduleItem['写真']}">
-									<p>
-										<img
-											src="${pageContext.request.contextPath}${scheduleItem['写真']}"/ >
-									</p>
+							<div class="photo-section ms-3">
+								<label class="form-label">写真</label>
+								<c:if test="${not empty schedule['写真']}">
+									<img src="${schedule['写真']}" alt="スポット画像"
+										style="max-width: 300px;">
+								</c:if>
+								<c:if test="${empty schedule['写真']}">
+									<p>画像はありません。</p>
 								</c:if>
 							</div>
 						</div>
-						<!-- 次のスポットまでの所要時間(アイコンと所要時間) -->
-						<div class="d-flex justify-content-center">
-
-							<div class="display-5 d-flex flex-column me-0">
-								<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-								<i class="bi bi-caret-down"></i>
-							</div>
-
-							<div>
-								<!-- 所要時間のフォーム -->
-
-								<span>次のスポットまでの所要時間</span>
-								<div class="d-flex align-items-center gap-3 ms-0">
-									<c:if test="${not empty scheduleItem['所要時間']}">
-										<p>
-											<strong> <c:if
-													test="${not empty scheduleItem['移動手段']}">
-                                                    ${scheduleItem['移動手段']}
-                                                </c:if>:約
-											</strong> ${scheduleItem['所要時間']}
-										</p>
-									</c:if>
+						
+						<!-- 移動手段 + 所要時間 -->
+						<c:if
+							test="${not empty schedule['移動手段'] or not empty schedule['所要時間']}">
+							<div
+								class="d-flex justify-content-center align-items-center mt-3">
+								<div class="display-5 d-flex flex-column me-0">
+									<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+									<i class="bi bi-caret-down"></i>
+								</div>
+								<div>
+									<span>次のスポットまでの所要時間</span>
+									<div class="d-flex align-items-center gap-3 ms-0">
+										<p class="form-control mb-0">移動手段: ${schedule['移動手段']}</p>
+										<p class="form-control mb-0">所要時間: ${schedule['所要時間']}</p>
+									</div>
 								</div>
 							</div>
-						</div>
-					</c:forEach>
-				</div>
+						</c:if>
+
+					</div>
+				</c:forEach>
 			</div>
+
 			<a href="<%=request.getContextPath()%>/user/addPlan">別の旅行プランを投稿</a> <a
 				href="<%=request.getContextPath()%>/user/myPlans">マイプランリスト</a>
 		</div>

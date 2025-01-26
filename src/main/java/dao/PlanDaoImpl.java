@@ -119,18 +119,18 @@ public class PlanDaoImpl implements PlanDao {
 				}
 			}
 
-			// カテゴリ関連付け
-			if (plan.getCategoryIds() != null && !plan.getCategoryIds().isEmpty()) {
-				String categorySql = "INSERT INTO categories_relations (plan_id, category_id) VALUES (?, ?)";
-				try (PreparedStatement categoryStmt = con.prepareStatement(categorySql)) {
-					for (int categoryId : plan.getCategoryIds()) {
-						categoryStmt.setInt(1, plan.getId());
-						categoryStmt.setInt(2, categoryId);
-						categoryStmt.addBatch();
-					}
-					categoryStmt.executeBatch();
-				}
-			}
+//			// カテゴリ関連付け
+//			if (plan.getCategoryIds() != null && !plan.getCategoryIds().isEmpty()) {
+//				String categorySql = "INSERT INTO categories_relations (plan_id, category_id) VALUES (?, ?)";
+//				try (PreparedStatement categoryStmt = con.prepareStatement(categorySql)) {
+//					for (int categoryId : plan.getCategoryIds()) {
+//						categoryStmt.setInt(1, plan.getId());
+//						categoryStmt.setInt(2, categoryId);
+//						categoryStmt.addBatch();
+//					}
+//					categoryStmt.executeBatch();
+//				}
+//			}
 		}
 	}
 
@@ -142,7 +142,7 @@ public class PlanDaoImpl implements PlanDao {
 					+ " WHERE id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, plan.getTitle());
-			stmt.setObject(2, plan.getSchedule());
+			stmt.setString(2, plan.getSchedule());
 			stmt.setString(3, plan.getPlace());
 			stmt.setObject(4, plan.getId(), Types.INTEGER);
 			stmt.executeUpdate();

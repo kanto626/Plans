@@ -14,10 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import dao.CategoryDao;
 import dao.DaoFactory;
 import dao.PlanDao;
-import domain.Category;
 import domain.Plan;
 import domain.User;
 
@@ -28,15 +26,6 @@ public class UserAddPlanServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			// カテゴリリストを取得
-			CategoryDao categoryDao = DaoFactory.createCategoryDao();
-			List<Category> categories = categoryDao.getAllCategories();
-			// カテゴリリストをリクエストスコープにセット
-			request.setAttribute("categories", categories);
-		} catch (Exception e) {
-			throw new ServletException("カテゴリ情報の取得中にエラーが発生しました", e);
-		}
 
 		// プラン作成フォームを表示
 		request.getRequestDispatcher("/WEB-INF/view/user/addPlan.jsp")
@@ -45,181 +34,160 @@ public class UserAddPlanServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		request.setCharacterEncoding("UTF-8");
+		// バリデーション用のフラグ
 		boolean isError = false;
 
-		// パラメータの取得とバリデーション
+		// 入力値の取得
 		String title = request.getParameter("title");
-		request.setAttribute("title", title); // 再表示用
-		if (title == null || title.isBlank()) {
-			request.setAttribute("titleError", "タイトルを入力してください");
-			isError = true;
-		} else if (title.length() > 50) {
-			request.setAttribute("titleError", "全角で50字以内、または半角100字以内で入力してください。");
-			isError = true;
-		}
-
 		String place = request.getParameter("place");
-		if (place.isBlank()) {
-			request.setAttribute("placeError", "目的地を選択してください");
+		String[] schedulePlaces = request.getParameterValues("schedulePlace[]");
+		String[] scheduleComments = request.getParameterValues("scheduleComment[]");
+		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
+		String[] hours = request.getParameterValues("hours[]");
+		String[] minutes = request.getParameterValues("minutes[]");
+
+		// null チェック: null の場合は空の配列を代入
+		if (schedulePlaces == null)
+			schedulePlaces = new String[0];
+		if (scheduleComments == null)
+			scheduleComments = new String[0];
+		if (scheduleTransports == null)
+			scheduleTransports = new String[0];
+		if (hours == null)
+			hours = new String[0];
+		if (minutes == null)
+			minutes = new String[0];
+
+		// 再表示用データの設定
+//		request.setAttribute("title", title);
+//		request.setAttribute("place", place);
+//		request.setAttribute("schedulePlaces", schedulePlaces);
+//		request.setAttribute("scheduleComments", scheduleComments);
+//		request.setAttribute("scheduleTransports", scheduleTransports);
+//		request.setAttribute("hours", hours);
+//		request.setAttribute("minutes", minutes);
+
+		// タイトルと目的地のバリデーション
+		if (title == null || title.trim().isEmpty()) {
+			request.setAttribute("titleError", "タイトルを入力してください。");
 			isError = true;
 		}
-		request.setAttribute("place", place); // 再表示用
-
-		/*
-		 
-		// カテゴリIDの取得
-		String[] categoryIdStrings = request.getParameterValues("categoryIds");
-		List<Integer> categoryIds = new ArrayList<>();
-		if (categoryIdStrings != null) {
-			for (String id : categoryIdStrings) {
-				try {
-					categoryIds.add(Integer.parseInt(id));
-				} catch (NumberFormatException e) {
-					request.setAttribute("categoryError", "無効なカテゴリが選択されました");
-					isError = true;
-					break;
-				}
-			}
-		}
-		
-		request.setAttribute("categoryIds", categoryIds); // 再表示用
-		 */
-
-		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
-		if (scheduleTransports == null) {
-			scheduleTransports = new String[0];
-		}
-		String[] hours = request.getParameterValues("hours[]");
-		if (hours == null) {
-			hours = new String[0];
+		if (place == null || place.trim().isEmpty()) {
+			request.setAttribute("placeError", "目的地を選択してください。");
+			isError = true;
 		}
 
-		String[] minutes = request.getParameterValues("minutes[]");
-		if (minutes == null) {
-			minutes = new String[0];
-		}
-
-		// 同様に schedulePlaces, scheduleTransports, scheduleComments なども
-		// null チェックして空配列に置き換える
-
-		String[] schedulePlaces = request.getParameterValues("schedulePlace[]");
-		if (schedulePlaces == null) {
-			schedulePlaces = new String[0];
-		}
-
-		String[] scheduleComments = request.getParameterValues("scheduleComment[]");
-		if (scheduleComments == null) {
-			scheduleComments = new String[0];
-		}
-
-		// 画像ファイル名を格納するリスト
+		// スケジュールの画像アップロード処理
 		List<String> scheduleImages = new ArrayList<>();
-
-		// パート情報を取得
-		Collection<Part> parts = request.getParts();
-
-		for (Part part : parts) {
-			// フォームの name 属性が "scheduleImage[]" であるか確認
-			if (part.getName().equals("scheduleImage[]")) {
-				String type = part.getContentType();
-				// ファイル名が空でない場合に処理を続行
-				if (part.getSize() > 0 && type != null) {
-					// 画像ファイルか否かのチェック
-					if (type.startsWith("image/")) {
-						// ファイル名を生成
+		try {
+			Collection<Part> parts = request.getParts();
+			for (Part part : parts) {
+				if ("scheduleImage[]".equals(part.getName())) {
+					String type = part.getContentType();
+					if (type != null && type.startsWith("image/")) {
 						String fileName = System.currentTimeMillis() + "-" + part.getSubmittedFileName();
-
-						// 画像アップロード
-						ServletContext ctx = request.getServletContext(); // ServletContextを取得
-						String path = ctx.getRealPath("/photo"); // 保存先のフォルダパスを取得
-						part.write(path + "/" + fileName); // ファイルを保存
-
-						// 画像の相対パスをリストに追加
+						ServletContext ctx = request.getServletContext();
+						String path = ctx.getRealPath("/photo");
+						part.write(path + "/" + fileName);
 						scheduleImages.add("/photo/" + fileName);
 					} else {
-						// 画像以外のファイルが選択された場合、エラーメッセージを設定
-						request.setAttribute("scheduleImagesError", "画像形式のファイルを選択してください");
-						isError = true;
-						scheduleImages.add(""); // プレースホルダーとして空文字を追加
+						scheduleImages.add(""); // 画像がない場合のプレースホルダー
 					}
-				} else {
-					scheduleImages.add(""); // 画像がアップロードされなかった場合のプレースホルダー
 				}
 			}
-		}
-
-		request.setAttribute("scheduleTransports", scheduleTransports);
-		request.setAttribute("hours", hours);
-		request.setAttribute("minutes", minutes);
-		request.setAttribute("schedulePlaces", schedulePlaces);
-		request.setAttribute("scheduleComments", scheduleComments);
-		request.setAttribute("scheduleImages", scheduleImages);
-
-		// バリデーション: スポット名のチェック
-		if (schedulePlaces == null || schedulePlaces[0].isBlank()) {
-			request.setAttribute("schedulePlacesError", "スポット名を入力してください。");
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("scheduleImagesError", "画像のアップロードに失敗しました。");
 			isError = true;
-		} else {
-			for (int i = 1; i < schedulePlaces.length; i++) {
-				if (!schedulePlaces[i].isBlank() && schedulePlaces[i].length() > 30) {
-					request.setAttribute("schedulePlaceError", "スポット名は30文字以内で入力してください。");
-					isError = true;
-					break;
-				}
-			}
 		}
 
-		// バリデーション: 移動手段が必須
-		for (int i = 0; i < hours.length; i++) {
-			if ((!hours[i].isEmpty() || !minutes[i].isEmpty()) && (scheduleTransports[i].isEmpty())) {
-				request.setAttribute("scheduleTransportsError", "所要時間が設定されている場合、移動手段も必須です。");
-				isError = true;
-			}
-		}
+//		// プレースホルダーを schedulePlaces.length に合わせる
+//		while (scheduleImages.size() < schedulePlaces.length) {
+//			scheduleImages.add("");
+//		}
 
+		// スケジュール項目のバリデーション
+//		for (int i = 0; i < schedulePlaces.length; i++) {
+//			String placeName = schedulePlaces[i];
+//			String transport = (i < scheduleTransports.length) ? scheduleTransports[i] : "";
+//			String hour = (i < hours.length) ? hours[i] : "";
+//			String minute = (i < minutes.length) ? minutes[i] : "";
+//
+//			// スポット名のバリデーション
+//			if (placeName == null || placeName.trim().isEmpty()) {
+//				request.setAttribute("schedulePlacesError", "すべてのスポット名を入力してください。");
+//				isError = true;
+//				break;
+//			}
+//
+//			// 移動手段と所要時間のバリデーション
+//			if ((!hour.isEmpty() || !minute.isEmpty()) && transport.isEmpty()) {
+//				request.setAttribute("scheduleTransportsError", "所要時間が設定されている場合、移動手段も必須です。");
+//				isError = true;
+//				break;
+//			}
+//			if (!transport.isEmpty() && hour.isEmpty() && minute.isEmpty()) {
+//				request.setAttribute("scheduleTimeError", "移動手段が設定されている場合、所要時間も必須です。");
+//				isError = true;
+//				break;
+//			}
+//		}
+
+		// エラーがあれば再表示
 		if (isError) {
-			request.getRequestDispatcher("/WEB-INF/view/user/addPlan.jsp")
-					.forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/view/user/addPlan.jsp").forward(request, response);
 			return;
 		}
 
-		StringBuilder scheduleData = new StringBuilder();
-		for (int i = 0; i < scheduleTransports.length; i++) {
+		// スケジュール文字列結合
+		StringBuilder scheduleBuilder = new StringBuilder();
+		for (int i = 0; i < schedulePlaces.length; i++) {
+			String placeName = schedulePlaces[i];
+			String comment = (i < scheduleComments.length) ? scheduleComments[i] : "";
+			String transport = (i < scheduleTransports.length) ? scheduleTransports[i] : "";
+			String hour = (i < hours.length) ? hours[i] : "";
+			String minute = (i < minutes.length) ? minutes[i] : "";
+			String image = (i < scheduleImages.size()) ? scheduleImages.get(i) : "";
+
+			// 時間のフォーマット
 			String time = "";
-			if (!hours[i].isEmpty() && !minutes[i].isEmpty()) {
-				time = hours[i] + "時間 " + minutes[i] + "分";
-			} else if (!hours[i].isEmpty()) {
-				time = hours[i] + "時間";
-			} else if (!minutes[i].isEmpty()) {
-				time = minutes[i] + "分";
+			if (!hour.isEmpty() && !minute.isEmpty()) {
+				time = hour + "時間 " + minute + "分";
+			} else if (!hour.isEmpty()) {
+				time = hour + "時間";
+			} else if (!minute.isEmpty()) {
+				time = minute + "分";
 			}
 
-			scheduleData.append("スポット名: ").append(schedulePlaces[i])
-					.append(" | コメント: ").append(scheduleComments[i] != null ? scheduleComments[i] : "")
-					.append(" | 写真: ").append(scheduleImages.get(i)) // 必ずインデックスが一致する
-					.append(" | 移動手段: ").append(scheduleTransports[i] != null ? scheduleTransports[i] : "")
-					.append(" | 所要時間: ").append(time)
-					.append("\n");
+			// スケジュール文字列を構築
+			scheduleBuilder
+					.append("スポット名: ").append(placeName)
+					.append(" | コメント: ").append(comment)
+					.append(" | 写真: ").append(image)
+					.append(" | 移動手段: ").append(transport)
+					.append(" | 所要時間: ").append(time).append("\n");
 		}
 
-		String scheduleText = scheduleData.toString();
-		User user = (User) request.getSession().getAttribute("user");
-
-		Plan plan = new Plan();
-		plan.setTitle(title);
-		plan.setSchedule(scheduleText);
-		plan.setPlace(place);
-		plan.setUser(user);
-		//		plan.setCategoryIds(categoryIds); // カテゴリIDリストをセット
-
+		// データベース保存
+		String schedule = scheduleBuilder.toString();
+		
 		try {
+			User user = (User) request.getSession().getAttribute("user");
+			Plan plan = new Plan();
+			plan.setTitle(title);
+			plan.setPlace(place);
+			plan.setSchedule(schedule);
+			plan.setUser(user);
+
 			PlanDao planDao = DaoFactory.createPlanDao();
 			planDao.insert(plan);
 			request.getSession().setAttribute("Plan", plan);
 			response.sendRedirect(request.getContextPath() + "/user/addPlanDone");
 		} catch (Exception e) {
-			throw new ServletException(e);
+			e.printStackTrace();
+			request.setAttribute("addError", "プランの登録に失敗しました。");
+			request.getRequestDispatcher("/WEB-INF/view/user/addPlan.jsp").forward(request, response);
 		}
 	}
 }

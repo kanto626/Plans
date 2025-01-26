@@ -31,7 +31,7 @@ body {
 </style>
 </head>
 <body>
-	
+
 	<h1>旅行プラン編集</h1>
 
 	<form action="" method="post" class="" enctype="multipart/form-data">
@@ -56,7 +56,7 @@ body {
 
 				<!-- 目的地 -->
 
-				<label for="place" class="form-label"><h3>目的地 </h3></label>
+				<label for="place" class="form-label"><h3>目的地</h3></label>
 				<c:if test="${not empty placeError}">
 					<div class="alert alert-danger">
 						<c:out value="${placeError}" />
@@ -185,22 +185,6 @@ body {
 
 			</div>
 
-			<div class="container">
-				<!-- カテゴリー -->
-				<h3>カテゴリー</h3>
-				<div class=container>
-					<c:if test="${not empty allCategories}">
-						<c:forEach var="category" items="${allCategories}">
-							<label> <input type="checkbox" name="categories"
-								value="${category.id}"
-								<c:if test="${category.selected}">checked</c:if> />
-								${category.name}
-							</label>
-							<br />
-						</c:forEach>
-					</c:if>
-				</div>
-			</div>
 
 			<div id="scheduleContainer">
 				<h3>- スケジュール -</h3>
