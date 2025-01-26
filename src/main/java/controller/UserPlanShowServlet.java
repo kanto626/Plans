@@ -40,24 +40,21 @@ public class UserPlanShowServlet extends HttpServlet {
 			//リクエストスコープに格納
 			request.setAttribute("plan", plan);
 
-			// スケジュールを取得しMapに変換
-			if (plan != null) {
-				String scheduleText = plan.getSchedule();
-				if (scheduleText != null && !scheduleText.isEmpty()) {
-					String[] scheduleItems = scheduleText.split("\n");
-					List<Map<String, String>> scheduleList = new ArrayList<>();
-					for (String item : scheduleItems) {
-						Map<String, String> scheduleItem = new HashMap<>();
-						String[] parts = item.split(" \\| ");
-						for (String part : parts) {
-							String[] keyValue = part.split(": ");
-							if (keyValue.length == 2) {
-								scheduleItem.put(keyValue[0].trim(), keyValue[1].trim());
-							}
+			// スケジュールテキストをMapに変換
+			List<Map<String, String>> scheduleList = new ArrayList<>();
+
+			if (plan != null && plan.getSchedule() != null) {
+				String[] scheduleItems = plan.getSchedule().split("\n");
+				for (String item : scheduleItems) {
+					Map<String, String> scheduleItem = new HashMap<>();
+					String[] parts = item.split(" \\| ");
+					for (String part : parts) {
+						String[] keyValue = part.split(": ");
+						if (keyValue.length == 2) {
+							scheduleItem.put(keyValue[0].trim(), keyValue[1].trim());
 						}
-						scheduleList.add(scheduleItem);
 					}
-					request.setAttribute("scheduleList", scheduleList);
+					scheduleList.add(scheduleItem);
 				}
 			}
 
