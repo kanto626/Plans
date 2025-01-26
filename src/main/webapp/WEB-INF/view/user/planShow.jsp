@@ -95,8 +95,9 @@ img {
 									<i class="bi bi-caret-down"></i>
 								</div>
 								<div>
-
+ <span>次のスポットまでの所要時間</span>
 									<div class="d-flex align-items-center gap-3 ms-0">
+								
 										<p class="form-control mb-0">${schedule['移動手段']}</p>
 
 										<p class="form-control mb-0">${schedule['所要時間']}</p>

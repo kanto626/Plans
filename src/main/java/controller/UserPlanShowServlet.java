@@ -57,7 +57,8 @@ public class UserPlanShowServlet extends HttpServlet {
 					scheduleList.add(scheduleItem);
 				}
 			}
-
+			//リクエストスコープに格納
+			request.setAttribute("scheduleList", scheduleList);
 			// フォワード
 			request.getRequestDispatcher("/WEB-INF/view/user/planShow.jsp").forward(request, response);
 		} catch (Exception e) {

@@ -60,13 +60,13 @@ public class UserAddPlanServlet extends HttpServlet {
 			minutes = new String[0];
 
 		// 再表示用データの設定
-//		request.setAttribute("title", title);
-//		request.setAttribute("place", place);
-//		request.setAttribute("schedulePlaces", schedulePlaces);
-//		request.setAttribute("scheduleComments", scheduleComments);
-//		request.setAttribute("scheduleTransports", scheduleTransports);
-//		request.setAttribute("hours", hours);
-//		request.setAttribute("minutes", minutes);
+		request.setAttribute("title", title);
+		request.setAttribute("place", place);
+		request.setAttribute("schedulePlaces", schedulePlaces);
+		request.setAttribute("scheduleComments", scheduleComments);
+		request.setAttribute("scheduleTransports", scheduleTransports);
+		request.setAttribute("hours", hours);
+		request.setAttribute("minutes", minutes);
 
 		// タイトルと目的地のバリデーション
 		if (title == null || title.trim().isEmpty()) {
@@ -78,6 +78,33 @@ public class UserAddPlanServlet extends HttpServlet {
 			isError = true;
 		}
 
+		// 追加されたスケジュールごとにバリデーション
+		// エラーメッセージを格納するリストを作成
+		List<String> errors = new ArrayList<>();
+		for (int i = 0; i < schedulePlaces.length; i++) {
+			String spotName = schedulePlaces[i];
+			String comment = (i < scheduleComments.length) ? scheduleComments[i] : "";
+			String transport = (i < scheduleTransports.length) ? scheduleTransports[i] : "";
+			String hour = (i < hours.length) ? hours[i] : "";
+			String minute = (i < minutes.length) ? minutes[i] : "";
+
+			// スポット名のバリデーション
+			if (spotName == null || spotName.trim().isEmpty()) {
+				errors.add("スポット名を入力してください。 (" + (i + 1) + "番目)");
+			} else if (spotName.length() > 20) {
+				errors.add("スポット名は20文字以内で入力してください。 (" + (i + 1) + "番目)");
+			}
+
+			// コメントのバリデーション
+			if (comment.length() > 50) {
+				errors.add("コメントは50文字以内で入力してください。 (" + (i + 1) + "番目)");
+			}
+
+			// 時間と移動手段の関連チェック
+			if ((!hour.isEmpty() || !minute.isEmpty()) && (transport == null || transport.trim().isEmpty())) {
+				errors.add("所要時間を入力した場合は移動手段を指定してください。 (" + (i + 1) + "番目)");
+			}
+		}
 		// スケジュールの画像アップロード処理
 		List<String> scheduleImages = new ArrayList<>();
 		try {
@@ -98,44 +125,18 @@ public class UserAddPlanServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("scheduleImagesError", "画像のアップロードに失敗しました。");
-			isError = true;
+			errors.add("画像のアップロードに失敗しました。");
 		}
 
-//		// プレースホルダーを schedulePlaces.length に合わせる
-//		while (scheduleImages.size() < schedulePlaces.length) {
-//			scheduleImages.add("");
-//		}
-
-		// スケジュール項目のバリデーション
-//		for (int i = 0; i < schedulePlaces.length; i++) {
-//			String placeName = schedulePlaces[i];
-//			String transport = (i < scheduleTransports.length) ? scheduleTransports[i] : "";
-//			String hour = (i < hours.length) ? hours[i] : "";
-//			String minute = (i < minutes.length) ? minutes[i] : "";
-//
-//			// スポット名のバリデーション
-//			if (placeName == null || placeName.trim().isEmpty()) {
-//				request.setAttribute("schedulePlacesError", "すべてのスポット名を入力してください。");
-//				isError = true;
-//				break;
-//			}
-//
-//			// 移動手段と所要時間のバリデーション
-//			if ((!hour.isEmpty() || !minute.isEmpty()) && transport.isEmpty()) {
-//				request.setAttribute("scheduleTransportsError", "所要時間が設定されている場合、移動手段も必須です。");
-//				isError = true;
-//				break;
-//			}
-//			if (!transport.isEmpty() && hour.isEmpty() && minute.isEmpty()) {
-//				request.setAttribute("scheduleTimeError", "移動手段が設定されている場合、所要時間も必須です。");
-//				isError = true;
-//				break;
-//			}
-//		}
-
-		// エラーがあれば再表示
-		if (isError) {
+		// エラーがある場合の共通処理
+		if (!errors.isEmpty() || isError) {
+			request.setAttribute("errors", errors);
+			request.setAttribute("schedulePlaces", schedulePlaces);
+			request.setAttribute("scheduleComments", scheduleComments);
+			request.setAttribute("scheduleImages", scheduleImages); // 再表示用
+			request.setAttribute("scheduleTransports", scheduleTransports);
+			request.setAttribute("hours", hours);
+			request.setAttribute("minutes", minutes);
 			request.getRequestDispatcher("/WEB-INF/view/user/addPlan.jsp").forward(request, response);
 			return;
 		}
@@ -171,7 +172,7 @@ public class UserAddPlanServlet extends HttpServlet {
 
 		// データベース保存
 		String schedule = scheduleBuilder.toString();
-		
+
 		try {
 			User user = (User) request.getSession().getAttribute("user");
 			Plan plan = new Plan();
