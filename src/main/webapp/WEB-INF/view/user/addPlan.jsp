@@ -34,11 +34,11 @@ body {
 
 <body>
 
-		<div class="container">
+	<div class="container">
 		<h1>旅行プラン作成</h1>
-	
-	<form action="" method="post" class="" enctype="multipart/form-data">
-		<!-- 基本情報 -->
+
+		<form action="" method="post" class="" enctype="multipart/form-data">
+			<!-- 基本情報 -->
 
 			<div class="container">
 				<h3 label for="title" class="form-label">タイトル</h3>
@@ -137,12 +137,75 @@ body {
 			<div id="scheduleContainer">
 				<c:choose>
 					<c:when test="${not empty schedulePlaces}">
-						<c:forEach var="i" begin="0"
+						<!-- 初期表示のスポット名、コメント、写真フォーム -->
+						<div class="schedule-item mb-3"
+							style="border: 1px solid #ccc; padding: 1rem;">
+							<div class="d-flex flex-row align-items-start mt-3">
+								<div class="d-flex flex-column w-75">
+									<label class="form-label">スポット名</label> <input type="text"
+										name="schedulePlace[]" class="form-control mb-2"
+										value="${schedulePlaces[0]}" /> <label class="form-label">コメント</label>
+									<textarea name="scheduleComment[]" class="form-control mb-2">${scheduleComments[0]}</textarea>
+								</div>
+								<div class="photo-section ms-3">
+									<label class="form-label">写真</label> <input type="file"
+										name="scheduleImage[]" class="form-control mb-2 image-input"
+										accept="image/*">
+									<c:if test="${not empty scheduleImages[0]}">
+										<img src="${scheduleImages[0]}" alt="既存画像"
+											style="max-width: 300px;" />
+									</c:if>
+								</div>
+							</div>
+						</div>
+
+						<!-- 追加フォーム -->
+						<c:forEach var="i" begin="1"
 							end="${fn:length(schedulePlaces) - 1}">
+							<!-- 移動手段と移動時間 -->
 							<div class="schedule-item mb-3"
 								style="border: 1px solid #ccc; padding: 1rem;">
+								<div
+									class="d-flex justify-content-center align-items-center mt-3">
+									<div class="display-5 d-flex flex-column me-0">
+										<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+										<i class="bi bi-caret-down"></i>
+									</div>
+									<div>
+										<span>次のスポットまでの所要時間</span>
+										<div class="d-flex align-items-center gap-3 ms-0">
+											<select name="scheduleTransport[]" class="form-select">
+												<option value=""
+													<c:if test="${scheduleTransports[i] == ''}">selected</c:if>>設定しない</option>
+												<option value="徒歩"
+													<c:if test="${scheduleTransports[i] == '徒歩'}">selected</c:if>>徒歩</option>
+												<option value="車"
+													<c:if test="${scheduleTransports[i] == '車'}">selected</c:if>>車</option>
+												<option value="バス"
+													<c:if test="${scheduleTransports[i] == 'バス'}">selected</c:if>>バス</option>
+											</select> <select name="hours[]" class="form-select">
+												<option value=""
+													<c:if test="${hours[i] == ''}">selected</c:if>>設定しない</option>
+												<c:forEach var="hour" begin="1" end="10">
+													<option value="${hour}"
+														<c:if test="${hours[i] == hour}">selected</c:if>>${hour}</option>
+												</c:forEach>
+											</select> <span>時間</span> <select name="minutes[]" class="form-select">
+												<option value=""
+													<c:if test="${minutes[i] == ''}">selected</c:if>>設定しない</option>
+												<c:forEach var="minute" items="${[5, 10, 15, 30]}">
+													<option value="${minute}"
+														<c:if test="${minutes[i] == minute}">selected</c:if>>${minute}</option>
+												</c:forEach>
+											</select> <span>分</span>
+										</div>
+									</div>
+								</div>
+							</div>
 
-								<!-- スポット名/コメント/画像 -->
+							<!-- スポット名、コメント、写真 -->
+							<div class="schedule-item mb-3"
+								style="border: 1px solid #ccc; padding: 1rem;">
 								<div class="d-flex flex-row align-items-start mt-3">
 									<div class="d-flex flex-column w-75">
 										<label class="form-label">スポット名</label> <input type="text"
@@ -153,51 +216,15 @@ body {
 									<div class="photo-section ms-3">
 										<label class="form-label">写真</label> <input type="file"
 											name="scheduleImage[]" class="form-control mb-2 image-input"
-											accept="image/*" onchange="previewImage(event, this)">
-										<img src="#" alt="プレビュー画像" class="img-preview"
-											style="max-width: 300px; display: none;" />
+											accept="image/*">
 										<c:if test="${not empty scheduleImages[i]}">
 											<img src="${scheduleImages[i]}" alt="既存画像"
 												style="max-width: 300px;" />
 										</c:if>
 									</div>
 								</div>
-
-								<!-- 移動手段 + 所要時間 -->
-								<c:if
-									test="${not empty scheduleTransports[i] or not empty hours[i] or not empty minutes[i]}">
-									<div
-										class="d-flex justify-content-center align-items-center mt-3">
-										<div class="display-5 d-flex flex-column me-0">
-											<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-											<i class="bi bi-caret-down"></i>
-										</div>
-										<div>
-											<span>次のスポットまでの所要時間</span>
-											<div class="d-flex align-items-center gap-3 ms-0">
-												<select name="scheduleTransport[]" class="form-select">
-													<c:forEach var="transport" items="${['徒歩', '車', 'バス']}">
-														<option value="${transport}"
-															${scheduleTransports[i] == transport ? 'selected' : ''}>
-															${transport}</option>
-													</c:forEach>
-												</select> <select name="hours[]" class="form-select">
-													<option value="" ${hours[i] == '' ? 'selected' : ''}>設定しない</option>
-													<c:forEach var="hour" begin="1" end="10">
-														<option value="${hour}"
-															${hours[i] == hour ? 'selected' : ''}>${hour}</option>
-													</c:forEach>
-												</select> <span>時間</span> <select name="minutes[]"
-													class="form-select">
-													<c:forEach var="minute" items="${[5, 10, 15, 30]}">
-														<option value="${minute}"
-															${minutes[i] == minute ? 'selected' : ''}>${minute}</option>
-													</c:forEach>
-												</select> <span>分</span>
-											</div>
-										</div>
-									</div>
-								</c:if>
+								<!-- 削除ボタン -->
+								<button type="button" class="btn btn-danger remove-button">削除</button>
 							</div>
 						</c:forEach>
 					</c:when>
@@ -223,6 +250,8 @@ body {
 					</c:otherwise>
 				</c:choose>
 			</div>
+
+
 
 
 
@@ -308,18 +337,18 @@ body {
 
 			<!-- 項目を追加するボタン -->
 			<button id="addSpotButton" type="button" class="btn btn-primary">スポットを追加</button>
-		</div>
-		<button type="submit" class="btn btn-primary">登録</button>
-		</div>
+	</div>
+	<button type="submit" class="btn btn-primary">登録</button>
+	</div>
 
 
 	</form>
 
-	
-		<p>
-			<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
-		</p>
-	
+
+	<p>
+		<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
+	</p>
+
 
 
 
@@ -327,29 +356,24 @@ body {
 	document.addEventListener('DOMContentLoaded', () => {
 	    const container = document.getElementById('scheduleContainer');
 
-	    // 「スポットを追加」ボタン → テンプレートを複製
-	    document.getElementById('addSpotButton').addEventListener('click', function () {
+	    // 再送信後の削除ボタンにもイベントを適用
+	    setupRemoveButton(container);
+
+	    document.getElementById('addSpotButton').addEventListener('click', () => {
 	        const template = document.getElementById('scheduleTemplate').content.cloneNode(true);
 	        container.appendChild(template);
 	        setupRemoveButton(container);
-	        setupImagePreview(container); // プレビュー機能を追加
 	    });
 
-	    // 初期の削除ボタンとプレビュー設定
-	    setupRemoveButton(container);
-	    setupImagePreview(container);
-	});
-
-	// 削除ボタンの設定
-	function setupRemoveButton(container) {
-	    const removeButtons = container.querySelectorAll('.remove-button');
-	    removeButtons.forEach((button) => {
-	        button.addEventListener('click', function () {
-	            button.closest('.schedule-item').remove(); // 親要素を削除
+	    function setupRemoveButton(container) {
+	        container.querySelectorAll('.remove-button').forEach(button => {
+	            button.addEventListener('click', () => {
+	                button.closest('.schedule-item').remove();
+	            });
 	        });
-	    });
-	}
-
+	    }
+	});
+	
 	// プレビュー機能の設定
 	function setupImagePreview(container) {
 	    const imageInputs = container.querySelectorAll('.image-input');
