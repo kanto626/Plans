@@ -33,12 +33,12 @@ body {
 </head>
 
 <body>
-	<div>
+
+		<div class="container">
 		<h1>旅行プラン作成</h1>
-	</div>
+	
 	<form action="" method="post" class="" enctype="multipart/form-data">
 		<!-- 基本情報 -->
-		<div class="container">
 
 			<div class="container">
 				<h3 label for="title" class="form-label">タイトル</h3>
@@ -139,60 +139,91 @@ body {
 					<c:when test="${not empty schedulePlaces}">
 						<c:forEach var="i" begin="0"
 							end="${fn:length(schedulePlaces) - 1}">
-							<div class="schedule-item mb-3">
-								<input type="text" name="schedulePlace[]"
-									class="form-control mb-2" value="${schedulePlaces[i]}" />
-								<textarea name="scheduleComment[]" class="form-control mb-2">${scheduleComments[i]}</textarea>
-								<!-- 画像 -->
-								<div class="photo-section">
-									<input type="file" name="scheduleImage[]"
-										onchange="previewImage(event, this)" /> <img src="#"
-										alt="プレビュー画像" style="display: none;" />
-									<c:if test="${not empty scheduleImages[i]}">
-										<img src="${scheduleImages[i]}" alt="既存画像"
-											style="max-width: 300px;" />
-									</c:if>
+							<div class="schedule-item mb-3"
+								style="border: 1px solid #ccc; padding: 1rem;">
+
+								<!-- スポット名/コメント/画像 -->
+								<div class="d-flex flex-row align-items-start mt-3">
+									<div class="d-flex flex-column w-75">
+										<label class="form-label">スポット名</label> <input type="text"
+											name="schedulePlace[]" class="form-control mb-2"
+											value="${schedulePlaces[i]}" /> <label class="form-label">コメント</label>
+										<textarea name="scheduleComment[]" class="form-control mb-2">${scheduleComments[i]}</textarea>
+									</div>
+									<div class="photo-section ms-3">
+										<label class="form-label">写真</label> <input type="file"
+											name="scheduleImage[]" class="form-control mb-2 image-input"
+											accept="image/*" onchange="previewImage(event, this)">
+										<img src="#" alt="プレビュー画像" class="img-preview"
+											style="max-width: 300px; display: none;" />
+										<c:if test="${not empty scheduleImages[i]}">
+											<img src="${scheduleImages[i]}" alt="既存画像"
+												style="max-width: 300px;" />
+										</c:if>
+									</div>
 								</div>
-								<!-- 移動手段 -->
-								<select name="scheduleTransport[]">
-									<c:forEach var="transport" items="${['徒歩', '車', 'バス']}">
-										<option value="${transport}"
-											${scheduleTransports[i] == transport ? 'selected' : ''}>${transport}</option>
-									</c:forEach>
-								</select>
-								<!-- 時間と分 -->
-								<select name="hours[]">
-									<option value="" ${hours[i] == '' ? 'selected' : ''}>設定しない</option>
-									<c:forEach var="hour" begin="1" end="10">
-										<option value="${hour}" ${hours[i] == hour ? 'selected' : ''}>${hour}</option>
-									</c:forEach>
-								</select> <select name="minutes[]">
-									<c:forEach var="minute" items="${[5, 10, 15, 30]}">
-										<option value="${minute}"
-											${minutes[i] == minute ? 'selected' : ''}>${minute}</option>
-									</c:forEach>
-								</select>
-								 <!-- 削除ボタン -->
-                    <button type="button" class="btn btn-danger remove-button">削除</button>
+
+								<!-- 移動手段 + 所要時間 -->
+								<c:if
+									test="${not empty scheduleTransports[i] or not empty hours[i] or not empty minutes[i]}">
+									<div
+										class="d-flex justify-content-center align-items-center mt-3">
+										<div class="display-5 d-flex flex-column me-0">
+											<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+											<i class="bi bi-caret-down"></i>
+										</div>
+										<div>
+											<span>次のスポットまでの所要時間</span>
+											<div class="d-flex align-items-center gap-3 ms-0">
+												<select name="scheduleTransport[]" class="form-select">
+													<c:forEach var="transport" items="${['徒歩', '車', 'バス']}">
+														<option value="${transport}"
+															${scheduleTransports[i] == transport ? 'selected' : ''}>
+															${transport}</option>
+													</c:forEach>
+												</select> <select name="hours[]" class="form-select">
+													<option value="" ${hours[i] == '' ? 'selected' : ''}>設定しない</option>
+													<c:forEach var="hour" begin="1" end="10">
+														<option value="${hour}"
+															${hours[i] == hour ? 'selected' : ''}>${hour}</option>
+													</c:forEach>
+												</select> <span>時間</span> <select name="minutes[]"
+													class="form-select">
+													<c:forEach var="minute" items="${[5, 10, 15, 30]}">
+														<option value="${minute}"
+															${minutes[i] == minute ? 'selected' : ''}>${minute}</option>
+													</c:forEach>
+												</select> <span>分</span>
+											</div>
+										</div>
+									</div>
+								</c:if>
 							</div>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
 						<!-- 初期表示用の空フォーム -->
-						<div class="schedule-item mb-3">
-							<input type="text" name="schedulePlace[]"
-								class="form-control mb-2" />
-							<textarea name="scheduleComment[]" class="form-control mb-2"></textarea>
-							<div class="photo-section ms-3">
-							<input type="file" name="scheduleImage[]"
-								class="form-control mb-2 image-input" accept="image/*">
-							<img src="#" alt="プレビュー" class="img-preview"
-								style="max-width: 200px; display: none;" />
-						</div>
+						<div class="schedule-item mb-3"
+							style="border: 1px solid #ccc; padding: 1rem;">
+							<div class="d-flex flex-row align-items-start mt-3">
+								<div class="d-flex flex-column w-75">
+									<label class="form-label">スポット名</label> <input type="text"
+										name="schedulePlace[]" class="form-control mb-2" /> <label
+										class="form-label">コメント</label>
+									<textarea name="scheduleComment[]" class="form-control mb-2"></textarea>
+								</div>
+								<div class="photo-section ms-3">
+									<label class="form-label">写真</label> <input type="file"
+										name="scheduleImage[]" class="form-control mb-2 image-input"
+										accept="image/*"> <img src="#" alt="プレビュー"
+										class="img-preview" style="max-width: 300px; display: none;" />
+								</div>
+							</div>
 						</div>
 					</c:otherwise>
 				</c:choose>
 			</div>
+
 
 
 
@@ -284,11 +315,11 @@ body {
 
 	</form>
 
-	<div>
+	
 		<p>
 			<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
 		</p>
-	</div>
+	
 
 
 

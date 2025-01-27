@@ -16,7 +16,7 @@
 	rel="stylesheet">
 <style>
 div {
-	border: 1px solid #000;
+	
 	/* 境界線のスタイル */
 	margin: 1rem;
 	/* すべての方向に余白を追加 */
@@ -40,8 +40,7 @@ img {
 		<div class="alert alert-success text-center" role="alert">
 			<h2>旅行プランが正常に登録されました！</h2>
 		</div>
-		<div class="container mt-5">
-			<p>以下の内容で登録しました</p>
+		
 			<!-- 基本情報 -->
 			<div class="container">
 				<strong>投稿者 : </strong> ${plan.user.name} <strong>投稿日 : </strong>
@@ -57,6 +56,7 @@ img {
 
 			<!-- スケジュール表示 -->
 			<div id="scheduleContainer">
+			<strong>スケジュール</strong>
 				<c:forEach var="schedule" items="${scheduleList}">
 					<div class="schedule-item mb-3"
 						style="border: 1px solid #ccc; padding: 1rem;">
@@ -71,7 +71,7 @@ img {
 								<p class="form-control">${schedule['コメント']}</p>
 							</div>
 							<div class="photo-section ms-3">
-								<label class="form-label">写真</label>
+								<label class="form-label"></label>
 								<c:if test="${not empty schedule['写真']}">
 									<img src="${pageContext.request.contextPath}${schedule['写真']}" alt="スポット画像"
 										style="max-width: 300px;">
@@ -104,7 +104,7 @@ img {
 					</div>
 				</c:forEach>
 			</div>
-		</div>
+		
 
 		<a href="<%=request.getContextPath()%>/user/addPlan">別の旅行プランを投稿</a> <a
 			href="<%=request.getContextPath()%>/user/myPlans">マイプランリスト</a>

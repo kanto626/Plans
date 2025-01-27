@@ -118,8 +118,6 @@ public class UserAddPlanServlet extends HttpServlet {
 						String path = ctx.getRealPath("/photo");
 						part.write(path + "/" + fileName);
 						scheduleImages.add("/photo/" + fileName);
-						System.out.println("Saved image path: " + path + "/" + fileName);
-						System.out.println("Accessible URL: /photo/" + fileName);
 
 					} else {
 						scheduleImages.add(""); // 画像がない場合のプレースホルダー
