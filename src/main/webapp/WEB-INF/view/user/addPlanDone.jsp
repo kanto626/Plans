@@ -16,7 +16,7 @@
 	rel="stylesheet">
 <style>
 div {
-	
+	border: 1px solid #000;
 	/* 境界線のスタイル */
 	margin: 1rem;
 	/* すべての方向に余白を追加 */
