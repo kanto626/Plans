@@ -73,7 +73,7 @@ img {
 							<div class="photo-section ms-3">
 								<label class="form-label">写真</label>
 								<c:if test="${not empty schedule['写真']}">
-									<img src="${schedule['写真']}" alt="スポット画像"
+									<img src="${pageContext.request.contextPath}${schedule['写真']}" alt="スポット画像"
 										style="max-width: 300px;">
 								</c:if>
 								<c:if test="${empty schedule['写真']}">

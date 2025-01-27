@@ -51,7 +51,7 @@ public class UserAddPlanDoneServlet extends HttpServlet {
 			request.setAttribute("scheduleList", scheduleList);
 
 			// JSPにフォワード
-			request.getRequestDispatcher("/WEB-INF/view/user/testDone.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/view/user/addPlanDone.jsp").forward(request, response);
 
 		} catch (Exception e) {
 			throw new ServletException(e);
