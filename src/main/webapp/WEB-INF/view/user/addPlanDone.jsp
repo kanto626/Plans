@@ -54,7 +54,7 @@ img {
 				<strong>場所 : </strong>${plan.place}
 
 			</div>
-			<!-- スケジュール表示 -->
+
 			<!-- スケジュール表示 -->
 			<div id="scheduleContainer">
 				<c:forEach var="schedule" items="${scheduleList}">
@@ -103,12 +103,12 @@ img {
 
 					</div>
 				</c:forEach>
-
 			</div>
-
-			<a href="<%=request.getContextPath()%>/user/addPlan">別の旅行プランを投稿</a> <a
-				href="<%=request.getContextPath()%>/user/myPlans">マイプランリスト</a>
 		</div>
-		<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
+
+		<a href="<%=request.getContextPath()%>/user/addPlan">別の旅行プランを投稿</a> <a
+			href="<%=request.getContextPath()%>/user/myPlans">マイプランリスト</a>
+	</div>
+	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
