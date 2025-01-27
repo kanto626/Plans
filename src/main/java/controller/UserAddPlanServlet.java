@@ -118,6 +118,9 @@ public class UserAddPlanServlet extends HttpServlet {
 						String path = ctx.getRealPath("/photo");
 						part.write(path + "/" + fileName);
 						scheduleImages.add("/photo/" + fileName);
+						System.out.println("Saved image path: " + path + "/" + fileName);
+						System.out.println("Accessible URL: /photo/" + fileName);
+
 					} else {
 						scheduleImages.add(""); // 画像がない場合のプレースホルダー
 					}
@@ -131,9 +134,11 @@ public class UserAddPlanServlet extends HttpServlet {
 		// エラーがある場合の共通処理
 		if (!errors.isEmpty() || isError) {
 			request.setAttribute("errors", errors);
+			request.setAttribute("title", title);
+			request.setAttribute("place", place);
 			request.setAttribute("schedulePlaces", schedulePlaces);
 			request.setAttribute("scheduleComments", scheduleComments);
-			request.setAttribute("scheduleImages", scheduleImages); // 再表示用
+			request.setAttribute("scheduleImages", scheduleImages);
 			request.setAttribute("scheduleTransports", scheduleTransports);
 			request.setAttribute("hours", hours);
 			request.setAttribute("minutes", minutes);
