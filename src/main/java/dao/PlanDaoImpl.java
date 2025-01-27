@@ -118,6 +118,9 @@ public class PlanDaoImpl implements PlanDao {
 					plan.setId(rs.getInt(1));
 				}
 			}
+		}
+	}
+
 
 			//			// カテゴリ関連付け
 			//			if (plan.getCategoryIds() != null && !plan.getCategoryIds().isEmpty()) {
@@ -131,9 +134,8 @@ public class PlanDaoImpl implements PlanDao {
 			//					categoryStmt.executeBatch();
 			//				}
 			//			}
-		}
-	}
 
+	
 	@Override
 	public void update(Plan plan) throws Exception {
 		try (Connection con = ds.getConnection()) {
@@ -142,7 +144,7 @@ public class PlanDaoImpl implements PlanDao {
 					+ " WHERE id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, plan.getTitle());
-			stmt.setObject(2, plan.getSchedule());
+			stmt.setString(2, plan.getSchedule());
 			stmt.setString(3, plan.getPlace());
 			stmt.setObject(4, plan.getId(), Types.INTEGER);
 			stmt.executeUpdate();

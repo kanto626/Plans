@@ -2,22 +2,23 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
-import dao.CategoryDao;
 import dao.DaoFactory;
 import dao.PlanDao;
-import domain.Category;
 import domain.Plan;
+import domain.User;
 
 /**
  * Servlet implementation class UserPlanEditServlet
@@ -45,25 +46,25 @@ public class UserPlanEditServlet extends HttpServlet {
 			PlanDao planDao = DaoFactory.createPlanDao();
 			Plan plan = planDao.findById(id);
 
-			// カテゴリ情報を取得
-			CategoryDao categoryDao = DaoFactory.createCategoryDao();
-			List<Category> allCategories = categoryDao.findAll();
-			List<Category> categories = categoryDao.getCategoriesByPlanId(id);
 
-			// 選択済みのカテゴリIDをリスト化
-			List<Integer> selectedCategoryIds = categories.stream()
-					.map(Category::getId)
-					.collect(Collectors.toList());
+//			// カテゴリ情報を取得
+//			CategoryDao categoryDao = DaoFactory.createCategoryDao();
+//			List<Category> allCategories = categoryDao.findAll();
+//			List<Category> categories = categoryDao.getCategoriesByPlanId(id);
+//
+//			// 選択済みのカテゴリIDをリスト化
+//			List<Integer> selectedCategoryIds = categories.stream()
+//					.map(Category::getId)
+//					.collect(Collectors.toList());
+//
+//			// 全カテゴリに選択状態を設定
+//			for (Category category : allCategories) {
+//				category.setSelected(selectedCategoryIds.contains(category.getId()));
+//			}
 
-			// 全カテゴリに選択状態を設定
-			for (Category category : allCategories) {
-				category.setSelected(selectedCategoryIds.contains(category.getId()));
-			}
 
 			// リクエストスコープに設定
 			request.setAttribute("plan", plan);
-			request.setAttribute("allCategories", allCategories);
-			request.setAttribute("categories", categories);
 
 			// スケジュールを取得しMapに変換
 			if (plan != null) {
@@ -129,8 +130,117 @@ public class UserPlanEditServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+		// バリデーション用のフラグ
+		boolean isError = false;
 
+		// 入力値の取得
+		String title = request.getParameter("title");
+		String place = request.getParameter("place");
+		String[] schedulePlaces = request.getParameterValues("schedulePlace[]");
+		String[] scheduleComments = request.getParameterValues("scheduleComment[]");
+		String[] scheduleTransports = request.getParameterValues("scheduleTransport[]");
+		String[] hours = request.getParameterValues("hours[]");
+		String[] minutes = request.getParameterValues("minutes[]");
+
+		// null チェック: null の場合は空の配列を代入
+		if (schedulePlaces == null)
+			schedulePlaces = new String[0];
+		if (scheduleComments == null)
+			scheduleComments = new String[0];
+		if (scheduleTransports == null)
+			scheduleTransports = new String[0];
+		if (hours == null)
+			hours = new String[0];
+		if (minutes == null)
+			minutes = new String[0];
+
+		// タイトルと目的地のバリデーション
+		if (title == null || title.trim().isEmpty()) {
+			request.setAttribute("titleError", "タイトルを入力してください。");
+			isError = true;
+		}
+		if (place == null || place.trim().isEmpty()) {
+			request.setAttribute("placeError", "目的地を選択してください。");
+			isError = true;
+		}
+
+		// スケジュールの画像アップロード処理
+		List<String> scheduleImages = new ArrayList<>();
+		try {
+			Collection<Part> parts = request.getParts();
+			for (Part part : parts) {
+				if ("scheduleImage[]".equals(part.getName())) {
+					String type = part.getContentType();
+					if (type != null && type.startsWith("image/")) {
+						String fileName = System.currentTimeMillis() + "-" + part.getSubmittedFileName();
+						ServletContext ctx = request.getServletContext();
+						String path = ctx.getRealPath("/photo");
+						part.write(path + "/" + fileName);
+						scheduleImages.add("/photo/" + fileName);
+					} else {
+						scheduleImages.add(""); // 画像がない場合のプレースホルダー
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("scheduleImagesError", "画像のアップロードに失敗しました。");
+			isError = true;
+		}
+
+		// エラーがあれば再表示
+		if (isError) {
+			request.getRequestDispatcher("/WEB-INF/view/user/editPlan.jsp").forward(request, response);
+			return;
+		}
+
+		// スケジュール文字列結合
+		StringBuilder scheduleBuilder = new StringBuilder();
+		for (int i = 0; i < schedulePlaces.length; i++) {
+			String placeName = schedulePlaces[i];
+			String comment = (i < scheduleComments.length) ? scheduleComments[i] : "";
+			String transport = (i < scheduleTransports.length) ? scheduleTransports[i] : "";
+			String hour = (i < hours.length) ? hours[i] : "";
+			String minute = (i < minutes.length) ? minutes[i] : "";
+			String image = (i < scheduleImages.size()) ? scheduleImages.get(i) : "";
+
+			// 時間のフォーマット
+			String time = "";
+			if (!hour.isEmpty() && !minute.isEmpty()) {
+				time = hour + "時間 " + minute + "分";
+			} else if (!hour.isEmpty()) {
+				time = hour + "時間";
+			} else if (!minute.isEmpty()) {
+				time = minute + "分";
+			}
+
+			// スケジュール文字列を構築
+			scheduleBuilder
+					.append("スポット名: ").append(placeName)
+					.append(" | コメント: ").append(comment)
+					.append(" | 写真: ").append(image)
+					.append(" | 移動手段: ").append(transport)
+					.append(" | 所要時間: ").append(time).append("\n");
+		}
+
+		// データベース保存
+		String schedule = scheduleBuilder.toString();
+
+		try {
+			User user = (User) request.getSession().getAttribute("user");
+			Plan plan = new Plan();
+			plan.setTitle(title);
+			plan.setPlace(place);
+			plan.setSchedule(schedule);
+			plan.setUser(user);
+
+			PlanDao planDao = DaoFactory.createPlanDao();
+			planDao.update(plan);
+
+			request.getRequestDispatcher("/WEB-INF/view/user/myPlans.jsp")
+					.forward(request, response);
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
+	}
 }
