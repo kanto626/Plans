@@ -74,8 +74,9 @@ public class UserLoginServlet extends HttpServlet {
 				// ログイン成功 ⇒ セッションにログインIDを格納
 				request.getSession().setAttribute("loginId", user.getLoginId());
 				request.getSession().setAttribute("user", user);
-				// ログイン後はトップページへリダイレクト
-				response.sendRedirect("top");
+				response.sendRedirect(request.getContextPath() + "/user/home");
+				
+				
 			} else {
 				// ログイン失敗 ⇒ エラーメッセージを表示
 				request.setAttribute("error", true);

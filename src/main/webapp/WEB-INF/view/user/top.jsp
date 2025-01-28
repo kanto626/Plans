@@ -79,50 +79,6 @@ h3, .text-center {
 		<div class="alert alert-warning " role="alert">
 			このサイトの全機能を利用するには、JavaScriptを有効にしてください。</div>
 	</noscript>
-		<%
-		String loginId = (String) session.getAttribute("loginId");
-		if (loginId != null) {
-		%>
-
-
-		<!-- ログイン中の表示 -->
-		<div class="container">
-			<div class="container-fluid vh-100 d-flex">
-				<!-- 左側: 中央に縦並び -->
-				<div
-					class="col-5 d-flex flex-column justify-content-center align-items-center">
-					<h1 class="display-1_5x fw-light">Plans</h1>
-					<p class="h4 fw-medium mb-4">― 旅行プラン投稿サイト ―</p>
-					<p>
-						<a href="<%=request.getContextPath()%>/user/logout"><button
-								type="button" class="btn btn-outline-secondary btn-sm">ログアウト</button></a>
-					</p>
-				</div>
-				<!-- 右側: 縦並び -->
-				<div
-					class="col-6 offset-2 d-flex flex-column justify-content-center align-items-center">
-					<ul class="list-unstyled display-6">
-						<li class="mb-5"><a
-							href="<%=request.getContextPath()%>/user/selectPrefecture"
-							class="custom-link">旅行プラン検索トップ</a></li>
-						<li class="mb-5"><a
-							href="<%=request.getContextPath()%>/user/addPlan"
-							class="custom-link">旅行プラン作成</a></li>
-						<li class="mb-5"><a
-							href="<%=request.getContextPath()%>/user/myPlans"
-							class="custom-link">マイプランリスト</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-
-		<%
-		} else {
-		%>
-
-
-
 		<!-- 未ログイン時の表示 -->
 		<div
 			class="container-fluid vh-100 d-flex justify-content-center align-items-center scale-container border-0">
@@ -147,10 +103,6 @@ h3, .text-center {
 					</button></a>
 			</div>
 		</div>
-		<%
-		}
-		%>
-
 
 	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -11,6 +11,24 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-sans-serif);
 }
 
+.hero {
+    background-image: url("/images/emile-seguin-R9OueKOtGGU-unsplash.jpg");
+    background-position: center;
+background-attachment: fixed;
+}
+
+.dero {
+    background-image: url("/images");
+    background-position: left;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+body {
+    text-align: center;
+    background-color: #EEEEEE;
+}
+
 /* style.css */
 .display-2x {
     font-size: 200px;
@@ -20,6 +38,5 @@ h1, h2, h3, h4, h5, h6 {
 .display-1_5x {
     font-size: 150px;
     /* display-1 よりさらに大きいサイズ */
-   
 }
 
