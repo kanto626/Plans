@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+	rel="stylesheet">
 <!doctype html>
 <html lang="ja">
 
@@ -25,23 +28,33 @@ div {
 
 body {
 	text-align: center;
-	background-color: #f9f9f9;
+	background-color: #EEEEEE;
+}
+
+.time-container {
+	width: 300px;
+	/* 幅を300pxに設定 */
+	height: 300px;
+	/* 高さも300pxに設定 */
+	background-color: rgb(168, 164, 164);
+	/* 背景色を設定（任意） */
+	border: 3px solid black;
 }
 
 /* 適宜スタイルは調整してください */
+.photo-section {
+	width: 200px;
+}
 </style>
 </head>
 
 <body>
-	<div>
+	<div class="container p-2" style="max-width: 1000px;">
 		<h1>旅行プラン作成</h1>
-	</div>
-	<form action="" method="post" class="" enctype="multipart/form-data">
-		<!-- 基本情報 -->
-		<div class="container">
-
-			<div class="container">
-				<h3 label for="title" class="form-label">タイトル</h3>
+		<form action="" method="post" class="" enctype="multipart/form-data">
+			<!-- 基本情報 -->
+			<div style="border: 1px solid #ccc; padding: 1rem;">
+				<label for="title" class="form-label fs-5">タイトル</label>
 				<c:if test="${not empty titleError}">
 					<div class="alert alert-danger">
 						<c:out value="${titleError}" />
@@ -50,18 +63,16 @@ body {
 				<input type="text" id="title" name="title"
 					value="<c:out value=" ${title}" />" class="form-control"
 					placeholder="タイトルを入力">
-
 			</div>
+			<div style="border: 1px solid #ccc; padding: 1rem;">
 
-			<div class="container">
-
-				<label for="place" class="form-label">目的地 : </label>
+				<label for="place" class="form-label fs-5">目的地</label>
 				<c:if test="${not empty placeError}">
 					<div class="alert alert-danger">
 						<c:out value="${placeError}" />
 					</div>
 				</c:if>
-				<select name="place" id="place" class="form-select">
+				<select name="place" id="place" class="form-select w-25 mx-auto">
 					<option value="">都道府県を選択</option>
 
 					<!-- 北海道・東北地方 -->
@@ -184,15 +195,8 @@ body {
 						</option>
 					</optgroup>
 				</select>
-
 			</div>
-
-			<div>
-				<h3 class="">- スケジュール -</h3>
-			</div>
-
-			
-
+			<p class="fs-5">- スケジュール -</p>
 			<c:if test="${not empty errors}">
 				<div class="alert alert-danger">
 					<ul>
@@ -202,39 +206,39 @@ body {
 					</ul>
 				</div>
 			</c:if>
-			
-			<div id="scheduleContainer">
+
+			<div id="scheduleContainer" class="pb-0 pt-0"
+				style="border: 1px solid #ccc; padding: 1rem;">
 				<!-- スポット入力欄の初期表示 -->
-				<div class="d-flex flex-row align-items-start mt-3">
+				<div class="d-flex flex-row align-items-start mb-0 p-0 border-0">
 					<!-- スポット、コメントエリア、スポット間アイコンを縦に並べる -->
 					<div class="d-flex flex-column w-75">
 						<!-- スポット名入力 -->
 						<input type="text" name="schedulePlace[]"
-							class="form-control mb-2" placeholder="スポット名">
-						<!-- コメントエリア -->
-						<input type="text" name="scheduleComment[]"
-							class="form-control mb-2" placeholder="一言コメント">
+							class="form-control mb-2" placeholder="スポット名" />
+						<textarea name="scheduleComment[]" class="form-control mb-2"
+							placeholder="説明やおすすめポイント"></textarea>
 					</div>
 					<!-- 写真を追加ボタン: 右側に配置 -->
-					<div class="photo-section ms-3">
+					<div class="photo-section ms-3 border-0">
 						<input type="file" name="scheduleImage[]"
 							class="form-control mb-2 schedule-image-input" accept="image/*" />
 						<img class="img-preview mb-2"
 							style="max-width: 200px; display: none;" />
 					</div>
 				</div>
-
 				<!-- 移動手段 + 所要時間 -->
-				<div class="d-flex justify-content-center align-items-center mt-3">
-					<div class="display-5 d-flex flex-column me-0">
-						<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-						<i class="bi bi-caret-down"></i>
+				<div
+					class="d-flex justify-content-center align-items-center mx-4 p-0 border-0">
+					<div class="display-5 d-flex flex-column me-0 border-0">
+						<span class="bi bi-caret-down"></span> <span
+							class="bi bi-caret-down"></span> <span class="bi bi-caret-down"></span>
 					</div>
-					<div>
-						<span>次のスポットまでの所要時間</span>
-						<div class="d-flex align-items-center gap-3 ms-0">
+					<div class="container border-0">
+						<h5>次のスポットまでの所要時間</h5>
+						<div class="d-flex align-items-center gap-3 m-0  border-0">
 							<select name="scheduleTransport[]" class="form-select">
-								<option value="">設定しない</option>
+								<option value="">選択</option>
 								<option value="徒歩">徒歩</option>
 								<option value="自転車">自転車</option>
 								<option value="車">車</option>
@@ -244,7 +248,7 @@ body {
 								<option value="フェリー">フェリー</option>
 								<option value="飛行機">飛行機</option>
 							</select> <span>:</span> <select name="hours[]" class="form-select">
-								<option value="">設定しない</option>
+								<option value="">0</option>
 								<option value="1">1</option>
 								<option value="2">2</option>
 								<option value="3">3</option>
@@ -255,34 +259,27 @@ body {
 								<option value="8">8</option>
 								<option value="9">9</option>
 								<option value="10">10</option>
-							</select> <span>時間</span> <select name="minutes[]" class="form-select">
-								<option value="">設定しない</option>
-								<option value="3">3</option>
+							</select><span>時間</span> <select name="minutes[]" class="form-select">
+								<option value="">0</option>
 								<option value="5">5</option>
 								<option value="10">10</option>
 								<option value="15">15</option>
-								<option value="20">20</option>
-								<option value="25">25</option>
 								<option value="30">30</option>
-								<option value="35">35</option>
-								<option value="40">40</option>
 								<option value="45">45</option>
-								<option value="50">50</option>
-								<option value="55">55</option>
 							</select> <span>分</span>
 						</div>
 					</div>
 				</div>
 
 				<!-- スポット名/コメント/画像 -->
-				<div class="d-flex flex-row align-items-start mt-3">
+				<div class="d-flex flex-row align-items-start mb-0 p-0 border-0">
 					<div class="d-flex flex-column w-75">
 						<input type="text" name="schedulePlace[]"
 							class="form-control mb-2" placeholder="スポット名" />
 						<textarea name="scheduleComment[]" class="form-control mb-2"
 							placeholder="説明やおすすめポイント"></textarea>
 					</div>
-					<div class="photo-section ms-3">
+					<div class="photo-section ms-3 border-0">
 						<input type="file" name="scheduleImage[]"
 							class="form-control mb-2 schedule-image-input" accept="image/*" />
 						<img class="img-preview mb-2"
@@ -292,20 +289,19 @@ body {
 			</div>
 			<!-- ▼ テンプレート: 「スポットを追加」ボタンで複製するときの構造 (所要時間 → スポット名/画像 → 削除ボタン) -->
 			<template id="scheduleTemplate">
-				<div class="schedule-item mb-3"
-					style="border: 1px solid #ccc; padding: 1rem;">
-
+				<div class="schedule-item position-relative border-0">
 					<!-- 移動手段 + 所要時間 -->
-					<div class="d-flex justify-content-center align-items-center mt-3">
-						<div class="display-5 d-flex flex-column me-0">
-							<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-							<i class="bi bi-caret-down"></i>
+					<div
+						class="d-flex justify-content-center align-items-center m-0 p-0 border-0">
+						<div class="display-5 d-flex flex-column me-0 border-0">
+							<span class="bi bi-caret-down"></span> <span
+								class="bi bi-caret-down"></span> <span class="bi bi-caret-down"></span>
 						</div>
-						<div>
-							<span>次のスポットまでの所要時間</span>
-							<div class="d-flex align-items-center gap-3 ms-0">
+						<div class="container border-0">
+							<h5>次のスポットまでの所要時間</h5>
+							<div class="d-flex align-items-center gap-3 m-0 border-0">
 								<select name="scheduleTransport[]" class="form-select">
-									<option value="">設定しない</option>
+									<option value="">選択</option>
 									<option value="徒歩">徒歩</option>
 									<option value="自転車">自転車</option>
 									<option value="車">車</option>
@@ -315,7 +311,7 @@ body {
 									<option value="フェリー">フェリー</option>
 									<option value="飛行機">飛行機</option>
 								</select> <span>:</span> <select name="hours[]" class="form-select">
-									<option value="">設定しない</option>
+									<option value="">0</option>
 									<option value="1">1</option>
 									<option value="2">2</option>
 									<option value="3">3</option>
@@ -327,54 +323,50 @@ body {
 									<option value="9">9</option>
 									<option value="10">10</option>
 								</select> <span>時間</span> <select name="minutes[]" class="form-select">
-									<option value="">設定しない</option>
-									<option value="3">3</option>
+									<option value="">0</option>
 									<option value="5">5</option>
 									<option value="10">10</option>
 									<option value="15">15</option>
-									<option value="20">20</option>
-									<option value="25">25</option>
 									<option value="30">30</option>
-									<option value="35">35</option>
-									<option value="40">40</option>
 									<option value="45">45</option>
-									<option value="50">50</option>
-									<option value="55">55</option>
 								</select> <span>分</span>
 							</div>
 						</div>
 					</div>
 
 					<!-- スポット名/コメント/画像 -->
-					<div class="d-flex flex-row align-items-start mt-3">
+					<div class="d-flex flex-row align-items-start m-0 p-0 border-0">
 						<div class="d-flex flex-column w-75">
 							<input type="text" name="schedulePlace[]"
 								class="form-control mb-2" placeholder="スポット名" />
 							<textarea name="scheduleComment[]" class="form-control mb-2"
 								placeholder="説明やおすすめポイント"></textarea>
 						</div>
-						<div class="photo-section ms-3">
+						<div class="photo-section ms-3 border-0">
 							<input type="file" name="scheduleImage[]"
 								class="form-control mb-2 schedule-image-input" accept="image/*" />
 							<img class="img-preview mb-2"
 								style="max-width: 200px; display: none;" />
 						</div>
 					</div>
-					<button type="button" class="btn btn-danger ms-3 remove-button">削除</button>
+
+					<!-- 項目削除するボタン -->
+					<button type="button"
+						class="btn btn-danger remove-button position-absolute bottom-0 end-0">
+						ー</button>
 				</div>
 			</template>
 
+
 			<!-- 項目を追加するボタン -->
-			<button id="addSpotButton" type="button" class="btn btn-primary">スポットを追加</button>
+				<button id="addSpotButton" type="button" class="btn btn-secondary">＋</button>
 		</div>
-		<button type="submit" class="btn btn-primary">登録</button>
-		</div>
-	</form>
-	<div>
+		<button type=" submit" class="btn btn-primary mb-3">登録</button>
+		</form>
 		<p>
 			<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
 		</p>
-	</div>
+
 
 	<script>
 	document.addEventListener("DOMContentLoaded", () => {
