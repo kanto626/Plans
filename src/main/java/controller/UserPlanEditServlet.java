@@ -47,22 +47,6 @@ public class UserPlanEditServlet extends HttpServlet {
 			Plan plan = planDao.findById(id);
 
 
-//			// カテゴリ情報を取得
-//			CategoryDao categoryDao = DaoFactory.createCategoryDao();
-//			List<Category> allCategories = categoryDao.findAll();
-//			List<Category> categories = categoryDao.getCategoriesByPlanId(id);
-//
-//			// 選択済みのカテゴリIDをリスト化
-//			List<Integer> selectedCategoryIds = categories.stream()
-//					.map(Category::getId)
-//					.collect(Collectors.toList());
-//
-//			// 全カテゴリに選択状態を設定
-//			for (Category category : allCategories) {
-//				category.setSelected(selectedCategoryIds.contains(category.getId()));
-//			}
-
-
 			// リクエストスコープに設定
 			request.setAttribute("plan", plan);
 

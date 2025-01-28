@@ -13,7 +13,6 @@
 	rel="stylesheet">
 <head>
 <body class="bg-light text-center">
-	<h1 class="my-5">Plans</h1>
 	<div class="container text-center">
 		<div class="row justify-content-center">
 			<form action="" method="post"
@@ -40,7 +39,7 @@ input[name="name"] {
 				<div class="mb-3">
 					<input type="text" name="loginId"
 						class="form-control rounded-pill w-75 m-auto"
-						placeholder="ログインID (30字以内)" value="<c:out value='${loginId}'/>">
+						placeholder="ログインID (5～30字以内)" value="<c:out value='${loginId}'/>">
 					<c:if test="${not empty loginIdError}">
 						<p class="text-danger small mt-2 w-75 m-auto">
 
@@ -73,6 +72,7 @@ input[name="loginPass"] {
 
 				<button type="submit" class="btn btn-primary rounded-pill my-4 px-5">作成する</button>
 			</form>
+				<a href="<%=request.getContextPath()%>/user/top">トップに戻る</a>
 		</div>
 	</div>
 	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>

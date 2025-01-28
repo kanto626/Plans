@@ -190,101 +190,179 @@ body {
 				<h3>- スケジュール -</h3>
 				<!-- スポットとその情報をフォーム形式で表示 -->
 				<div class="d-flex flex-column mt-3">
-					<c:forEach var="scheduleItem" items="${scheduleList}">
+					<c:forEach var="scheduleItem" items="${scheduleList}"
+						varStatus="status">
+						<!-- スポット名とコメントフォーム -->
 						<div class="schedule-item d-flex flex-row align-items-start mb-4">
-							<!-- 左側にスポット名とコメントのフォームを表示 -->
+							<!-- スポット名やコメントの入力フォーム -->
 							<div class="d-flex flex-column w-75">
-								<!-- スポット名 -->
 								<input type="text" name="schedulePlace[]"
 									class="form-control mb-2" placeholder="スポット名"
 									value="${scheduleItem['スポット名']}">
-								<!-- コメント -->
 								<textarea name="scheduleComment[]" class="form-control mb-2"
 									placeholder="説明やおすすめポイント">${scheduleItem['コメント']}</textarea>
 							</div>
 
-							<!-- 右側に写真と移動手段、所要時間を表示 -->
-							<!-- 写真 -->
-							<div class="form-group">
-								<!-- 画像がある場合は表示 -->
+							<!-- 写真関連の処理 -->
+							<div class="photo-section ms-3">
+								<!-- 現在の画像を表示 -->
 								<c:if test="${not empty scheduleItem['写真']}">
 									<img
 										src="${pageContext.request.contextPath}${scheduleItem['写真']}"
-										alt="現在の写真"
-										style="max-width: 300px; display: block; margin-bottom: 10px;">
+										alt="現在の写真" class="current-image"
+										style="max-width: 200px; display: block; margin-bottom: 10px;">
 								</c:if>
 
-								<!-- 画像変更用ファイル選択 -->
+								<!-- 画像の変更用 -->
 								<label for="scheduleImage">写真の追加または変更</label> <input type="file"
-									name="scheduleImage[]" class="form-control mb-2"
-									accept="image/*">
+									name="scheduleImage[]"
+									class="form-control mb-2 schedule-image-input" accept="image/*" />
+
+								<!-- 新しい画像のプレビュー -->
+								<img class="img-preview mb-2"
+									style="max-width: 200px; display: none;" />
 							</div>
 
 						</div>
 
-						<!-- 次のスポットまでの所要時間のフォーム -->
-						<div class="d-flex justify-content-center">
-							<div class="display-5 d-flex flex-column me-0">
-								<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
-								<i class="bi bi-caret-down"></i>
-							</div>
-
-							<div>
-								<span>次のスポットまでの所要時間</span>
-								<div class="d-flex align-items-center gap-3 ms-0">
-									<select name="scheduleTransport[]" class="form-select">
-										<option value="">設定しない</option>
-										<option value="徒歩"
-											${scheduleItem['移動手段'] == '徒歩' ? 'selected' : ''}>徒歩</option>
-										<option value="車"
-											${scheduleItem['移動手段'] == '車' ? 'selected' : ''}>車</option>
-										<option value="バス"
-											${scheduleItem['移動手段'] == 'バス' ? 'selected' : ''}>バス</option>
-										<option value="電車"
-											${scheduleItem['移動手段'] == '電車' ? 'selected' : ''}>電車</option>
-										<option value="自転車"
-											${scheduleItem['移動手段'] == '自転車' ? 'selected' : ''}>自転車</option>
-										<option value="フェリー"
-											${scheduleItem['移動手段'] == 'フェリー' ? 'selected' : ''}>フェリー</option>
-									</select> <span>:</span> <select name="hours[]" class="form-select">
-										<option value="">設定しない</option>
-										<c:forEach begin="1" end="10" var="hour">
-											<option value="${hour}"
-												${scheduleItem['時間'] != null && scheduleItem['時間'] == hour ? 'selected' : ''}>
-												${hour}</option>
-										</c:forEach>
-									</select> <span style="white-space: nowrap;">時間</span> <select
-										name="minutes[]" class="form-select">
-										<option value="">設定しない</option>
-										<option value="1"
-											${scheduleItem['分'] != null && scheduleItem['分'] == 1 ? 'selected' : ''}>1</option>
-										<option value="3"
-											${scheduleItem['分'] != null && scheduleItem['分'] == 3 ? 'selected' : ''}>3</option>
-										<c:forEach begin="5" end="55" step="5" var="minute">
-											<option value="${minute}"
-												${scheduleItem['分'] != null && scheduleItem['分'] == minute ? 'selected' : ''}>
-												${minute}</option>
-										</c:forEach>
-									</select>
-
-
+						<!-- 次のスポットまでの所要時間フォーム（最後の要素以外の場合のみ表示） -->
+						<c:if test="${!status.last}">
+							<div class="d-flex justify-content-center">
+								<div class="display-5 d-flex flex-column me-0">
+									<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+									<i class="bi bi-caret-down"></i>
+								</div>
+								<div>
+									<span>次のスポットまでの所要時間</span>
+									<div class="d-flex align-items-center gap-3 ms-0">
+										<select name="scheduleTransport[]" class="form-select">
+											<option value="">設定しない</option>
+											<option value="徒歩"
+												${scheduleItem['移動手段'] == '徒歩' ? 'selected' : ''}>徒歩</option>
+											<option value="車"
+												${scheduleItem['移動手段'] == '車' ? 'selected' : ''}>車</option>
+											<option value="バス"
+												${scheduleItem['移動手段'] == 'バス' ? 'selected' : ''}>バス</option>
+											<option value="電車"
+												${scheduleItem['移動手段'] == '電車' ? 'selected' : ''}>電車</option>
+											<option value="自転車"
+												${scheduleItem['移動手段'] == '自転車' ? 'selected' : ''}>自転車</option>
+											<option value="フェリー"
+												${scheduleItem['移動手段'] == 'フェリー' ? 'selected' : ''}>フェリー</option>
+										</select> <span>:</span> <select name="hours[]" class="form-select">
+											<option value="">設定しない</option>
+											<c:forEach begin="1" end="10" var="hour">
+												<option value="${hour}"
+													${scheduleItem['時間'] != null && scheduleItem['時間'] == hour ? 'selected' : ''}>${hour}</option>
+											</c:forEach>
+										</select> <span style="white-space: nowrap;">時間</span> <select
+											name="minutes[]" class="form-select">
+											<option value="">設定しない</option>
+											<option value="1"
+												${scheduleItem['分'] != null && scheduleItem['分'] == 1 ? 'selected' : ''}>1</option>
+											<option value="3"
+												${scheduleItem['分'] != null && scheduleItem['分'] == 3 ? 'selected' : ''}>3</option>
+											<c:forEach begin="5" end="55" step="5" var="minute">
+												<option value="${minute}"
+													${scheduleItem['分'] != null && scheduleItem['分'] == minute ? 'selected' : ''}>${minute}</option>
+											</c:forEach>
+										</select>
+									</div>
 								</div>
 							</div>
-						</div>
+						</c:if>
 					</c:forEach>
+
 				</div>
 
-				<!-- 削除ボタン表示の条件 -->
-				<c:if test="${plan.user.id == sessionScope.user.id}">
-					<a href="deletePlan?id=<c:out value="${plan.id}" />">削除</a>
-				</c:if>
 			</div>
+
+			<!-- ▼ テンプレート: 「スポットを追加」ボタンで複製するときの構造 (所要時間 → スポット名/画像 → 削除ボタン) -->
+			<template id="scheduleTemplate">
+				<div class="schedule-item mb-3"
+					style="border: 1px solid #ccc; padding: 1rem;">
+
+					<!-- 移動手段 + 所要時間 -->
+					<div class="d-flex justify-content-center align-items-center mt-3">
+						<div class="display-5 d-flex flex-column me-0">
+							<i class="bi bi-caret-down"></i> <i class="bi bi-caret-down"></i>
+							<i class="bi bi-caret-down"></i>
+						</div>
+						<div>
+							<span>次のスポットまでの所要時間</span>
+							<div class="d-flex align-items-center gap-3 ms-0">
+								<select name="scheduleTransport[]" class="form-select">
+									<option value="">設定しない</option>
+									<option value="徒歩">徒歩</option>
+									<option value="自転車">自転車</option>
+									<option value="車">車</option>
+									<option value="バス">バス</option>
+									<option value="電車">電車</option>
+									<option value="新幹線">新幹線</option>
+									<option value="フェリー">フェリー</option>
+									<option value="飛行機">飛行機</option>
+								</select> <span>:</span> <select name="hours[]" class="form-select">
+									<option value="">設定しない</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+								</select> <span>時間</span> <select name="minutes[]" class="form-select">
+									<option value="">設定しない</option>
+									<option value="3">3</option>
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="15">15</option>
+									<option value="20">20</option>
+									<option value="25">25</option>
+									<option value="30">30</option>
+									<option value="35">35</option>
+									<option value="40">40</option>
+									<option value="45">45</option>
+									<option value="50">50</option>
+									<option value="55">55</option>
+								</select> <span>分</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- スポット名/コメント/画像 -->
+					<div class="d-flex flex-row align-items-start mt-3">
+						<div class="d-flex flex-column w-75">
+							<input type="text" name="schedulePlace[]"
+								class="form-control mb-2" placeholder="スポット名" />
+							<textarea name="scheduleComment[]" class="form-control mb-2"
+								placeholder="説明やおすすめポイント"></textarea>
+						</div>
+						<div class="photo-section ms-3">
+							<input type="file" name="scheduleImage[]"
+								class="form-control mb-2 schedule-image-input" accept="image/*" />
+							<img class="img-preview mb-2"
+								style="max-width: 200px; display: none;" />
+						</div>
+					</div>
+					<button type="button" class="btn btn-danger ms-3 remove-button">削除</button>
+				</div>
+			</template>
+			<!-- 項目を追加するボタン -->
+			<button id="addSpotButton" type="button" class="btn btn-primary">スポットを追加</button>
+
 			<!-- ボタン -->
 			<button type="submit" class="btn btn-primary">保存</button>
 			<a
 				href="${not empty sessionScope.previousPage ? sessionScope.previousPage : '/defaultPage'}"
 				class="btn btn-secondary">キャンセル</a>
 		</div>
+		<!-- 削除ボタン表示の条件 -->
+		<c:if test="${plan.user.id == sessionScope.user.id}">
+			<a href="deletePlan?id=<c:out value="${plan.id}" />">削除</a>
+		</c:if>
 	</form>
 	<div>
 		<p>
@@ -292,7 +370,65 @@ body {
 		</p>
 	</div>
 
+	<script>
+	document.addEventListener("DOMContentLoaded", () => {
+	    const scheduleContainer = document.getElementById("scheduleContainer");
+	    const addSpotButton = document.getElementById("addSpotButton");
+	    const scheduleTemplate = document.getElementById("scheduleTemplate");
 
+	    // スポットを追加するボタン → テンプレートを複製
+	    addSpotButton.addEventListener("click", () => {
+	        if (scheduleTemplate) {
+	            // テンプレートを取得し複製
+	            const template = scheduleTemplate.content.cloneNode(true);
+
+	            // フィールドを初期化
+	            template.querySelectorAll("input, textarea").forEach(input => {
+	                input.value = "";
+	            });
+
+	            // プレビュー画像を非表示
+	            const imgPreview = template.querySelector(".img-preview");
+	            if (imgPreview) imgPreview.style.display = "none";
+
+	            // コンテナにテンプレートを追加
+	            scheduleContainer.appendChild(template);
+	        } else {
+	            console.error("テンプレートが見つかりませんでした");
+	        }
+	    });
+
+	    // イベント委譲: 画像プレビュー
+	    scheduleContainer.addEventListener("change", (event) => {
+	        if (event.target.classList.contains("schedule-image-input")) {
+	            const fileInput = event.target;
+
+	            // プレビュー画像を取得
+	            const imgPreview = fileInput.closest(".schedule-item").querySelector(".img-preview");
+
+	            if (fileInput.files && fileInput.files[0]) {
+	                const reader = new FileReader();
+	                reader.onload = (e) => {
+	                    imgPreview.src = e.target.result;
+	                    imgPreview.style.display = "block";
+	                };
+	                reader.readAsDataURL(fileInput.files[0]);
+	            } else {
+	                imgPreview.style.display = "none";
+	            }
+	        }
+	    });
+
+	    // イベント委譲: 削除ボタン
+	    scheduleContainer.addEventListener("click", (event) => {
+	        if (event.target.classList.contains("remove-button")) {
+	            const scheduleItem = event.target.closest(".schedule-item");
+	            if (scheduleItem) scheduleItem.remove();
+	        }
+	    });
+	});
+
+</script>
 	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

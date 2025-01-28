@@ -38,12 +38,7 @@ img {
 <body>
 	<div class="container mt-5">
 		<h1>旅行プラン詳細</h1>
-		<p>
-			<c:if test="${plan.user.id == sessionScope.user.id}">
-				<!-- 更新リンク -->
-				<a href="editPlan?id=<c:out value="${plan.id}" />">編集</a>
-			</c:if>
-		</p>
+		
 		<div class="container mt-5">
 
 			<!-- 基本情報 -->
@@ -95,9 +90,9 @@ img {
 									<i class="bi bi-caret-down"></i>
 								</div>
 								<div>
- <span>次のスポットまでの所要時間</span>
+									<span>次のスポットまでの所要時間</span>
 									<div class="d-flex align-items-center gap-3 ms-0">
-								
+
 										<p class="form-control mb-0">${schedule['移動手段']}</p>
 
 										<p class="form-control mb-0">${schedule['所要時間']}</p>

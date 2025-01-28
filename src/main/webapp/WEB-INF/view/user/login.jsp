@@ -59,6 +59,7 @@ input[name="loginPass"] {
 							<c:out value="${loginPassError}" />
 						</p>
 					</c:if>
+				<a href="<%=request.getContextPath()%>/user/top">アカウント作成</p>
 				</div>
 				<button type="submit" class="btn btn-primary rounded-pill my-4 px-5">ログイン</button>
 			</form>
