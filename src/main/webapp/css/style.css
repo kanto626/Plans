@@ -1,3 +1,16 @@
+:root{
+    --font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, "游ゴシック体", "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+body {
+    font-family: var(--font-family-sans-serif);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-sans-serif);
+}
+
 /* style.css */
 .display-2x {
     font-size: 200px;
@@ -9,57 +22,3 @@
     /* display-1 よりさらに大きいサイズ */
 }
 
-/* 共通のリンクスタイルを定義 */
-.custom-link {
-    color: #1c4877;
-    /* デフォルトリンクカラー */
-    text-decoration: underline;
-    text-underline-offset: 15px;
-    text-decoration-color: rgba(9, 150, 155, 0.25);
-    transition: text-decoration-color 0.3s;
-}
-
-.custom-link:hover {
-    color: #22b4eefb;
-    /* ホバー時にリンクの色を変更 */
-    text-decoration-color: rgba(201, 14, 14, 0.75);
-    /* ホバー時に下線の色を変更 */
-}
-
-
-.form-section {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.connector-icon {
-    margin: 10px 0;
-}
-
-
-/* ドロップダウンメニューの背景色をカスタマイズ */
-.dropdown-menu {
-    background-color: #f0f0f0;
-    /* 任意の色に変更 */
-}
-
-/* ドロップダウンアイテムのホバー時の色 */
-.dropdown-item:hover {
-    background-color: #dcdcdc;
-}
-
-.checkbox-group {
-    display: flex;
-    flex-wrap: wrap; /* 折り返しを許可 */
-    gap: 10px; /* 各要素間のスペース */
-}
-.checkbox-group label {
-    display: flex;
-    align-items: center; /* 中央揃え */
-    margin-right: 10px; /* ラベル間の余白 */
-}
-
- 

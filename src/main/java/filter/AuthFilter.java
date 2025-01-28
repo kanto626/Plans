@@ -35,20 +35,31 @@ public class AuthFilter implements Filter {
 	/**
 	* @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	*/
-	public void doFilter(ServletRequest request,
-			ServletResponse response, FilterChain chain)
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		HttpSession session = req.getSession();
 		String uri = req.getRequestURI();
+
+		// 静的リソースを除外
+		if (uri.startsWith(req.getContextPath() + "/css") ||
+				uri.startsWith(req.getContextPath() + "/js") ||
+				uri.startsWith(req.getContextPath() + "/images") ||
+				uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".png") || uri.endsWith(".jpg")) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		// 認証対象のリソースをチェック
 		if (!uri.endsWith("/login") && !uri.endsWith("/top") && !uri.endsWith("/register")) {
 			if (session.getAttribute("loginId") == null) {
 				res.sendRedirect("login");
 				return;
 			}
 		}
-		// pass the request along the filter chain
+
+		// フィルターチェーンを続行
 		chain.doFilter(request, response);
 	}
 
