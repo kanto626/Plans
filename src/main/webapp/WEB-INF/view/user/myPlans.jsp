@@ -53,19 +53,22 @@
 
 		<!-- 旅行プランリスト -->
 		<div class="card">
-			<div class="card-header">
-				<h4 class="mb-0">タイトル</h3>
+			<div
+				class="card-header d-flex justify-content-between align-items-center">
+				<h4 class="mb-0 text-center w-50 ms-3">タイトル</h4>
+				<span class="text-muted">投稿日</span>
 			</div>
+
 			<div class="card-body p-0">
 				<table class="table table-striped table-hover m-0">
-
-
 					<tbody>
 						<c:forEach items="${plans}" var="p">
 							<tr>
 								<td><a href="planShow?id=<c:out value='${p.id}' />"> <c:out
 											value="「${p.title}」" />
 								</a></td>
+								<td class="text-end text-muted"><fmt:formatDate
+										value="${p.registeredAt}" pattern="yyyy-MM-dd" /></td>
 							</tr>
 						</c:forEach>
 					</tbody>

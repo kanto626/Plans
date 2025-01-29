@@ -11,10 +11,11 @@
 	rel="stylesheet">
 <link href="<%=request.getContextPath()%>/css/style.css"
 	rel="stylesheet">
-	
+
 </head>
 
-<body class="bg-light text-center">
+<body>
+
 	<h1 class="my-5">Plans</h1>
 	<div class="container text-center">
 		<div class="row justify-content-center">
@@ -59,13 +60,15 @@ input[name="loginPass"] {
 </style>
 							<c:out value="${loginPassError}" />
 						</p>
-					
+
 					</c:if>
-				<a href="<%=request.getContextPath()%>/user/register">アカウント登録</a></p>
 				</div>
 				<button type="submit" class="btn btn-primary rounded-pill my-4 px-5">ログイン</button>
 			</form>
 		</div>
+				<h6 class="mt-4">
+					<a href="<%=request.getContextPath()%>/user/register">アカウントを作成</a>
+				</h6>
 	</div>
 	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 </body>

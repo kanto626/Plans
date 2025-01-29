@@ -15,12 +15,12 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <head>
-<body class="bg-light text-center">
-	<div class="container text-center">
-		<div class="row justify-content-center">
+<body class="text-center p-3">
+	<div class="container text-center mt-4">
+				<h2 class="mt-5 mb-5">アカウント登録</h2>
+		<div class="row justify-content-center mb-3">
 			<form action="" method="post"
 				class="border rounded bg-white col-md-6 p-4">
-				<h2 class="mt-3 mb-5">アカウント登録</h2>
 
 				<div class="mb-3">
 					<input type="text" name="name"
@@ -75,8 +75,8 @@ input[name="loginPass"] {
 
 				<button type="submit" class="btn btn-primary rounded-pill my-4 px-5">作成する</button>
 			</form>
-				<a href="<%=request.getContextPath()%>/user/top">トップに戻る</a>
 		</div>
+				<a href="<%=request.getContextPath()%>/user/top">トップに戻る</a>
 	</div>
 	<script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 </body>
