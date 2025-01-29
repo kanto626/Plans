@@ -41,7 +41,7 @@ img {
 		<div class="alert alert-secondary" role="alert">
 			<h1>旅行プランが正常に登録されました</h1>
 		</div>
-		<div class="d-flex justify-content-center gap-3">
+		<div class="d-flex justify-content-center gap-3 border-0">
 			<a href="<%=request.getContextPath()%>/user/myPlans"
 				class="btn btn-secondary d-flex align-items-center justify-content-center">
 				<h4 class="m-0">マイプランリスト</h4>
@@ -50,8 +50,6 @@ img {
 				<h4 class="m-0">別の旅行プランを投稿</h4>
 			</a>
 		</div>
-
-
 	</div>
 
 

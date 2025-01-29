@@ -5,7 +5,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>トップページ</title>
+<title>home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="<%=request.getContextPath()%>/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -16,6 +16,11 @@
 
 
 <style>
+body {
+    text-align: center;
+    background-color: #EEEEEE;
+}
+
 .custom-container {
 	/* 境界線のスタイル */
 	margin: 1rem;
@@ -40,17 +45,24 @@
 	text-decoration-color: rgba(3, 58, 113, 0.25);
 	/* ホバー時に下線の色を変更 */
 }
-</style>
+
+.hero {
+	background-image: url("<%=request.getContextPath()%>/images/home3.jpg");
+	background-position: center;
+	background-size: auto 800px;;
+	background-repeat: no-repeat;
+	height: 200px;
+}
 </style>
 </head>
 
 <!-- ログイン中の表示 -->
-<div class="container">
+<div class="hero vh-100 d-flex align-items-center" id="home">
 	<div class="container-fluid vh-100 d-flex">
 		<!-- 左側: 中央に縦並び -->
 		<div
-			class="col-5 d-flex flex-column justify-content-center align-items-center">
-			<h1 class="display-1_5x fw-light">Plans</h1>
+			class="col-6 d-flex flex-column justify-content-center align-items-center">
+			<h1 class="display-1 fw-light">Plans</h1>
 			<p class="h4 fw-medium mb-4">― 旅行プラン投稿サイト ―</p>
 			<p>
 				<a href="<%=request.getContextPath()%>/user/logout"><button
@@ -59,22 +71,24 @@
 		</div>
 		<!-- 右側: 縦並び -->
 		<div
-			class="col-6 offset-2 d-flex flex-column justify-content-center align-items-center">
-			<ul class="list-unstyled display-6">
+			class="col-6  d-flex flex-column justify-content-center align-items-center">
+			<ul class="list-unstyled">
 				<li class="mb-5"><a
 					href="<%=request.getContextPath()%>/user/selectPrefecture"
-					class="custom-link">旅行プラン検索トップ</a></li>
+					class="custom-link"><h4>旅行プラン検索トップ</h4></a></li>
+
 				<li class="mb-5"><a
 					href="<%=request.getContextPath()%>/user/addPlan"
-					class="custom-link">旅行プラン作成</a></li>
+					class="custom-link"><h4>旅行プラン作成</h4></a></li>
 				<li class="mb-5"><a
 					href="<%=request.getContextPath()%>/user/myPlans"
-					class="custom-link">マイプランリスト</a></li>
+					class="custom-link"><h4>マイプランリスト</h4></a></li>
 			</ul>
 		</div>
 	</div>
 </div>
+</div>
+
 <script src="<%=request.getContextPath()%>/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

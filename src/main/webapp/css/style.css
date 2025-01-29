@@ -5,17 +5,14 @@
 
 body {
     font-family: var(--font-family-sans-serif);
+     text-align: center;
+    background-color: #E5E5E5;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-sans-serif);
 }
 
-.hero {
-    background-image: url("/images/emile-seguin-R9OueKOtGGU-unsplash.jpg");
-    background-position: center;
-background-attachment: fixed;
-}
 
 .dero {
     background-image: url("/images");
@@ -24,10 +21,6 @@ background-attachment: fixed;
     background-attachment: fixed;
 }
 
-body {
-    text-align: center;
-    background-color: #EEEEEE;
-}
 
 /* style.css */
 .display-2x {

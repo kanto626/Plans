@@ -11,6 +11,7 @@
 	rel="stylesheet">
 <link href="<%=request.getContextPath()%>/css/style.css"
 	rel="stylesheet">
+	
 </head>
 
 <body class="bg-light text-center">
@@ -58,8 +59,9 @@ input[name="loginPass"] {
 </style>
 							<c:out value="${loginPassError}" />
 						</p>
+					
 					</c:if>
-				<a href="<%=request.getContextPath()%>/user/top">アカウント作成</a></p>
+				<a href="<%=request.getContextPath()%>/user/register">アカウント登録</a></p>
 				</div>
 				<button type="submit" class="btn btn-primary rounded-pill my-4 px-5">ログイン</button>
 			</form>

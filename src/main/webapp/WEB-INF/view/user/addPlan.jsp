@@ -45,6 +45,7 @@ body {
 .photo-section {
 	width: 200px;
 }
+
 </style>
 </head>
 
@@ -229,8 +230,8 @@ body {
 				</div>
 				<!-- 移動手段 + 所要時間 -->
 				<div
-					class="d-flex justify-content-center align-items-center mx-4 p-0 border-0">
-					<div class="display-5 d-flex flex-column me-0 border-0">
+					class="d-flex justify-content-center align-items-center mx-4 p-0 border-0 ">
+					<div class="display-5 d-flex flex-column me-0 border-0 st">
 						<span class="bi bi-caret-down"></span> <span
 							class="bi bi-caret-down"></span> <span class="bi bi-caret-down"></span>
 					</div>
@@ -273,6 +274,7 @@ body {
 
 				<!-- スポット名/コメント/画像 -->
 				<div class="d-flex flex-row align-items-start mb-0 p-0 border-0">
+					
 					<div class="d-flex flex-column w-75">
 						<input type="text" name="schedulePlace[]"
 							class="form-control mb-2" placeholder="スポット名" />
@@ -292,7 +294,7 @@ body {
 				<div class="schedule-item position-relative border-0">
 					<!-- 移動手段 + 所要時間 -->
 					<div
-						class="d-flex justify-content-center align-items-center m-0 p-0 border-0">
+						class="d-flex justify-content-center align-items-center m-0 p-0 border-0 custom-icon-color">
 						<div class="display-5 d-flex flex-column me-0 border-0">
 							<span class="bi bi-caret-down"></span> <span
 								class="bi bi-caret-down"></span> <span class="bi bi-caret-down"></span>
@@ -364,7 +366,7 @@ body {
 		<button type=" submit" class="btn btn-primary mb-3">登録</button>
 		</form>
 		<p>
-			<a href="<%=request.getContextPath()%>/user/top">トップに戻る </a>
+			<a href="<%=request.getContextPath()%>/user/home">ホーム</a>
 		</p>
 
 
