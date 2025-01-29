@@ -19,7 +19,7 @@
 	<h1>アカウント作成完了</h1>
 	<p>アカウントを作成しました。</p>
 	<p>
-		<a href="<%=request.getContextPath()%>/user/home">ホーム</a>
+		<a href="<%=request.getContextPath()%>/user/login">ログイン画面へ</a>
 	</p>
 </body>
 </html>

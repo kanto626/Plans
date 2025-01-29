@@ -1,4 +1,3 @@
-
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -6,10 +5,10 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>管理者専用</title>
+<title>admin</title>
 </head>
 <body>
-	<h1>管理者専用</h1>
+	<h2>管理者専用</h2>
 	<h2>ユーザーリスト</h2>
 	<table border="1">
 		<tr>

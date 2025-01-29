@@ -59,7 +59,7 @@ div {
 </style>
 </head>
 <body>
-	<div class="container p-2" style="max-width: 800px;">
+	<div class="container p-2" style="max-width:1000px;">
 		<h1>旅行プラン詳細</h1>
 
 
@@ -84,7 +84,7 @@ div {
 					style="border: 1px solid #ccc; padding: 1rem;">
 
 					<!-- スポット名/コメント/画像 -->
-					<div class="d-flex flex-row align-items-start mb-0 p-0 border-0">
+					<div class="d-flex flex-row align-items-start m-0 p-0 border-0">
 						<div class="d-flex flex-column w-75">
 
 							<p class="form-control ">${schedule['スポット名']}</p>
@@ -93,7 +93,6 @@ div {
 							<p class="form-control">${schedule['コメント']}</p>
 						</div>
 						<div class="photo-section ms-3 border-0">
-
 							<c:if test="${not empty schedule['写真']}">
 								<img src="${pageContext.request.contextPath}${schedule['写真']}"
 									alt="スポット画像" style="max-width: 300px;">

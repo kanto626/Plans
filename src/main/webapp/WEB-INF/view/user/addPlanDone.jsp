@@ -24,10 +24,6 @@ div {
 	/* 境界線の内側に余白を追加 */
 }
 
-body {
-	text-align: center;
-	background-color: #EEEEEE;
-}
 
 img {
 	width: 300px;

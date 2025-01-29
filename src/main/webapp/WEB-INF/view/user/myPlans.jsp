@@ -55,7 +55,7 @@
 		<div class="card">
 			<div
 				class="card-header d-flex justify-content-between align-items-center">
-				<h4 class="mb-0 text-center w-50 ms-3">タイトル</h4>
+				<h4 class="mb-0 ms-3">タイトル</h4>
 				<span class="text-muted">投稿日</span>
 			</div>
 
@@ -64,9 +64,11 @@
 					<tbody>
 						<c:forEach items="${plans}" var="p">
 							<tr>
-								<td><a href="planShow?id=<c:out value='${p.id}' />"> <c:out
+								<td class="text-start"><a
+									href="planShow?id=<c:out value='${p.id}' />"> <c:out
 											value="「${p.title}」" />
 								</a></td>
+
 								<td class="text-end text-muted"><fmt:formatDate
 										value="${p.registeredAt}" pattern="yyyy-MM-dd" /></td>
 							</tr>
